@@ -30,14 +30,14 @@ translate = updatePosition . Vector.translate
 
 -- | The game's state.
 data World = World
-    { rndGen           :: StdGen
+    { rndGen :: StdGen
       -- ^ The random generator for this world
 
-    , rotateAction     :: RotateAction
+    , rotateAction :: RotateAction
       -- ^ The most recent rotation action
-    , movementAction   :: MovementAction
+    , movementAction :: MovementAction
       -- ^ The most recent movement action
-    , shootAction      :: ShootAction
+    , shootAction :: ShootAction
       -- TODO: add more fields here!
     }
 
