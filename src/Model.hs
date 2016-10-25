@@ -5,6 +5,29 @@ module Model where
 
 import System.Random
 
+import Vector (VectorF, PointF)
+import qualified Vector as Vector
+
+-- | The player's space ship
+data Player = Player
+    { position :: PointF
+    , direction :: VectorF
+    }
+
+updatePosition :: (VectorF -> VectorF) -> Player -> Player
+updatePosition f player @ Player { position } =
+    player { position = f position }
+
+updateDirection :: (VectorF -> VectorF) -> Player -> Player
+updateDirection f player @ Player { direction } =
+    player { direction = f direction }
+
+rotate :: Float -> Player -> Player
+rotate = updateDirection . Vector.rotate
+
+translate :: VectorF -> Player -> Player
+translate = updatePosition . Vector.translate
+
 -- | The game's state.
 data World = World
     { rndGen           :: StdGen
