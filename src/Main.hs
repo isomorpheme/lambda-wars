@@ -36,8 +36,8 @@ chooseDisplay :: [String] -> (Float, Float, Display)
 chooseDisplay []
     = ( defaultHorizontalResolution, defaultVerticalResolution
       , InWindow "Lambda Wars"
-                 (round defaultHorizontalResolution
-                 ,round defaultVerticalResolution  )
+                 ( round defaultHorizontalResolution
+                 , round defaultVerticalResolution )
                  (100,100)
       )
 chooseDisplay [read -> horizontal, read -> vertical]

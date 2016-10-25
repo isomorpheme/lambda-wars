@@ -5,7 +5,6 @@ module View (
 ) where
 
 import Graphics.Gloss
-import Graphics.Gloss.Geometry
 
 import Model
 

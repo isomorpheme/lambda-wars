@@ -10,7 +10,6 @@ import Control.Arrow ((>>>))
 import Data.List
 
 import Graphics.Gloss
-import Graphics.Gloss.Geometry
 
 import System.Random
 
