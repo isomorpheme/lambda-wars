@@ -29,7 +29,7 @@ sub (Vector a b) (Vector c d) = Vector (a - b) (c - d)
 
 -- | Multiply a vector by a scalar value.
 mul :: Num a => a -> Vector a -> Vector a
-mul a (Vector x y) = Vector (a * x) (a * y)
+mul a = fmap (* a)
 
 -- | Take the dot product of two vectors.
 dot :: Num a => Vector a -> Vector a -> a
