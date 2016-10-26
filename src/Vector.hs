@@ -1,6 +1,8 @@
 module Vector
     ( -- * The 'Vector' Type
       Vector(..)
+      -- ** Creating Vectors
+    , fromValue, zero, one
       -- ** Basic Arithmetic
     , add, sub, mul, dot
       -- ** Other Functions
@@ -23,6 +25,18 @@ instance Monoid a => Monoid (Vector a) where
     mempty = Vector mempty mempty
     mappend (Vector a b) (Vector c d) =
         Vector (a `mappend` c) (b `mappend` d)
+
+-- | Create a vector with both components set to the same value.
+fromValue :: a -> Vector a
+fromValue x = Vector x x
+
+-- | A vector with both components set to zero.
+zero :: Num a => Vector a
+zero = fromValue 0
+
+-- | A vector with both components set to one.
+one :: Num a => Vector a
+one = fromValue 1
 
 -- | Add two vectors together.
 add :: Num a => Vector a -> Vector a -> Vector a
