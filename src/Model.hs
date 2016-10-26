@@ -39,7 +39,9 @@ data World = World
       -- ^ The most recent movement action
     , shootAction :: ShootAction
       -- ^ The most recent shooting action
-      -- TODO: add more fields here!
+
+    , player :: Player
+      -- ^ Information about the player
     } deriving Show
 
 data RotateAction = NoRotation | RotateLeft | RotateRight
@@ -57,4 +59,5 @@ initial seed = World
     , rotateAction = NoRotation
     , movementAction = NoMovement
     , shootAction = DontShoot
+    , player = Player Vector.zero Vector.unitY
     }
