@@ -38,6 +38,7 @@ data World = World
     , movementAction :: MovementAction
       -- ^ The most recent movement action
     , shootAction :: ShootAction
+      -- ^ The most recent shooting action
       -- TODO: add more fields here!
     }
 
