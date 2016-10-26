@@ -40,11 +40,11 @@ one = fromValue 1
 
 -- | Add two vectors together.
 add :: Num a => Vector a -> Vector a -> Vector a
-add (Vector a b) (Vector c d) = Vector (a + b) (c + d)
+add (Vector a b) (Vector c d) = Vector (a + c) (b + d)
 
 -- | Subtract two vectors.
 sub :: Num a => Vector a -> Vector a -> Vector a
-sub (Vector a b) (Vector c d) = Vector (a - b) (c - d)
+sub (Vector a b) (Vector c d) = Vector (a - c) (b - d)
 
 -- | Multiply a vector by a scalar value.
 mul :: Num a => a -> Vector a -> Vector a
