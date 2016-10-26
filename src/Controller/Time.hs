@@ -2,7 +2,7 @@
 {-# LANGUAGE ParallelListComp                                                #-}
 
 module Controller.Time (
-    timeHandler
+    handleTime
 ) where
 
 import Control.Arrow ((>>>))
@@ -17,5 +17,5 @@ import Model
 
 -- | Time handling
 
-timeHandler :: Float -> World -> World
-timeHandler time = error "implement Controller.Time.timeHandler!"
+handleTime :: Float -> World -> World
+handleTime time = error "implement Controller.Time.timeHandler!"

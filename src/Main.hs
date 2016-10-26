@@ -26,7 +26,7 @@ main = do
     let (w, h, display) = chooseDisplay args
     let background = black
     let fps = 60
-    play display background fps initial' (draw w h) eventHandler timeHandler
+    play display background fps initial' (draw w h) handleEvent handleTime
 
 -- | Choose a display mode. Note that the resolution of a full screen mode
 --   should likely match the resolution of your monitor exactly.

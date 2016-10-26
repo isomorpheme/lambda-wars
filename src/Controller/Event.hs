@@ -1,5 +1,5 @@
 module Controller.Event (
-    eventHandler
+    handleEvent
 ) where
 
 import Graphics.Gloss
@@ -9,8 +9,8 @@ import Model
 
 -- | Event handling
 
-eventHandler :: Event -> World -> World
-eventHandler event world =
+handleEvent :: Event -> World -> World
+handleEvent event world =
     case event of
         (EventKey key keyState _ _) ->
             handleKey key keyState world

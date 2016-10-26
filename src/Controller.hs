@@ -1,6 +1,6 @@
 module Controller (
-    eventHandler,
-    timeHandler
+    handleEvent,
+    handleTime
 ) where
 
 import Controller.Event
