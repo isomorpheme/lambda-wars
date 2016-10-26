@@ -49,4 +49,9 @@ data MovementAction = NoMovement | Thrust
 data ShootAction = Shoot | DontShoot
 
 initial :: Int -> World
-initial seed = error "implement Model.initial!"
+initial seed = World
+    { rndGen = mkStdGen seed
+    , rotateAction = NoRotation
+    , movementAction = NoMovement
+    , shootAction = DontShoot
+    }
