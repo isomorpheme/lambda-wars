@@ -12,7 +12,7 @@ import qualified Vector as Vector
 data Player = Player
     { position :: PointF
     , direction :: VectorF
-    }
+    } deriving Show
 
 updatePosition :: (VectorF -> VectorF) -> Player -> Player
 updatePosition f player @ Player { position } =
@@ -40,13 +40,16 @@ data World = World
     , shootAction :: ShootAction
       -- ^ The most recent shooting action
       -- TODO: add more fields here!
-    }
+    } deriving Show
 
 data RotateAction = NoRotation | RotateLeft | RotateRight
+    deriving (Show, Eq)
 
 data MovementAction = NoMovement | Thrust
+    deriving (Show, Eq)
 
 data ShootAction = Shoot | DontShoot
+    deriving (Show, Eq)
 
 initial :: Int -> World
 initial seed = World
