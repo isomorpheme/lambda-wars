@@ -19,6 +19,11 @@ data Vector a = Vector a a
 instance Functor Vector where
     fmap f (Vector x y) = Vector (f x) (f y)
 
+instance Monoid a => Monoid (Vector a) where
+    mempty = Vector mempty mempty
+    mappend (Vector a b) (Vector c d) =
+        Vector (a `mappend` c) (b `mappend` d)
+
 -- | Add two vectors together.
 add :: Num a => Vector a -> Vector a -> Vector a
 add (Vector a b) (Vector c d) = Vector (a + b) (c + d)
