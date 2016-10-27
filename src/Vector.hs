@@ -6,7 +6,7 @@ module Vector
       -- ** Basic Arithmetic
     , add, sub, mul, divide, dot
       -- ** Other Functions
-    , magnitude, magnitude2, normalize, neg, rotate
+    , magnitude, magnitude2, normalize, neg, rotate, angle, angle'
       -- * The 'Point' Type
     , Point
     , distance, distance2, translate
@@ -86,6 +86,14 @@ neg = fmap negate
 -- | Rotate a vector by an angle in radians.
 rotate :: Floating a => a -> Vector a -> Vector a
 rotate a (Vector x y) = Vector (x * cos a - y * sin a) (x * sin a + y * cos a)
+
+-- | The angle of this vector to the positive Y axis, in radians.
+angle :: RealFloat a => Vector a -> a
+angle (Vector x y) = (pi / 2) - atan2 y x
+
+-- | The angle of this vector to the positive Y axis, in degrees.
+angle' :: RealFloat a => Vector a -> a
+angle' = (* (180 / pi)) . angle
 
 -- | Exactly the same as a normal 'Vector', but with a different meaning:
 --   a 'Point' represents a position, as opposed to an offset or direction.
