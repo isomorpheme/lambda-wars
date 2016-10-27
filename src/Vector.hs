@@ -7,6 +7,8 @@ module Vector
     , add, sub, mul, divide, dot
       -- ** Other Functions
     , magnitude, magnitude2, normalize, neg, rotate, angle, angle'
+      -- ** Converting vectors
+    , toTuple
       -- * The 'Point' Type
     , Point
     , distance, distance2, translate
@@ -94,6 +96,9 @@ angle (Vector x y) = (pi / 2) - atan2 y x
 -- | The angle of this vector to the positive Y axis, in degrees.
 angle' :: RealFloat a => Vector a -> a
 angle' = (* (180 / pi)) . angle
+
+toTuple :: Vector a -> (a, a)
+toTuple (Vector x y) = (x, y)
 
 -- | Exactly the same as a normal 'Vector', but with a different meaning:
 --   a 'Point' represents a position, as opposed to an offset or direction.
