@@ -6,7 +6,7 @@ module Model where
 import System.Random
 
 import Vector (VectorF, PointF)
-import qualified Vector as Vector
+import qualified Vector
 
 -- | The player's space ship
 data Player = Player
