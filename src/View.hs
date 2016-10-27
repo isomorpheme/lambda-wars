@@ -13,7 +13,7 @@ import qualified Vector
 -- | Drawing
 
 draw :: Float -> Float -> World -> Picture
-draw horizontalResolution verticalResolution world @ (World { .. }) =
+draw _ _ World { .. } =
     drawPlayer player
 
 drawPlayer :: Player -> Picture
