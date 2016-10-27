@@ -58,6 +58,10 @@ sub (Vector a b) (Vector c d) = Vector (a - c) (b - d)
 mul :: Num a => a -> Vector a -> Vector a
 mul a = fmap (* a)
 
+-- | Divide a vector by a scalar value.
+divide :: Fractional a => a -> Vector a -> Vector a
+divide a = fmap (/ a)
+
 -- | Take the dot product of two vectors.
 dot :: Num a => Vector a -> Vector a -> a
 dot (Vector a b) (Vector c d) = a * c + b * d
@@ -70,6 +74,14 @@ magnitude = sqrt . magnitude2
 --   performance.
 magnitude2 :: Num a => Vector a -> a
 magnitude2 v = dot v v
+
+-- | Normalize the vector.
+normalize :: Floating a => Vector a -> Vector a
+normalize v = divide (magnitude v) v
+
+-- | Calculate the negated vector.
+neg :: Num a => Vector a -> Vector a
+neg = fmap negate
 
 -- | Rotate a vector by an angle in radians.
 rotate :: Floating a => a -> Vector a -> Vector a
