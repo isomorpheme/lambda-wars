@@ -87,7 +87,7 @@ neg = fmap negate
 
 -- | Rotate a vector by an angle in radians.
 rotate :: Floating a => a -> Vector a -> Vector a
-rotate a (Vector x y) = Vector (x * cos a - y * sin a) (x * sin a + y * cos a)
+rotate a (Vector x y) = Vector (x * cos a + y * sin a) (y * cos a - x * sin a)
 
 -- | The angle of this vector to the positive Y axis, in radians.
 angle :: RealFloat a => Vector a -> a
