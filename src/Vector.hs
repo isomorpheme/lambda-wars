@@ -4,9 +4,9 @@ module Vector
       -- ** Creating Vectors
     , fromValue, unitX, unitY, zero, one
       -- ** Basic Arithmetic
-    , add, sub, mul, dot
+    , add, sub, mul, divide, dot
       -- ** Other Functions
-    , magnitude, magnitude2, rotate
+    , magnitude, magnitude2, normalize, neg, rotate
       -- * The 'Point' Type
     , Point
     , distance, distance2, translate
