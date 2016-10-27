@@ -5,11 +5,27 @@ module View (
 ) where
 
 import Graphics.Gloss
+import Graphics.Gloss.Data.Picture
+import Graphics.Gloss.Geometry.Angle
 
 import Model
+import Vector (Vector(..), mul)
+import qualified Vector
 
 -- | Drawing
 
 draw :: Float -> Float -> World -> Picture
-draw horizontalResolution verticalResolution world@(World{..})
-    = error "implement View.draw!"
+draw horizontalResolution verticalResolution world @ (World { .. }) =
+    drawPlayer player
+
+drawPlayer :: Player -> Picture
+drawPlayer Player { position = (Vector x y), direction } =
+    Color white
+        $ Translate x y
+        $ Rotate (Vector.angle' direction) ship
+    where
+        ship = Scale 20 20 $ Polygon
+            [ (0, 1)
+            , (0.5, -0.5)
+            , (-0.5, -0.5)
+            ]
