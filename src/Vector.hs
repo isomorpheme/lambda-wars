@@ -73,7 +73,7 @@ magnitude2 v = dot v v
 
 -- | Rotate a vector by an angle in radians.
 rotate :: Floating a => a -> Vector a -> Vector a
-rotate = undefined
+rotate a (Vector x y) = Vector (x * cos a - y * sin a) (x * sin a + y * cos a)
 
 -- | Exactly the same as a normal 'Vector', but with a different meaning:
 --   a 'Point' represents a position, as opposed to an offset or direction.
