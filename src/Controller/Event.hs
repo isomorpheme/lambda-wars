@@ -36,3 +36,5 @@ handleKey key keyState world =
             world { shootAction = Shoot }
         (SpecialKey KeySpace, Up) ->
             world { shootAction = DontShoot }
+        _ -> 
+            world
