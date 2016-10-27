@@ -5,11 +5,9 @@ module View (
 ) where
 
 import Graphics.Gloss
-import Graphics.Gloss.Data.Picture
-import Graphics.Gloss.Geometry.Angle
 
 import Model
-import Vector (Vector(..), mul)
+import Vector (Vector(..))
 import qualified Vector
 
 -- | Drawing
