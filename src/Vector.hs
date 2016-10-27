@@ -70,7 +70,7 @@ dot (Vector a b) (Vector c d) = a * c + b * d
 magnitude :: Floating a => Vector a -> a
 magnitude = sqrt . magnitude2
 
--- | Calculated the magnitude squared of a vector. Useful for improving
+-- | Calculate the magnitude squared of a vector. Useful for improving
 --   performance.
 magnitude2 :: Num a => Vector a -> a
 magnitude2 v = dot v v
@@ -79,7 +79,7 @@ magnitude2 v = dot v v
 normalize :: Floating a => Vector a -> Vector a
 normalize v = divide (magnitude v) v
 
--- | Calculate the negated vector.
+-- | Negate the vector.
 neg :: Num a => Vector a -> Vector a
 neg = fmap negate
 
