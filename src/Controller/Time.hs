@@ -11,17 +11,19 @@ import Control.Arrow ((>>>))
 import Data.List
 import System.Random
 
+import Lens.Micro
+
 import Config (rotationSpeed)
 import Model
 
 -- | Time handling
 
 handleTime :: Float -> World -> World
-handleTime deltaTime world @ World { .. } =
-    case rotateAction of
+handleTime deltaTime world =
+    case world & _rotateAction of
         RotateRight ->
-            world { player = rotate (rotationSpeed * deltaTime) player }
+            world & player %~ rotate (rotationSpeed * deltaTime)
         RotateLeft ->
-            world { player = rotate (-rotationSpeed * deltaTime) player }
+            world & player %~ rotate (-rotationSpeed * deltaTime)
         _ ->
             world

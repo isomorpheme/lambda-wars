@@ -4,6 +4,7 @@ module Controller.Event (
 
 import Graphics.Gloss
 import Graphics.Gloss.Interface.Pure.Game
+import Lens.Micro
 
 import Model
 
@@ -18,23 +19,23 @@ handleEvent event world =
             world
 
 handleKey :: Key -> KeyState -> World -> World
-handleKey key keyState world =
+handleKey key keyState =
     case (key, keyState) of
         (SpecialKey KeyLeft, Down) ->
-            world { rotateAction = RotateLeft }
+            set rotateAction RotateLeft
         (SpecialKey KeyLeft, Up) ->
-            world { rotateAction = NoRotation }
+            set rotateAction NoRotation
         (SpecialKey KeyRight, Down) ->
-            world { rotateAction = RotateRight }
+            set rotateAction RotateRight
         (SpecialKey KeyRight, Up) ->
-            world { rotateAction = NoRotation }
+            set rotateAction NoRotation
         (SpecialKey KeyUp, Down) ->
-            world { movementAction = Thrust }
+            set movementAction Thrust
         (SpecialKey KeyUp, Up) ->
-            world { movementAction = NoMovement }
+            set movementAction NoMovement
         (SpecialKey KeySpace, Down) ->
-            world { shootAction = Shoot }
+            set shootAction Shoot
         (SpecialKey KeySpace, Up) ->
-            world { shootAction = DontShoot }
-        _ -> 
-            world
+            set shootAction DontShoot
+        _ ->
+            id
