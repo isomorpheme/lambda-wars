@@ -1,36 +1,26 @@
 {-# LANGUAGE DisambiguateRecordFields #-}
 {-# LANGUAGE NamedFieldPuns #-}
 
-module Model where
+module Model
+    ( module Model
+    , module Model.Player
+    )
+    where
 
 import System.Random
 
-import Vector (VectorF, PointF, mul)
-import qualified Vector
+import Model.Enemy
+import Model.Player
+import Physics
 
--- | The player's space ship
-data Player = Player
-    { position :: PointF
-    , direction :: VectorF
-    } deriving Show
+data RotateAction = NoRotation | RotateLeft | RotateRight
+    deriving (Show, Eq)
 
-updatePosition :: (VectorF -> VectorF) -> Player -> Player
-updatePosition f player @ Player { position } =
-    player { position = f position }
+data MovementAction = NoMovement | Thrust
+    deriving (Show, Eq)
 
-updateDirection :: (VectorF -> VectorF) -> Player -> Player
-updateDirection f player @ Player { direction } =
-    player { direction = f direction }
-
-rotate :: Float -> Player -> Player
-rotate = updateDirection . Vector.rotate
-
-translate :: VectorF -> Player -> Player
-translate = updatePosition . Vector.translate
-
-move :: Float -> Player -> Player
-move speed player @ Player { direction } =
-    translate (speed `mul` direction) player
+data ShootAction = Shoot | DontShoot
+    deriving (Show, Eq)
 
 -- | The game's state.
 data World = World
@@ -48,20 +38,18 @@ data World = World
       -- ^ Information about the player
     } deriving Show
 
-data RotateAction = NoRotation | RotateLeft | RotateRight
-    deriving (Show, Eq)
-
-data MovementAction = NoMovement | Thrust
-    deriving (Show, Eq)
-
-data ShootAction = Shoot | DontShoot
-    deriving (Show, Eq)
-
 initial :: Int -> World
 initial seed = World
     { rndGen = mkStdGen seed
     , rotateAction = NoRotation
     , movementAction = NoMovement
     , shootAction = DontShoot
-    , player = Player Vector.zero Vector.unitY
+    , player = defaultPlayer
     }
+
+updatePlayer :: (Player -> Player) -> World -> World
+updatePlayer f world @ World { player } =
+    world { player = f player }
+
+stepPhysics :: Float -> World -> World
+stepPhysics deltaTime = updatePlayer $ updatePhysics $ step deltaTime

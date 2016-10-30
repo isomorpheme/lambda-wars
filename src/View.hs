@@ -1,12 +1,15 @@
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE ViewPatterns #-}
 
 module View (
     draw
 ) where
 
 import Graphics.Gloss
+import Graphics.Gloss.Geometry.Angle
 
 import Model
+import Physics
 import Vector (Vector(..))
 import qualified Vector
 
@@ -17,12 +20,12 @@ draw _ _ World { .. } =
     drawPlayer player
 
 drawPlayer :: Player -> Picture
-drawPlayer Player { position = (Vector x y), direction } =
+drawPlayer Player { physics = (position -> Vector x y), direction } =
     Color white
         $ Translate x y
-        $ Rotate (Vector.angle' direction) ship
+        $ Rotate (radToDeg direction) ship
     where
-        ship = Scale 20 20 $ Polygon
+        ship = Scale 15 15 $ Polygon
             [ (0, 1)
             , (0.5, -0.5)
             , (-0.5, -0.5)

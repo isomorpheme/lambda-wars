@@ -11,36 +11,43 @@ import Control.Arrow ((>>>))
 import Data.List
 import System.Random
 
-import Config (rotationSpeed, movementSpeed, thrustSpeed)
+import Config (rotationSpeed, thrustForce)
 import Model
+import Physics
+import Vector (mul)
+import qualified Vector
 
 -- | Time handling
 
 handleTime :: Float -> World -> World
 handleTime deltaTime =
     foldr (.) id $ map ($ deltaTime)
-        [ handleRotation
+        [ stepPhysics
+        , handleRotation
         , handleMovement
         ]
 
 handleRotation :: Float -> World -> World
-handleRotation deltaTime world @ World { rotateAction, player } =
-    world { player = player' }
+handleRotation deltaTime world =
+    updatePlayer update world
     where
-        player' = case rotateAction of
+        update = case rotateAction world of
             RotateRight ->
-                rotate (rotationSpeed * deltaTime) player
+                rotate (rotationSpeed * deltaTime)
             RotateLeft ->
-                rotate (-rotationSpeed * deltaTime) player
+                rotate (-rotationSpeed * deltaTime)
             NoRotation ->
-                player
+                id
 
 handleMovement :: Float -> World -> World
-handleMovement deltaTime world @ World { movementAction, player } =
-    world { player = player' }
+handleMovement deltaTime world =
+    updatePlayer update world
     where
-        player' = case movementAction of
-            NoMovement ->
-                move (movementSpeed * deltaTime) player
-            Thrust ->
-                move (thrustSpeed * deltaTime) player
+        update player =
+            updatePhysics (accelerate $ deltaTime `mul` acceleration) player
+            where
+                acceleration = case movementAction world of
+                    NoMovement ->
+                        Vector.zero
+                    Thrust ->
+                        Vector.fromAngleLength (direction player) thrustForce

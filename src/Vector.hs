@@ -2,7 +2,7 @@ module Vector
     ( -- * The 'Vector' Type
       Vector(..)
       -- ** Creating Vectors
-    , fromValue, unitX, unitY, zero, one
+    , fromValue, fromAngleLength, unitX, unitY, zero, one
       -- ** Basic Arithmetic
     , add, sub, mul, divide, dot
       -- ** Other Functions
@@ -31,6 +31,10 @@ instance Monoid a => Monoid (Vector a) where
 -- | Create a vector with both components set to the same value.
 fromValue :: a -> Vector a
 fromValue x = Vector x x
+
+-- | Create a vector from an angle (to the positive Y axis) and a length.
+fromAngleLength :: Floating a => a -> a -> Vector a
+fromAngleLength a l = l `mul` (rotate a unitY)
 
 -- | A vector with the X component set to 1
 unitX :: Num a => Vector a
