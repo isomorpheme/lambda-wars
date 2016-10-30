@@ -5,7 +5,7 @@ module Model where
 
 import System.Random
 
-import Vector (VectorF, PointF)
+import Vector (VectorF, PointF, mul)
 import qualified Vector
 
 -- | The player's space ship
@@ -27,6 +27,10 @@ rotate = updateDirection . Vector.rotate
 
 translate :: VectorF -> Player -> Player
 translate = updatePosition . Vector.translate
+
+move :: Float -> Player -> Player
+move speed player @ Player { direction } =
+    translate (speed `mul` direction) player
 
 -- | The game's state.
 data World = World

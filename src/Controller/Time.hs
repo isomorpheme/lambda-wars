@@ -11,17 +11,36 @@ import Control.Arrow ((>>>))
 import Data.List
 import System.Random
 
-import Config (rotationSpeed)
+import Config (rotationSpeed, movementSpeed, thrustSpeed)
 import Model
 
 -- | Time handling
 
 handleTime :: Float -> World -> World
-handleTime deltaTime world @ World { .. } =
-    case rotateAction of
-        RotateRight ->
-            world { player = rotate (rotationSpeed * deltaTime) player }
-        RotateLeft ->
-            world { player = rotate (-rotationSpeed * deltaTime) player }
-        _ ->
-            world
+handleTime deltaTime =
+    foldr (.) id $ map ($ deltaTime)
+        [ handleRotation
+        , handleMovement
+        ]
+
+handleRotation :: Float -> World -> World
+handleRotation deltaTime world @ World { rotateAction, player } =
+    world { player = player' }
+    where
+        player' = case rotateAction of
+            RotateRight ->
+                rotate (rotationSpeed * deltaTime) player
+            RotateLeft ->
+                rotate (-rotationSpeed * deltaTime) player
+            NoRotation ->
+                player
+
+handleMovement :: Float -> World -> World
+handleMovement deltaTime world @ World { movementAction, player } =
+    world { player = player' }
+    where
+        player' = case movementAction of
+            NoMovement ->
+                move (movementSpeed * deltaTime) player
+            Thrust ->
+                move (thrustSpeed * deltaTime) player

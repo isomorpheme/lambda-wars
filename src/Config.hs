@@ -5,6 +5,8 @@ module Config
     , defaultHorizontalResolution
     -- * Physics Parameters
     , rotationSpeed
+    , movementSpeed
+    , thrustSpeed
     ) where
 
 -- | Default window configuration
@@ -16,3 +18,9 @@ defaultHorizontalResolution = 1024
 
 rotationSpeed :: Float
 rotationSpeed = 2 * pi
+
+movementSpeed :: Float
+movementSpeed = 40
+
+thrustSpeed :: Float
+thrustSpeed = 80
