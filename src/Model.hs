@@ -36,6 +36,8 @@ data World = World
 
     , player :: Player
       -- ^ Information about the player
+    , enemies :: [Enemy]
+      -- ^ All the enemies
     } deriving Show
 
 initial :: Int -> World
@@ -45,6 +47,7 @@ initial seed = World
     , movementAction = NoMovement
     , shootAction = DontShoot
     , player = defaultPlayer
+    , enemies = []
     }
 
 updatePlayer :: (Player -> Player) -> World -> World
