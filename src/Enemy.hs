@@ -16,14 +16,14 @@ data EnemyType
 
 data Enemy = Enemy
     { physics :: Physics
-    , type' :: EnemyType
+    , enemyType :: EnemyType
     } deriving (Show)
 
 instance Draw Enemy where
-    draw Enemy { physics = position -> Vector x y, type' = type' } =
+    draw Enemy { physics = position -> Vector x y, enemyType = enemyType } =
         Color white
             $ Translate x y
-            $ draw type'
+            $ draw enemyType
 
 instance Draw EnemyType where
     draw (Asteroid size rotation) =
