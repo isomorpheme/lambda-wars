@@ -16,6 +16,9 @@ module Vector
     , VectorF, PointF
     ) where
 
+import Control.Monad.State
+import System.Random
+
 -- | A 2D vector, represented as an X and a Y component.
 data Vector a = Vector a a
     deriving (Show, Eq)
@@ -27,6 +30,18 @@ instance Monoid a => Monoid (Vector a) where
     mempty = Vector mempty mempty
     mappend (Vector a b) (Vector c d) =
         Vector (a `mappend` c) (b `mappend` d)
+
+instance Random a => Random (Vector a) where
+    randomR (Vector lx ly, Vector hx hy) =
+        runState $ do
+            x <- state $ randomR (lx, hx)
+            y <- state $ randomR (ly, hy)
+            return $ Vector x y
+    random =
+        runState $ do
+            x <- state random
+            y <- state random
+            return $ Vector x y
 
 -- | Create a vector with both components set to the same value.
 fromValue :: a -> Vector a

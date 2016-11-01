@@ -57,6 +57,7 @@ executable lambda-wars
                , gloss >=1.9 && < 1.11
                , random >= 1.1 && <1.2
                , time >=1.5 && <1.7
+               , mtl
 
   -- Directories containing source files.
   hs-source-dirs:      src
