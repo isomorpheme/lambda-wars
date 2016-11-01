@@ -1,3 +1,4 @@
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ViewPatterns #-}
 
 module Model.Bullet where
@@ -6,9 +7,9 @@ import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
 
 import Draw
-import Physics(HasPhysics, Physics, position)
+import Physics
 import qualified Physics
-import Vector (Vector(..))
+import Vector (Vector(..), VectorF, PointF)
 import qualified Vector
 
 data Bullet = Bullet
@@ -19,6 +20,16 @@ data Bullet = Bullet
 instance HasPhysics Bullet where
     _physics f bullet @ Bullet { physics } =
         bullet { physics = f physics }
+
+create :: PointF -> Float -> Float -> Bullet
+create position direction speed =
+    Bullet
+        { physics = initialPhysics
+            { position
+            , velocity = Vector.fromAngleLength direction speed
+            }
+        , direction = direction
+        }
 
 instance Draw Bullet where
     draw Bullet { physics = position -> Vector x y, direction } =
