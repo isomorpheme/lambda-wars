@@ -5,7 +5,7 @@ module Player where
 import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
 
-import Drawable
+import Draw
 import Physics
 import Vector (Vector(..))
 import qualified Vector
@@ -30,7 +30,7 @@ updateDirection f player @ Player { direction } =
 rotate :: Float -> Player -> Player
 rotate = updateDirection . (+)
 
-instance Drawable Player where
+instance Draw Player where
     draw Player { physics = position -> Vector x y, direction } =
         Color white
             $ Translate x y

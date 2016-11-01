@@ -8,7 +8,7 @@ import System.Random
 
 import Graphics.Gloss
 
-import Drawable
+import Draw
 import Enemy
 import Player
 import Physics
@@ -57,7 +57,7 @@ updatePlayer f world @ World { player } =
 stepPhysics :: Float -> World -> World
 stepPhysics deltaTime = updatePlayer $ updatePhysics $ step deltaTime
 
-instance Drawable World where
+instance Draw World where
     draw World { .. } =
         Pictures
             [ draw player

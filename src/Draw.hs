@@ -1,13 +1,13 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ViewPatterns #-}
 
-module Drawable where
+module Draw where
 
 import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
 
-class Drawable a where
+class Draw a where
     draw :: a -> Picture
 
-instance Drawable a => Drawable [a] where
+instance Draw a => Draw [a] where
     draw xs = Pictures $ map draw xs

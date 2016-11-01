@@ -3,9 +3,8 @@
 module Enemy where
 
 import Graphics.Gloss
-import Graphics.Gloss.Geometry.Angle
 
-import Drawable
+import Draw
 import Physics
 import Vector (Vector(..))
 import qualified Vector
@@ -20,15 +19,14 @@ data Enemy = Enemy
     , type' :: EnemyType
     } deriving (Show)
 
-instance Drawable Enemy where
+instance Draw Enemy where
     draw Enemy { physics = position -> Vector x y, type' = type' } =
         Color white
-            $ Translate x y 
+            $ Translate x y
             $ draw type'
 
-instance Drawable EnemyType where
-    
-    draw (Asteroid size rotation) = 
+instance Draw EnemyType where
+    draw (Asteroid size rotation) =
         Rotate rotation
             $ Scale size size
             $ Polygon
@@ -43,7 +41,7 @@ instance Drawable EnemyType where
                 ]
 
     draw Seeker =
-        Scale 4 4 
+        Scale 4 4
             $ Line
                 [ (-2, 2)
                 , (0, 1)

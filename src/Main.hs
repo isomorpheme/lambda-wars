@@ -13,7 +13,7 @@ import System.Environment (getArgs)
 import Graphics.Gloss
 
 import Config
-import Drawable
+import Draw
 import World
 import Controller
 
