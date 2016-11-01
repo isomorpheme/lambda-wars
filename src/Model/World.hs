@@ -68,9 +68,6 @@ playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =
     (movementAction, rotateAction, shootAction)
 
-addBullet :: Maybe Bullet -> World -> World
-addBullet = _bullets . maybe id (:)
-
 stepPhysics :: Float -> World -> World
 stepPhysics dt =
     ( (_player . _physics $ step dt)
