@@ -19,4 +19,4 @@ rotationSpeed :: Float
 rotationSpeed = 2 * pi
 
 thrustForce :: Float
-thrustForce = 20
+thrustForce = 40
