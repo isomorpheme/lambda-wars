@@ -6,7 +6,8 @@ import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
 
 import Draw
-import Physics
+import Physics(HasPhysics, Physics, position, initialPhysics)
+import qualified Physics
 import Vector (Vector(..))
 import qualified Vector
 
@@ -19,9 +20,10 @@ data Player = Player
 defaultPlayer :: Player
 defaultPlayer = Player initialPhysics 0
 
-_physics :: (Physics -> Physics) -> Player -> Player
-_physics f player @ Player { physics } =
-    player { physics = f physics }
+instance HasPhysics Player where
+    physics a = Player.physics a
+    _physics f player @ Player { physics } =
+        player { physics = f physics }
 
 _direction :: (Float -> Float) -> Player -> Player
 _direction f player @ Player { direction } =

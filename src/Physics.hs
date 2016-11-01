@@ -11,6 +11,10 @@ data Physics = Physics
     , bounds :: Float
     } deriving Show
 
+class HasPhysics a where
+    physics :: a -> Physics
+    _physics :: (Physics -> Physics) -> a -> a
+
 initialPhysics :: Physics
 initialPhysics = Physics
     { position = Vector.zero
