@@ -60,19 +60,12 @@ _player :: (Player -> Player) -> World -> World
 _player f world @ World { player } =
     world { player = f player }
 
-_bullets :: (Bullet -> Bullet) -> World -> World
+_bullets :: ([Bullet] -> [Bullet]) -> World -> World
 _bullets f world @ World { bullets} =
-    world { bullets = map f bullets }
+    world { bullets = f bullets }
 
 addBullet :: Maybe Bullet -> World -> World
-addBullet bullet world @ World { bullets } =
-    world { bullets = bullets' }
-        where
-            bullets' = case bullet of
-                Nothing ->
-                    bullets
-                Just b ->
-                    b : bullets
+addBullet = _bullets . maybe id (:)
 
 stepPhysics :: Float -> World -> World
 stepPhysics dt =
