@@ -1,16 +1,16 @@
 {-# LANGUAGE DisambiguateRecordFields #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE RecordWildCards #-}
 
-module Model
-    ( module Model
-    , module Model.Player
-    )
-    where
+module World where
 
 import System.Random
 
-import Model.Enemy
-import Model.Player
+import Graphics.Gloss
+
+import Drawable
+import Enemy
+import Player
 import Physics
 
 data RotateAction = NoRotation | RotateLeft | RotateRight
@@ -56,3 +56,10 @@ updatePlayer f world @ World { player } =
 
 stepPhysics :: Float -> World -> World
 stepPhysics deltaTime = updatePlayer $ updatePhysics $ step deltaTime
+
+instance Drawable World where
+    draw World { .. } =
+        Pictures
+            [ draw player
+            , draw enemies
+            ]

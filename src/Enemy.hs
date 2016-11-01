@@ -1,13 +1,16 @@
-module Model.Enemy where
+module Enemy where
 
+import Drawable
 import Physics
 
 data EnemyType
-    = Asteroid Float
+    = Seeker
     deriving (Eq, Show)
 
 data Enemy = Enemy
     { physics :: Physics
-    , rotation :: Float
     , type' :: EnemyType
     } deriving (Show)
+
+instance Drawable Enemy where
+    draw = undefined

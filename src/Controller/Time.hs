@@ -12,8 +12,9 @@ import Data.List
 import System.Random
 
 import Config (rotationSpeed, thrustForce)
-import Model
+import World
 import Physics
+import Player
 import Vector (mul)
 import qualified Vector
 

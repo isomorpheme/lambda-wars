@@ -5,7 +5,7 @@ module Controller.Event (
 import Graphics.Gloss
 import Graphics.Gloss.Interface.Pure.Game
 
-import Model
+import World
 
 -- | Event handling
 
@@ -36,5 +36,5 @@ handleKey key keyState world =
             world { shootAction = Shoot }
         (SpecialKey KeySpace, Up) ->
             world { shootAction = DontShoot }
-        _ -> 
+        _ ->
             world

@@ -1,7 +1,13 @@
-module Model.Player where
+{-# LANGUAGE ViewPatterns #-}
 
+module Player where
+
+import Graphics.Gloss
+import Graphics.Gloss.Geometry.Angle
+
+import Drawable
 import Physics
-import Vector (VectorF, PointF, mul)
+import Vector (Vector(..))
 import qualified Vector
 
 -- | The player's space ship
@@ -23,3 +29,15 @@ updateDirection f player @ Player { direction } =
 
 rotate :: Float -> Player -> Player
 rotate = updateDirection . (+)
+
+instance Drawable Player where
+    draw Player { physics = position -> Vector x y, direction } =
+        Color white
+            $ Translate x y
+            $ Rotate (radToDeg direction) ship
+        where
+            ship = Scale 15 15 $ Polygon
+                [ (0, 1)
+                , (0.5, -0.5)
+                , (-0.5, -0.5)
+                ]
