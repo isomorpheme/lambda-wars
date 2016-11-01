@@ -12,7 +12,6 @@ data Physics = Physics
     } deriving Show
 
 class HasPhysics a where
-    physics :: a -> Physics
     _physics :: (Physics -> Physics) -> a -> a
 
 initialPhysics :: Physics

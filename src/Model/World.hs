@@ -2,16 +2,16 @@
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module World where
+module Model.World where
 
 import System.Random
 
 import Graphics.Gloss
 
-import Bullet
 import Draw
-import Enemy
-import Player
+import Model.Bullet
+import Model.Enemy
+import Model.Player
 import Physics
 
 data RotateAction = NoRotation | RotateLeft | RotateRight
@@ -67,15 +67,15 @@ _bullets f world @ World { bullets} =
 addBullet :: Maybe Bullet -> World -> World
 addBullet bullet world @ World { bullets } =
     world { bullets = bullets' }
-        where 
+        where
             bullets' = case bullet of
-                Nothing -> 
+                Nothing ->
                     bullets
-                Just b -> 
+                Just b ->
                     b : bullets
 
 stepPhysics :: Float -> World -> World
-stepPhysics dt = 
+stepPhysics dt =
     ( (_player . _physics $ step dt)
     . (_bullets . _physics $ step dt)
     )

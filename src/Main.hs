@@ -14,7 +14,7 @@ import Graphics.Gloss
 
 import Config
 import Draw
-import World
+import Model.World
 import Controller
 
 -- | Main

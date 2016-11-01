@@ -1,6 +1,6 @@
 {-# LANGUAGE ViewPatterns #-}
 
-module Enemy where
+module Model.Enemy where
 
 import Graphics.Gloss
 

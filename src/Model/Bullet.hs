@@ -1,6 +1,6 @@
 {-# LANGUAGE ViewPatterns #-}
 
-module Bullet where
+module Model.Bullet where
 
 import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
@@ -17,7 +17,6 @@ data Bullet = Bullet
     } deriving (Show)
 
 instance HasPhysics Bullet where
-    physics a = Bullet.physics a
     _physics f bullet @ Bullet { physics } =
         bullet { physics = f physics }
 

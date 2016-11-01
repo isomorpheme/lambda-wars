@@ -1,6 +1,6 @@
 {-# LANGUAGE ViewPatterns #-}
 
-module Player where
+module Model.Player where
 
 import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
@@ -22,7 +22,6 @@ defaultPlayer :: Player
 defaultPlayer = Player initialPhysics 0 0
 
 instance HasPhysics Player where
-    physics a = Player.physics a
     _physics f player @ Player { physics } =
         player { physics = f physics }
 
