@@ -51,4 +51,5 @@ handleTime :: Float -> World -> World
 handleTime dt world @ World { .. } =
         ( stepPhysics dt
         . updatePlayer dt
+        . updateEnemies dt
         ) world

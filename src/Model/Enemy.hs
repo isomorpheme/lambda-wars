@@ -1,3 +1,4 @@
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE ViewPatterns #-}
 
 module Model.Enemy where
@@ -6,7 +7,7 @@ import Graphics.Gloss
 
 import Draw
 import Physics
-import Vector (Vector(..))
+import Vector (Vector(..), PointF)
 import qualified Vector
 
 data EnemyType
@@ -18,6 +19,24 @@ data Enemy = Enemy
     { physics :: Physics
     , enemyType :: EnemyType
     } deriving (Show)
+
+instance HasPhysics Enemy where
+    _physics f enemy @ Enemy { physics } =
+        enemy { physics = f physics }
+
+asteroid :: Float -> Float -> PointF -> Enemy
+asteroid size rotation position =
+    Enemy
+        { physics = initialPhysics { position }
+        , enemyType = Asteroid size rotation
+        }
+
+seeker :: PointF -> Enemy
+seeker position =
+    Enemy
+        { physics = initialPhysics { position }
+        , enemyType = Seeker
+        }
 
 instance Draw Enemy where
     draw Enemy { physics = position -> Vector x y, enemyType = enemyType } =

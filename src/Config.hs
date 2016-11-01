@@ -3,12 +3,14 @@ module Config
       aspectRatio
     , defaultVerticalResolution
     , defaultHorizontalResolution
-    -- * Physics Parameters
+    -- * Player Parameters
     , rotationSpeed
     , thrustForce
     , bulletSpeed
     , shootDelay
     , backfire
+    -- * Enemy parameters
+    , seekerSpeed
     ) where
 
 -- | Default window configuration
@@ -32,3 +34,6 @@ shootDelay = 0.2
 
 backfire :: Float
 backfire = -5
+
+seekerSpeed :: Float
+seekerSpeed = 10

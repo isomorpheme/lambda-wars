@@ -62,8 +62,12 @@ _player f world @ World { player } =
     world { player = f player }
 
 _bullets :: ([Bullet] -> [Bullet]) -> World -> World
-_bullets f world @ World { bullets} =
+_bullets f world @ World { bullets } =
     world { bullets = f bullets }
+
+_enemies :: ([Enemy] -> [Enemy]) -> World -> World
+_enemies f world @ World { enemies} =
+    world { enemies = f enemies }
 
 playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =
@@ -74,6 +78,7 @@ stepPhysics dt =
     compose
         [ _player . _physics $ step dt
         , _bullets . _physics $ step dt
+        , _enemies . _physics $ step dt
         ]
 
 instance Draw World where
