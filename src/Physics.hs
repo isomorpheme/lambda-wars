@@ -14,6 +14,9 @@ data Physics = Physics
 class HasPhysics a where
     _physics :: (Physics -> Physics) -> a -> a
 
+instance HasPhysics a => HasPhysics [a] where
+    _physics = map . _physics
+
 initialPhysics :: Physics
 initialPhysics = Physics
     { position = Vector.zero
