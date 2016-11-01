@@ -36,8 +36,10 @@ instance Drawable Player where
             $ Translate x y
             $ Rotate (radToDeg direction) ship
         where
-            ship = Scale 15 15 $ Polygon
-                [ (0, 1)
-                , (0.5, -0.5)
-                , (-0.5, -0.5)
+            ship = Scale 3 3 $ Line
+                [ (0, 4)
+                , (2, -2)
+                , (0, -1)
+                , (-2, -2)
+                , (0, 4)
                 ]
