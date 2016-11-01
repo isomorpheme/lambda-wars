@@ -20,7 +20,7 @@ draw _ _ World { .. } =
     drawPlayer player
 
 drawPlayer :: Player -> Picture
-drawPlayer Player { physics = (position -> Vector x y), direction } =
+drawPlayer Player { physics = position -> Vector x y, direction } =
     Color white
         $ Translate x y
         $ Rotate (radToDeg direction) ship
