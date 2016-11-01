@@ -6,8 +6,7 @@ import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
 
 import Draw
-import Physics(HasPhysics, Physics, position, initialPhysics)
-import qualified Physics
+import Physics
 import Vector (Vector(..))
 import qualified Vector
 
