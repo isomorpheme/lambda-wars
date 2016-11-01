@@ -11,7 +11,8 @@ import Vector (Vector(..))
 import qualified Vector
 
 data EnemyType
-    = Seeker
+    = Asteroid Float Float
+    | Seeker
     deriving (Eq, Show)
 
 data Enemy = Enemy
@@ -20,11 +21,17 @@ data Enemy = Enemy
     } deriving (Show)
 
 instance Drawable Enemy where
-    draw Enemy { physics = position -> Vector x y } =
+    draw Enemy { physics = position -> Vector x y, type' = type' } =
         Color white
-            $ Translate x y asteroid
-        where
-            asteroid = Scale 3 3 $ Polygon
+            $ Translate x y 
+            $ draw type'
+
+instance Drawable EnemyType where
+    
+    draw (Asteroid size rotation) = 
+        Rotate rotation
+            $ Scale size size
+            $ Polygon
                 [ (-1, 3)
                 , (1, 3)
                 , (3, 1)
@@ -33,4 +40,18 @@ instance Drawable Enemy where
                 , (-1, -3)
                 , (-3, -1)
                 , (-3, 1)
+                ]
+
+    draw Seeker =
+        Scale 4 4 
+            $ Line
+                [ (-2, 2)
+                , (0, 1)
+                , (2, 2)
+                , (1, 0)
+                , (2, -2)
+                , (0, -1)
+                , (-2, -2)
+                , (-1, 0)
+                , (-2, 2)
                 ]
