@@ -15,10 +15,11 @@ import qualified Vector
 data Player = Player
     { physics :: Physics
     , direction :: Float
+    , shootCooldown :: Float
     } deriving Show
 
 defaultPlayer :: Player
-defaultPlayer = Player initialPhysics 0
+defaultPlayer = Player initialPhysics 0 0
 
 instance HasPhysics Player where
     physics a = Player.physics a
@@ -28,6 +29,10 @@ instance HasPhysics Player where
 _direction :: (Float -> Float) -> Player -> Player
 _direction f player @ Player { direction } =
     player { direction = f direction }
+
+_shootCooldown :: (Float -> Float) -> Player -> Player
+_shootCooldown f player @ Player { shootCooldown } =
+    player { shootCooldown = f shootCooldown }
 
 rotate :: Float -> Player -> Player
 rotate = _direction . (+)
