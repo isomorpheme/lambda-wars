@@ -64,6 +64,10 @@ _bullets :: ([Bullet] -> [Bullet]) -> World -> World
 _bullets f world @ World { bullets} =
     world { bullets = f bullets }
 
+playerActions :: World -> PlayerActions
+playerActions World { movementAction, rotateAction, shootAction } =
+    (movementAction, rotateAction, shootAction)
+
 addBullet :: Maybe Bullet -> World -> World
 addBullet = _bullets . maybe id (:)
 

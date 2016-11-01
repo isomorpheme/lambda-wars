@@ -9,7 +9,7 @@ import Graphics.Gloss
 import Graphics.Gloss.Interface.Pure.Game
 
 import Config (rotationSpeed, thrustForce, bulletSpeed, shootDelay)
-import Controller.Player
+import Controller.World
 import Model.World
 import Physics
 
@@ -50,9 +50,5 @@ handleKey key keyState world =
 handleTime :: Float -> World -> World
 handleTime dt world @ World { .. } =
         ( stepPhysics dt
-        . _player (const newPlayer)
-        . addBullet maybeBullet
+        . updatePlayer dt
         ) world
-            where
-                (newPlayer, maybeBullet) =
-                    updatePlayer (movementAction, rotateAction, shootAction) dt player

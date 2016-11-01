@@ -10,8 +10,8 @@ import Physics
 import Vector (mul, add)
 import qualified Vector
 
-updatePlayer :: PlayerActions -> Float -> Player -> (Player, Maybe Bullet)
-updatePlayer (movement, rotation, shoot) dt (player @ Player { .. }) =
+update :: PlayerActions -> Float -> Player -> (Player, Maybe Bullet)
+update (movement, rotation, shoot) dt (player @ Player { .. }) =
     (updateMovement . updateRotation . updateCooldown . applyBackfire $ player, maybeBullet)
     where
         updateMovement =
