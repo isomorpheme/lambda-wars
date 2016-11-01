@@ -1,7 +1,14 @@
+{-# LANGUAGE ViewPatterns #-}
+
 module Enemy where
+
+import Graphics.Gloss
+import Graphics.Gloss.Geometry.Angle
 
 import Drawable
 import Physics
+import Vector (Vector(..))
+import qualified Vector
 
 data EnemyType
     = Seeker
@@ -13,4 +20,17 @@ data Enemy = Enemy
     } deriving (Show)
 
 instance Drawable Enemy where
-    draw = undefined
+    draw Enemy { physics = position -> Vector x y } =
+        Color white
+            $ Translate x y asteroid
+        where
+            asteroid = Scale 3 3 $ Polygon
+                [ (-1, 3)
+                , (1, 3)
+                , (3, 1)
+                , (3, -1)
+                , (1, -3)
+                , (-1, -3)
+                , (-3, -1)
+                , (-3, 1)
+                ]
