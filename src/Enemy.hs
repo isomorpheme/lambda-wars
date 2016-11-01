@@ -29,7 +29,7 @@ instance Draw EnemyType where
     draw (Asteroid size rotation) =
         Rotate rotation
             $ Scale size size
-            $ Polygon
+            $ Line
                 [ (-1, 3)
                 , (1, 3)
                 , (3, 1)
@@ -38,6 +38,7 @@ instance Draw EnemyType where
                 , (-1, -3)
                 , (-3, -1)
                 , (-3, 1)
+                , (-1, 3)
                 ]
 
     draw Seeker =
