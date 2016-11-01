@@ -6,6 +6,9 @@ module Config
     -- * Physics Parameters
     , rotationSpeed
     , thrustForce
+    , bulletSpeed
+    , shootDelay
+    , backfire
     ) where
 
 -- | Default window configuration
@@ -20,3 +23,12 @@ rotationSpeed = 2 * pi
 
 thrustForce :: Float
 thrustForce = 40
+
+bulletSpeed :: Float
+bulletSpeed = 200
+
+shootDelay :: Float
+shootDelay = 0.2
+
+backfire :: Float
+backfire = -5
