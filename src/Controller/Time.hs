@@ -21,34 +21,28 @@ import qualified Vector
 -- | Time handling
 
 handleTime :: Float -> World -> World
-handleTime deltaTime =
-    foldr (.) id $ map ($ deltaTime)
-        [ stepPhysics
-        , handleRotation
-        , handleMovement
-        ]
+handleTime dt world @ World { .. } =
+        ( stepPhysics dt
+        . _player (updatePlayer (movementAction, rotateAction, shootAction) dt)
+        ) world
 
-handleRotation :: Float -> World -> World
-handleRotation deltaTime world =
-    _player update world
+updatePlayer :: PlayerAction -> Float -> Player -> Player
+updatePlayer (movement, rotation, _) dt player =
+    updateMovement . updateRotation $ player
     where
-        update = case rotateAction world of
-            RotateRight ->
-                rotate (rotationSpeed * deltaTime)
-            RotateLeft ->
-                rotate (-rotationSpeed * deltaTime)
-            NoRotation ->
-                id
-
-handleMovement :: Float -> World -> World
-handleMovement deltaTime world =
-    _player update world
-    where
-        update player =
-            _physics (accelerate $ deltaTime `mul` acceleration) player
-            where
-                acceleration = case movementAction world of
+        updateMovement =
+            let
+                acceleration = case movement of
                     NoMovement ->
                         Vector.zero
                     Thrust ->
                         Vector.fromAngleLength (direction player) thrustForce
+            in
+                _physics (accelerate $ dt `mul` acceleration)
+        updateRotation = case rotation of
+            RotateRight ->
+                rotate (rotationSpeed * dt)
+            RotateLeft ->
+                rotate (-rotationSpeed * dt)
+            NoRotation ->
+                id

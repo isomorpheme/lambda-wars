@@ -22,6 +22,8 @@ data MovementAction = NoMovement | Thrust
 data ShootAction = Shoot | DontShoot
     deriving (Show, Eq)
 
+type PlayerAction = (MovementAction, RotateAction, ShootAction)
+
 -- | The game's state.
 data World = World
     { rndGen :: StdGen
