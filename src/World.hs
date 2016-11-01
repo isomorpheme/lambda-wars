@@ -50,12 +50,12 @@ initial seed = World
     , enemies = []
     }
 
-updatePlayer :: (Player -> Player) -> World -> World
-updatePlayer f world @ World { player } =
+_player :: (Player -> Player) -> World -> World
+_player f world @ World { player } =
     world { player = f player }
 
 stepPhysics :: Float -> World -> World
-stepPhysics deltaTime = updatePlayer $ updatePhysics $ step deltaTime
+stepPhysics deltaTime = _player . _physics $ step deltaTime
 
 instance Draw World where
     draw World { .. } =

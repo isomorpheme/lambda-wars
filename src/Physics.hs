@@ -18,24 +18,24 @@ initialPhysics = Physics
     , bounds = 0
     }
 
-updatePosition :: (PointF -> PointF) -> Physics -> Physics
-updatePosition f physics @ Physics { position } =
+_position :: (PointF -> PointF) -> Physics -> Physics
+_position f physics @ Physics { position } =
     physics { position = f position }
 
-updateVelocity :: (VectorF -> VectorF) -> Physics -> Physics
-updateVelocity f physics @ Physics { velocity } =
+_velocity :: (VectorF -> VectorF) -> Physics -> Physics
+_velocity  f physics @ Physics { velocity } =
     physics { velocity = f velocity }
 
-updateBounds :: (Float -> Float) -> Physics -> Physics
-updateBounds f physics @ Physics { bounds } =
+_bounds :: (Float -> Float) -> Physics -> Physics
+_bounds  f physics @ Physics { bounds } =
     physics { bounds = f bounds }
 
 translate :: VectorF -> Physics -> Physics
-translate = updatePosition . Vector.add
+translate = _position . Vector.add
 
 accelerate :: VectorF -> Physics -> Physics
-accelerate = updateVelocity . Vector.add
+accelerate = _velocity . Vector.add
 
 step :: Float -> Physics -> Physics
 step deltaTime physics @ Physics { velocity } =
-    updatePosition (add $ deltaTime `mul` velocity) physics
+    _position (add $ deltaTime `mul` velocity) physics

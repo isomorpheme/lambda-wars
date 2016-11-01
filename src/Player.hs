@@ -19,16 +19,16 @@ data Player = Player
 defaultPlayer :: Player
 defaultPlayer = Player initialPhysics 0
 
-updatePhysics :: (Physics -> Physics) -> Player -> Player
-updatePhysics f player @ Player { physics } =
+_physics :: (Physics -> Physics) -> Player -> Player
+_physics f player @ Player { physics } =
     player { physics = f physics }
 
-updateDirection :: (Float -> Float) -> Player -> Player
-updateDirection f player @ Player { direction } =
+_direction :: (Float -> Float) -> Player -> Player
+_direction f player @ Player { direction } =
     player { direction = f direction }
 
 rotate :: Float -> Player -> Player
-rotate = updateDirection . (+)
+rotate = _direction . (+)
 
 instance Draw Player where
     draw Player { physics = position -> Vector x y, direction } =

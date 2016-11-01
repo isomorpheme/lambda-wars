@@ -30,7 +30,7 @@ handleTime deltaTime =
 
 handleRotation :: Float -> World -> World
 handleRotation deltaTime world =
-    updatePlayer update world
+    _player update world
     where
         update = case rotateAction world of
             RotateRight ->
@@ -42,10 +42,10 @@ handleRotation deltaTime world =
 
 handleMovement :: Float -> World -> World
 handleMovement deltaTime world =
-    updatePlayer update world
+    _player update world
     where
         update player =
-            updatePhysics (accelerate $ deltaTime `mul` acceleration) player
+            _physics (accelerate $ deltaTime `mul` acceleration) player
             where
                 acceleration = case movementAction world of
                     NoMovement ->
