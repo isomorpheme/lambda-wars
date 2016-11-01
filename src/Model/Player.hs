@@ -9,6 +9,7 @@ import Draw
 import Physics
 import Vector (Vector(..))
 import qualified Vector
+import Util
 
 -- | The player's space ship
 data Player = Player
@@ -34,6 +35,10 @@ _shootCooldown f player @ Player { shootCooldown } =
 
 rotate :: Float -> Player -> Player
 rotate = _direction . (+)
+
+thrust :: Float -> Player -> Player
+thrust strength player = player & _physics (accelerate a)
+    where a = Vector.fromAngleLength (player & direction) strength
 
 instance Draw Player where
     draw Player { physics = position -> Vector x y, direction } =

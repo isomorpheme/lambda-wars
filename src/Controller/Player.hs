@@ -15,28 +15,26 @@ update (movement, rotation, shoot) dt (player @ Player { .. }) =
     (updateMovement . updateRotation . updateCooldown . applyBackfire $ player, maybeBullet)
     where
         updateMovement =
-            let
-                acceleration = case movement of
-                    NoMovement ->
-                        Vector.zero
-                    Thrust ->
-                        Vector.fromAngleLength direction thrustForce
-            in
-                _physics (accelerate $ dt `mul` acceleration)
-        updateRotation = case rotation of
-            RotateRight ->
-                rotate (rotationSpeed * dt)
-            RotateLeft ->
-                rotate (-rotationSpeed * dt)
-            NoRotation ->
-                id
+            case movement of
+                Thrust ->
+                    thrust $ dt * thrustForce
+                NoMovement ->
+                    id
+        updateRotation =
+            case rotation of
+                RotateRight ->
+                    rotate (rotationSpeed * dt)
+                RotateLeft ->
+                    rotate (-rotationSpeed * dt)
+                NoRotation ->
+                    id
         (applyBackfire, updateCooldown, maybeBullet) =
             case shoot of
                 Shoot ->
                     if
                         shootCooldown == 0
                     then
-                        ( _physics (accelerate $ (Vector.fromAngleLength direction backfire))
+                        ( thrust $ dt * backfire
                         , _shootCooldown $ const shootDelay
                         , Just $ Bullet physics { velocity = velocity physics `add` Vector.fromAngleLength direction bulletSpeed } direction
                         )
