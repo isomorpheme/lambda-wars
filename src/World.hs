@@ -8,6 +8,7 @@ import System.Random
 
 import Graphics.Gloss
 
+import Bullet
 import Draw
 import Enemy
 import Player
@@ -40,6 +41,8 @@ data World = World
       -- ^ Information about the player
     , enemies :: [Enemy]
       -- ^ All the enemies
+    , bullets :: [Bullet]
+      -- ^ All the bullets
     } deriving Show
 
 initial :: Int -> World
@@ -50,18 +53,37 @@ initial seed = World
     , shootAction = DontShoot
     , player = defaultPlayer
     , enemies = []
+    , bullets = []
     }
 
 _player :: (Player -> Player) -> World -> World
 _player f world @ World { player } =
     world { player = f player }
 
+_bullets :: (Bullet -> Bullet) -> World -> World
+_bullets f world @ World { bullets} =
+    world { bullets = map f bullets }
+
+addBullet :: Maybe Bullet -> World -> World
+addBullet bullet world @ World { bullets } =
+    world { bullets = bullets' }
+        where 
+            bullets' = case bullet of
+                Nothing -> 
+                    bullets
+                Just b -> 
+                    b : bullets
+
 stepPhysics :: Float -> World -> World
-stepPhysics deltaTime = _player . _physics $ step deltaTime
+stepPhysics dt = 
+    ( (_player . _physics $ step dt)
+    . (_bullets . _physics $ step dt)
+    )
 
 instance Draw World where
     draw World { .. } =
         Pictures
             [ draw player
             , draw enemies
+            , draw bullets
             ]
