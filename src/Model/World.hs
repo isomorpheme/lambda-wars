@@ -13,6 +13,7 @@ import Model.Bullet
 import Model.Enemy
 import Model.Player
 import Physics
+import Util
 
 data RotateAction = NoRotation | RotateLeft | RotateRight
     deriving (Show, Eq)
@@ -70,9 +71,10 @@ playerActions World { movementAction, rotateAction, shootAction } =
 
 stepPhysics :: Float -> World -> World
 stepPhysics dt =
-    ( (_player . _physics $ step dt)
-    . (_bullets . _physics $ step dt)
-    )
+    compose
+        [ _player . _physics $ step dt
+        , _bullets . _physics $ step dt
+        ]
 
 instance Draw World where
     draw World { .. } =
