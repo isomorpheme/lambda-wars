@@ -8,6 +8,7 @@ import System.Random
 
 import Graphics.Gloss
 
+import Config
 import Draw
 import Model.Bullet
 import Model.Enemy
@@ -88,14 +89,17 @@ stepPhysics dt =
 
 instance Draw World where
     draw World { .. } =
-        Pictures
         Pictures $
+            map drawWrapped
             [ draw player
             , draw enemies
             , draw bullets
             ]
             ++
-            drawCamera
+            [ drawBorder
+            , drawCamera
+            ]
+
 drawBorder :: Picture
 drawBorder =
     Pictures
@@ -121,3 +125,11 @@ drawCamera =
             where 
                 w = cameraWidth / 2
                 h = cameraHeight / 2
+
+drawWrapped :: Picture -> Picture
+drawWrapped picture = 
+    Pictures 
+        [ Translate (cameraWidth * w) (cameraHeight * h) picture 
+        | w <- [-1, 0, 1]
+        , h <- [-1, 0, 1]
+        ]
