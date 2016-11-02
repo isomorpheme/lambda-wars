@@ -14,6 +14,7 @@ import Model.Enemy
 import Model.Player
 import Physics
 import Util
+import Vector
 
 data RotateAction = NoRotation | RotateLeft | RotateRight
     deriving (Show, Eq)
@@ -53,7 +54,11 @@ initial seed = World
     , movementAction = NoMovement
     , shootAction = DontShoot
     , player = defaultPlayer
-    , enemies = []
+    , enemies =
+        -- TODO: spawn enemies over time
+        take 10
+            $ iterateState (spawn (Vector (-100) (-100), Vector 100 100) undefined)
+            $ mkStdGen seed
     , bullets = []
     }
 
