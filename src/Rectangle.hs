@@ -1,3 +1,6 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+
 module Rectangle where
 
 import Graphics.Gloss.Data.Picture
@@ -6,47 +9,39 @@ import Draw
 import Vector
 import Util
 
-data Rectangle = Rectangle
-    { topLeft :: PointF
-    , bottomRight :: PointF
-    }
+type Rectangle = (PointF, PointF)
 
 rectangleCorners :: PointF -> PointF -> Rectangle
-rectangleCorners = Rectangle
+rectangleCorners = (,)
 
 rectangle :: PointF -> Float -> Float -> Rectangle
 rectangle center width height =
     let offset = (/ 2) <$> Vector width (-height)
-    in Rectangle
-        { topLeft = center `sub` offset
-        , bottomRight = center `add` offset
-        }
+    in (center `sub` offset, center `add` offset)
 
 square :: PointF -> Float -> Rectangle
 square center size = rectangle center size size
 
 width :: Rectangle -> Float
-width Rectangle { topLeft = Vector l _, bottomRight = Vector r _ } =
-    r - l
+width (Vector l _, Vector r _ ) = r - l
 
 height :: Rectangle -> Float
-height Rectangle { topLeft = Vector _ t, bottomRight = Vector _ b } =
-    t - b
+height (Vector _ t, Vector _ b) = t - b
 
 top :: Rectangle -> Float
-top Rectangle { topLeft = Vector _ y } = y
+top (Vector _ y, _) = y
 
 bottom :: Rectangle -> Float
-bottom Rectangle { bottomRight = Vector _ y } = y
+bottom (_, Vector _ y) = y
 
 right :: Rectangle -> Float
-right Rectangle { bottomRight = Vector x _ } = x
+right (_, Vector x _) = x
 
 left :: Rectangle -> Float
-left Rectangle { topLeft = Vector x _ } = x
+left (Vector x _, _) = x
 
 corners :: Rectangle -> [PointF]
-corners Rectangle { topLeft = Vector l t, bottomRight = Vector r b } =
+corners (Vector l t, Vector r b) =
     [Vector l t, Vector r t, Vector r b, Vector l b]
 
 contains :: PointF -> Rectangle -> Bool
