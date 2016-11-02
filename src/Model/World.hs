@@ -14,6 +14,7 @@ import Model.Bullet
 import Model.Enemy
 import Model.Player
 import Physics
+import Rectangle
 import Util
 import Vector
 
@@ -104,23 +105,13 @@ instance Draw World where
 
 
 drawHeart :: Picture
-drawHeart = Color white $ Scale 3 6 square
+drawHeart = Color white $ draw $ rectangle Vector.zero 6 12
 
 drawHearts :: Integer -> Picture
 drawHearts n = Pictures [Translate (x + fromInteger dx * 8) y drawHeart | dx <- [0..n]]
     where
         x = 0 - cameraWidth / 2 + 5
         y = 0 - cameraHeight / 2 - 10
-
-square :: Picture
-square = 
-    Line
-        [ (-1, -1)
-        , (-1, 1)
-        , (1, 1)
-        , (1, -1)
-        , (-1, -1)
-        ]
 
 drawBorder :: Picture
 drawBorder =
