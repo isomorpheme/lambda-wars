@@ -98,7 +98,29 @@ instance Draw World where
             ++
             [ drawBorder
             , drawCamera
+            , drawHearts 5
             ]
+
+
+
+drawHeart :: Picture
+drawHeart = Color white $ Scale 3 6 square
+
+drawHearts :: Integer -> Picture
+drawHearts n = Pictures [Translate (x + fromInteger dx * 8) y drawHeart | dx <- [0..n]]
+    where
+        x = 0 - cameraWidth / 2 + 5
+        y = 0 - cameraHeight / 2 - 10
+
+square :: Picture
+square = 
+    Line
+        [ (-1, -1)
+        , (-1, 1)
+        , (1, 1)
+        , (1, -1)
+        , (-1, -1)
+        ]
 
 drawBorder :: Picture
 drawBorder =
