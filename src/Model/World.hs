@@ -89,7 +89,35 @@ stepPhysics dt =
 instance Draw World where
     draw World { .. } =
         Pictures
+        Pictures $
             [ draw player
             , draw enemies
             , draw bullets
             ]
+            ++
+            drawCamera
+drawBorder :: Picture
+drawBorder =
+    Pictures
+        [ Polygon [(w, h), (4.5 * w, 4.5 * h), (4.5 * w, -4.5 * h), (w, -h)]
+        , Polygon [(w, h), (4.5 * w, 4.5 * h), (-4.5 * w, 4.5 * h), (-w, h)]
+        , Polygon [(-w, -h), (-4.5 * w, -4.5 * h), (-4.5 * w, 4.5 * h), (-w, h)]
+        , Polygon [(-w, -h), (-4.5 * w, -4.5 * h), (4.5 * w, -4.5 * h), (w, -h)]
+        ]
+            where
+                w = cameraWidth / 2
+                h = cameraHeight / 2
+
+
+drawCamera :: Picture
+drawCamera = 
+    Color white $ Line
+        [ (-w, h)
+        , (w, h)
+        , (w, -h)
+        , (-w, -h)
+        , (-w, h)
+        ]
+            where 
+                w = cameraWidth / 2
+                h = cameraHeight / 2

@@ -3,6 +3,10 @@ module Config
       aspectRatio
     , defaultVerticalResolution
     , defaultHorizontalResolution
+    -- * Camera Parameters
+    , cameraRatio
+    , cameraWidth
+    , cameraHeight
     -- * Player Parameters
     , rotationSpeed
     , thrustForce
@@ -22,6 +26,12 @@ aspectRatio, defaultVerticalResolution, defaultHorizontalResolution :: Float
 aspectRatio                 = 16/9
 defaultVerticalResolution   = defaultHorizontalResolution / aspectRatio
 defaultHorizontalResolution = 1024
+
+-- * Camera settings
+cameraRatio, cameraWidth, cameraHeight :: Float
+cameraRatio  = 1
+cameraWidth  = 256
+cameraHeight = cameraWidth / cameraRatio
 
 -- * Player settings
 
