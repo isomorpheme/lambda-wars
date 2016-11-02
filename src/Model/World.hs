@@ -80,14 +80,6 @@ playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =
     (movementAction, rotateAction, shootAction)
 
-stepPhysics :: Float -> World -> World
-stepPhysics dt =
-    compose
-        [ _player . _physics $ step dt
-        , _bullets . _physics $ step dt
-        , _enemies . _physics $ step dt
-        ]
-
 instance Draw World where
     draw World { .. } =
         Pictures $
@@ -101,8 +93,6 @@ instance Draw World where
             , drawCamera
             , drawHearts 5
             ]
-
-
 
 drawHeart :: Picture
 drawHeart = Color white $ draw $ rectangle Vector.zero 6 12

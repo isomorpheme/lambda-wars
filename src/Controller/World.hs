@@ -10,6 +10,14 @@ import Model.World
 import Physics
 import Util
 
+stepPhysics :: Float -> World -> World
+stepPhysics dt =
+    compose
+        [ _player . _physics $ step dt
+        , _bullets . _physics $ step dt
+        , _enemies . _physics $ step dt
+        ]
+
 updatePlayer :: Float -> World -> World
 updatePlayer dt world @ World { player } =
     let (player', bullet) = Player.update (world & playerActions) dt player
