@@ -127,7 +127,7 @@ drawBorder =
 
 
 drawCamera :: Picture
-drawCamera = 
+drawCamera =
     Color white $ Line
         [ (-w, h)
         , (w, h)
@@ -135,14 +135,14 @@ drawCamera =
         , (-w, -h)
         , (-w, h)
         ]
-            where 
+            where
                 w = cameraWidth / 2
                 h = cameraHeight / 2
 
 drawWrapped :: Picture -> Picture
-drawWrapped picture = 
-    Pictures 
-        [ Translate (cameraWidth * w) (cameraHeight * h) picture 
+drawWrapped picture =
+    Pictures
+        [ Translate (cameraWidth * w) (cameraHeight * h) picture
         | w <- [-1, 0, 1]
         , h <- [-1, 0, 1]
         ]
