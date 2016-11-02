@@ -80,8 +80,8 @@ seeker position =
 
 spawn :: RandomGen g => (PointF, PointF) -> (PointF, Float) -> g -> (Enemy, g)
 spawn bounds avoid = runState $ do
-    enemyType <- state random
-    position <- state $ randomR bounds
+    enemyType <- getRandom
+    position <- getRandomR bounds
     return $ Enemy
         { physics = initialPhysics { position }
         , enemyType

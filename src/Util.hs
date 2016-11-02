@@ -4,8 +4,8 @@ module Util
     ( (&)
     , compose
     , set
-    , choose
-    , frequency
+    , getRandom, getRandomR
+    , choose, frequency
     , iterateState
     ) where
 
@@ -24,11 +24,21 @@ compose = foldr (.) id
 set :: ((a -> a) -> b -> b) -> a -> b -> b
 set = (. const)
 
+-- * Helpers for 'Random'
+
+-- | Helper for using 'random' in the 'State' monad.
+getRandom :: (Random a, RandomGen g) => State g a
+getRandom = state random
+
+-- | Helper for using 'randomR' in the 'State' monad.
+getRandomR :: (Random a, RandomGen g) => (a, a) -> State g a
+getRandomR = state . randomR
+
 -- These functions are like the ones provided QuickCheck's "Gen" module,
 -- but using 'Random' and 'RandomGen' instead of the 'Gen' monad.
 
 -- | Choose a random value from a list.
-choose :: (RandomGen g) => [a] -> g -> (a, g)
+choose :: RandomGen g => [a] -> g -> (a, g)
 choose [] = error "Called 'Util.choose' on an empty list"
 choose xs = first (xs !!) . randomR (0, length xs - 1)
 
