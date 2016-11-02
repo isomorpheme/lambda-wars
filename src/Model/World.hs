@@ -58,8 +58,8 @@ initial seed = World
     , player = defaultPlayer
     , enemies =
         -- TODO: spawn enemies over time
-        take 10
-            $ iterateState (spawn (Vector (-100) (-100), Vector 100 100) undefined)
+        take 50
+            $ iterateState (spawn (square Vector.zero 100) (square Vector.zero 80))
             $ mkStdGen seed
     , bullets = []
     }

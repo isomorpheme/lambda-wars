@@ -11,6 +11,7 @@ import Graphics.Gloss
 import Config (asteroidSize, asteroidFrequency, seekerFrequency)
 import Draw
 import Physics
+import Rectangle
 import Vector (Vector(..), PointF)
 import qualified Vector
 import Util
@@ -78,14 +79,17 @@ seeker position =
         , enemyType = Seeker
         }
 
-spawn :: RandomGen g => (PointF, PointF) -> (PointF, Float) -> g -> (Enemy, g)
+spawn :: RandomGen g => Rectangle -> Rectangle -> g -> (Enemy, g)
 spawn bounds avoid = runState $ do
     enemyType <- getRandom
     position <- getRandomR bounds
-    return $ Enemy
-        { physics = initialPhysics { position }
-        , enemyType
-        }
+    if avoid `contains` position then
+        state $ spawn bounds avoid
+    else
+        return $ Enemy
+            { physics = initialPhysics { position }
+            , enemyType
+            }
 
 instance Draw Enemy where
     draw Enemy { physics = position -> Vector x y, enemyType = enemyType } =
