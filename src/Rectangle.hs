@@ -44,14 +44,14 @@ corners :: Rectangle -> [PointF]
 corners (Vector l t, Vector r b) =
     [Vector l t, Vector r t, Vector r b, Vector l b]
 
-contains :: PointF -> Rectangle -> Bool
-contains (Vector x y) rectangle =
-    let [t, b, r, l] = map ($ rectangle) [top, bottom, right, left]
+contains :: Rectangle -> PointF -> Bool
+contains rect (Vector x y) =
+    let [t, b, r, l] = map ($ rect) [top, bottom, right, left]
     in and [t > y, y > b, r > x, x > l]
 
 intersects :: Rectangle -> Rectangle -> Bool
 intersects a b =
-    any (`contains` b) $ corners a
+    any (b `contains`) $ corners a
 
 instance Draw Rectangle where
     draw = lineLoop . map toTuple . corners
