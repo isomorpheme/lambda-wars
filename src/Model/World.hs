@@ -14,6 +14,7 @@ import Model.Bullet
 import Model.Enemy
 import Model.Particle
 import Model.Player
+import Model.Star
 import Physics
 import Rectangle
 import Util
@@ -54,6 +55,8 @@ data World = World
       -- ^ Time until another enemy spawns
     , particles :: [Particle]
       -- ^ All the particles
+    , stars :: [Star]
+      -- ^ All the stars
     } deriving Show
 
 initial :: Int -> World
@@ -68,6 +71,7 @@ initial seed = World
     , enemies = []
     , spawnTimer = spawnTime
     , particles = []
+    , stars = [defaultStar]
     }
 
 _player :: (Player -> Player) -> World -> World
@@ -103,7 +107,8 @@ instance Draw World where
             , draw bullets
             ]
             ++
-            [ draw particles
+            [ draw stars
+            , draw particles
             , drawBorder
             , drawCamera
             , drawHearts 5
