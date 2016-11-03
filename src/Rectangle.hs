@@ -9,43 +9,43 @@ import Draw
 import Vector
 import Util
 
-type Rectangle = (PointF, PointF)
+type Rectangle = (Point, Point)
 
-rectangleCorners :: PointF -> PointF -> Rectangle
+rectangleCorners :: Point -> Point -> Rectangle
 rectangleCorners = (,)
 
-rectangle :: PointF -> Float -> Float -> Rectangle
+rectangle :: Point -> Float -> Float -> Rectangle
 rectangle center width height =
-    let offset = (/ 2) <$> Vector width (-height)
-    in (center `sub` offset, center `add` offset)
+    let offset = vmap (/ 2) (width, -height)
+    in (center - offset, center + offset)
 
-square :: PointF -> Float -> Rectangle
+square :: Point -> Float -> Rectangle
 square center size = rectangle center size size
 
 width :: Rectangle -> Float
-width (Vector l _, Vector r _ ) = r - l
+width ((l, _), (r, _) ) = r - l
 
 height :: Rectangle -> Float
-height (Vector _ t, Vector _ b) = t - b
+height ((_, t), (_, b)) = t - b
 
 top :: Rectangle -> Float
-top (Vector _ y, _) = y
+top ((_, y), _) = y
 
 bottom :: Rectangle -> Float
-bottom (_, Vector _ y) = y
+bottom (_, (_, y)) = y
 
 right :: Rectangle -> Float
-right (_, Vector x _) = x
+right (_, (x, _)) = x
 
 left :: Rectangle -> Float
-left (Vector x _, _) = x
+left ((x, _), _) = x
 
-corners :: Rectangle -> [PointF]
-corners (Vector l t, Vector r b) =
-    [Vector l t, Vector r t, Vector r b, Vector l b]
+corners :: Rectangle -> [Point]
+corners ((l, t), (r, b)) =
+    [(l, t), (r, t), (r, b), (l, b)]
 
-contains :: Rectangle -> PointF -> Bool
-contains rect (Vector x y) =
+contains :: Rectangle -> Point -> Bool
+contains rect (x, y) =
     let [t, b, r, l] = map ($ rect) [top, bottom, right, left]
     in and [t > y, y > b, r > x, x > l]
 
@@ -54,4 +54,4 @@ intersects a b =
     any (b `contains`) $ corners a
 
 instance Draw Rectangle where
-    draw = lineLoop . map toTuple . corners
+    draw = lineLoop . corners

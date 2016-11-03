@@ -9,8 +9,7 @@ import Graphics.Gloss.Geometry.Angle
 import Draw
 import Physics
 import qualified Physics
-import Vector (Vector(..), VectorF, PointF)
-import qualified Vector
+import Vector
 
 data Bullet = Bullet
     { physics :: Physics
@@ -22,18 +21,18 @@ instance HasPhysics Bullet where
     _physics f bullet @ Bullet { physics } =
         bullet { physics = f physics }
 
-create :: PointF -> Float -> Float -> Bullet
+create :: Point -> Float -> Float -> Bullet
 create position direction speed =
     Bullet
         { physics = initialPhysics
             { position
-            , velocity = Vector.fromAngleLength direction speed
+            , velocity = fromAngleLength direction speed
             }
         , direction = direction
         }
 
 instance Draw Bullet where
-    draw Bullet { physics = position -> Vector x y, direction } =
+    draw Bullet { physics = position -> (x, y), direction } =
         Color white
             $ Translate x y
             $ Rotate (radToDeg direction) bullet

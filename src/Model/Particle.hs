@@ -8,10 +8,9 @@ import Graphics.Gloss.Geometry.Angle
 
 import Draw
 import Physics
-import Vector (Vector(..), VectorF, PointF)
-import qualified Vector
+import Vector
 
-data Particle = Particle 
+data Particle = Particle
     { physics :: Physics
     , direction :: Float
     , lifeTime :: Float
@@ -30,11 +29,10 @@ instance HasPhysics Particle where
         particle { physics = f physics }
 
 instance Draw Particle where
-    draw Particle { physics = position -> Vector x y, direction } =
+    draw Particle { physics = position -> (x, y), direction } =
         Color white
             $ Translate x y
             $ Rotate (radToDeg direction)
             $ Scale 4 4 particle
         where
             particle = Line [(0,-1), (0, 1)]
-

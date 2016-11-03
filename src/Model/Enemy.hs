@@ -12,8 +12,7 @@ import Config (asteroidSize, asteroidFrequency, seekerFrequency)
 import Draw
 import Physics
 import Rectangle
-import Vector (Vector(..), PointF)
-import qualified Vector
+import Vector
 import Util
 
 data EnemyType
@@ -66,14 +65,14 @@ instance HasPhysics Enemy where
     _physics f enemy @ Enemy { physics } =
         enemy { physics = f physics }
 
-asteroid :: Float -> Float -> PointF -> Enemy
+asteroid :: Float -> Float -> Point -> Enemy
 asteroid size rotation position =
     Enemy
         { physics = initialPhysics { position }
         , enemyType = Asteroid size rotation
         }
 
-seeker :: PointF -> Enemy
+seeker :: Point -> Enemy
 seeker position =
     Enemy
         { physics = initialPhysics { position }
@@ -93,7 +92,7 @@ spawn bounds avoid = runState $ do
             }
 
 instance Draw Enemy where
-    draw Enemy { physics = position -> Vector x y, enemyType = enemyType } =
+    draw Enemy { physics = position -> (x, y), enemyType = enemyType } =
         Color white
             $ Translate x y
             $ draw enemyType

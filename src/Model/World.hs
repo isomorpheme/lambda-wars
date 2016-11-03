@@ -59,7 +59,7 @@ data World = World
 initial :: Int -> World
 initial seed = World
     { rndGen = mkStdGen seed
-    , screenBounds = rectangle Vector.zero cameraWidth cameraHeight
+    , screenBounds = rectangle 0 cameraWidth cameraHeight
     , rotateAction = NoRotation
     , movementAction = NoMovement
     , shootAction = DontShoot
@@ -110,7 +110,7 @@ instance Draw World where
             ]
 
 drawHeart :: Picture
-drawHeart = Color white $ draw $ rectangle Vector.zero 6 12
+drawHeart = Color white $ draw $ rectangle 0 6 12
 
 drawHearts :: Integer -> Picture
 drawHearts n = Pictures [Translate (x + fromInteger dx * 8) y drawHeart | dx <- [0..n]]

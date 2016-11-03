@@ -24,7 +24,7 @@ data Player = Player
 defaultPlayer :: Player
 defaultPlayer = Player
     { physics = initialPhysics
-        { localBounds = square Vector.zero 10 }
+        { localBounds = square 0 10 }
     , direction = 0
     , shootCooldown = 0
     , exhaustCooldown = 0
@@ -55,7 +55,7 @@ thrust strength player = player & _physics (accelerate a)
     where a = Vector.fromAngleLength (player & direction) strength
 
 instance Draw Player where
-    draw Player { physics = position -> Vector x y, direction } =
+    draw Player { physics = position -> (x, y), direction } =
         Color white
             $ Translate x y
             $ Rotate (radToDeg direction) ship

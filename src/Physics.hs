@@ -9,10 +9,11 @@ import Control.Monad (join)
 import Config
 import Rectangle
 import Vector
+import Util
 
 data Physics = Physics
-    { position :: PointF
-    , velocity :: VectorF
+    { position :: Point
+    , velocity :: Vector
     , localBounds :: Rectangle
     } deriving Show
 
@@ -26,16 +27,16 @@ instance HasPhysics a => HasPhysics [a] where
 
 initialPhysics :: Physics
 initialPhysics = Physics
-    { position = Vector.zero
-    , velocity = Vector.zero
-    , localBounds = square Vector.zero 0
+    { position = 0
+    , velocity = 0
+    , localBounds = square 0 0
     }
 
-_position :: (PointF -> PointF) -> Physics -> Physics
+_position :: (Point -> Point) -> Physics -> Physics
 _position f physics @ Physics { position } =
     physics { position = f position }
 
-_velocity :: (VectorF -> VectorF) -> Physics -> Physics
+_velocity :: (Vector -> Vector) -> Physics -> Physics
 _velocity  f physics @ Physics { velocity } =
     physics { velocity = f velocity }
 
@@ -45,21 +46,21 @@ _localBounds  f physics @ Physics { localBounds } =
 
 bounds :: Physics -> Rectangle
 bounds Physics { position, localBounds } =
-    join bimap (add position) localBounds
+    join bimap (+ position) localBounds
 
-translate :: VectorF -> Physics -> Physics
-translate = _position . Vector.add
+translate :: Vector -> Physics -> Physics
+translate = _position . (+)
 
-accelerate :: VectorF -> Physics -> Physics
-accelerate = _velocity . Vector.add
+accelerate :: Vector -> Physics -> Physics
+accelerate = _velocity . (+)
 
 step :: Float -> Physics -> Physics
 step deltaTime physics @ Physics { velocity } =
-    _position (screenWrap . (add $ deltaTime `mul` velocity)) physics
+    physics & _position (screenWrap . (+ deltaTime `mul` velocity))
 
-screenWrap :: VectorF -> VectorF
-screenWrap (Vector x y) =
-    Vector (wrap cameraWidth x) (wrap cameraHeight y)
+screenWrap :: Vector -> Vector
+screenWrap (x, y) =
+    (wrap cameraWidth x, wrap cameraHeight y)
         where
             wrap size value
                 | value < 0 - size / 2 = value + size
