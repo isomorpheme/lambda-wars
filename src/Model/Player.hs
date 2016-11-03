@@ -18,6 +18,7 @@ data Player = Player
     { physics :: Physics
     , direction :: Float
     , shootCooldown :: Float
+    , exhaustCooldown :: Float
     } deriving Show
 
 defaultPlayer :: Player
@@ -26,6 +27,7 @@ defaultPlayer = Player
         { localBounds = square Vector.zero 10 }
     , direction = 0
     , shootCooldown = 0
+    , exhaustCooldown = 0
     }
 
 instance HasPhysics Player where
@@ -40,6 +42,10 @@ _direction f player @ Player { direction } =
 _shootCooldown :: (Float -> Float) -> Player -> Player
 _shootCooldown f player @ Player { shootCooldown } =
     player { shootCooldown = f shootCooldown }
+
+_exhaustCooldown :: (Float -> Float) -> Player -> Player
+_exhaustCooldown f player @ Player { exhaustCooldown } =
+    player { exhaustCooldown = f exhaustCooldown }
 
 rotate :: Float -> Player -> Player
 rotate = _direction . (+)

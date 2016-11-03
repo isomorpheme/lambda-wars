@@ -14,15 +14,15 @@ import Vector (mul, add)
 import qualified Vector
 import Util
 
-update :: PlayerActions -> Float -> Player -> (Player, Maybe Bullet, [Particle])
-update (movement, rotation, shoot) dt player = (player', bullet, particles)
+update :: PlayerActions -> Float -> Player -> (Player, Maybe Bullet, Maybe Particle)
+update (movement, rotation, shoot) dt player = (player'', bullet, particle)
     where
-        (player', bullet) =
+        (player'', bullet) =
             ( updateShooting shoot dt
             . updateMovement movement dt
             . updateRotation rotation dt
-            ) player
-        particles = addParticles movement player        
+            ) player'
+        (player', particle) = addParticle movement dt player        
 
 updateMovement :: MovementAction -> Float -> Player -> Player
 updateMovement Thrust dt = thrust $ thrustForce * dt
@@ -44,11 +44,14 @@ updateShooting action dt player @ Player { physics = position -> pos, .. } =
             & thrust (backfire)
             . set _shootCooldown shootDelay
 
-addParticles :: MovementAction -> Player -> [Particle]
-addParticles NoMovement _ = []
-addParticles _ Player { physics = position -> pos, direction } = 
-    Particle initialPhysics
-        { position = pos `add` Vector.fromAngleLength direction (-10)
-        , velocity = Vector.fromAngleLength direction (-100)
-        } direction 0.3
-        :[]
+addParticle :: MovementAction -> Float -> Player -> (Player, Maybe Particle)
+addParticle move dt player @ Player { physics = position -> pos, .. } = 
+    if move == Thrust && exhaustCooldown <= 0 then
+        ( player & set _exhaustCooldown 0.01 -- TODO: Random??
+        , Just $ Particle initialPhysics
+            { position = pos `add` Vector.fromAngleLength direction (-10)
+            , velocity = Vector.fromAngleLength direction (-100)
+            } direction 0.3
+        )
+    else
+        (player & _exhaustCooldown (subtract dt), Nothing)

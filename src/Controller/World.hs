@@ -25,11 +25,11 @@ stepPhysics dt =
 
 updatePlayer :: Float -> World -> World
 updatePlayer dt world @ World { player } =
-    let (player', bullet, particles) = Player.update (world & playerActions) dt player
+    let (player', bullet, particle) = Player.update (world & playerActions) dt player
     in world
         & set _player player'
         & _bullets (maybe id (:) bullet)
-        . _particles (particles ++)
+        . _particles (maybe id (:) particle)
 
 updateEnemies :: Float -> World -> World
 updateEnemies dt world @ (player -> physics' -> position -> pos) =
