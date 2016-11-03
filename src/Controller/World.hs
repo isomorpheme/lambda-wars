@@ -4,6 +4,8 @@
 
 module Controller.World where
 
+import Data.Maybe
+
 import Config (spawnTime)
 import Controller.Enemy as Enemy
 import Controller.Particle as Particle
@@ -55,10 +57,7 @@ spawnEnemy world @ World { .. } =
 
 updateParticles :: Float -> World -> World
 updateParticles dt world =
-    world & _particles updateParticles'
-    where
-        updateParticles' [] = []
-        updateParticles' (x:xs) = maybe id (:) (Particle.update dt x) (updateParticles' xs)
+    world & _particles (mapMaybe $ Particle.update dt)
 
 updatePlayerCollisions :: World -> World
 updatePlayerCollisions world @ World { enemies, player, rndGen } =
