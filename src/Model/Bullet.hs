@@ -18,6 +18,7 @@ data Bullet = Bullet
     } deriving (Show)
 
 instance HasPhysics Bullet where
+    physics' = physics
     _physics f bullet @ Bullet { physics } =
         bullet { physics = f physics }
 

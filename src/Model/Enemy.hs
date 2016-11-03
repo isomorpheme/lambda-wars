@@ -62,6 +62,7 @@ data Enemy = Enemy
     } deriving (Show)
 
 instance HasPhysics Enemy where
+    physics' = physics
     _physics f enemy @ Enemy { physics } =
         enemy { physics = f physics }
 

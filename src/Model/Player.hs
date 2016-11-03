@@ -22,6 +22,7 @@ defaultPlayer :: Player
 defaultPlayer = Player initialPhysics 0 0
 
 instance HasPhysics Player where
+    physics' = physics
     _physics f player @ Player { physics } =
         player { physics = f physics }
 
