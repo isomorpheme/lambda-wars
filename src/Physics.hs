@@ -56,13 +56,4 @@ accelerate = _velocity . (+)
 
 step :: Float -> Physics -> Physics
 step deltaTime physics @ Physics { velocity } =
-    physics & _position (screenWrap (rectangle 0 cameraWidth cameraHeight) . (+ deltaTime `mul` velocity))
-
-screenWrap :: Rectangle -> Vector -> Vector
-screenWrap screen (x, y) =
-    (wrap (width screen) x, wrap (height screen) y)
-        where
-            wrap size value
-                | value < 0 - size / 2 = value + size
-                | value > size / 2     = value - size
-                | otherwise            = value
+    physics & _position (screenWrap (rectangle 0 cameraWidth cameraHeight) . (+ deltaTime `mul` velocity))  
