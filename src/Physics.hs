@@ -3,13 +3,17 @@
 
 module Physics where
 
+import Data.Bifunctor (bimap)
+import Control.Monad (join)
+
 import Config
+import Rectangle
 import Vector
 
 data Physics = Physics
     { position :: PointF
     , velocity :: VectorF
-    , bounds :: Float
+    , localBounds :: Rectangle
     } deriving Show
 
 class HasPhysics a where
@@ -17,13 +21,14 @@ class HasPhysics a where
     _physics :: (Physics -> Physics) -> a -> a
 
 instance HasPhysics a => HasPhysics [a] where
+    physics' = error "yeah, this is kinda dumb"
     _physics = map . _physics
 
 initialPhysics :: Physics
 initialPhysics = Physics
     { position = Vector.zero
     , velocity = Vector.zero
-    , bounds = 0
+    , localBounds = square Vector.zero 0
     }
 
 _position :: (PointF -> PointF) -> Physics -> Physics
@@ -34,9 +39,13 @@ _velocity :: (VectorF -> VectorF) -> Physics -> Physics
 _velocity  f physics @ Physics { velocity } =
     physics { velocity = f velocity }
 
-_bounds :: (Float -> Float) -> Physics -> Physics
-_bounds  f physics @ Physics { bounds } =
-    physics { bounds = f bounds }
+_localBounds :: (Rectangle -> Rectangle) -> Physics -> Physics
+_localBounds  f physics @ Physics { localBounds } =
+    physics { localBounds  = f localBounds }
+
+bounds :: Physics -> Rectangle
+bounds Physics { position, localBounds } =
+    join bimap (add position) localBounds
 
 translate :: VectorF -> Physics -> Physics
 translate = _position . Vector.add

@@ -33,6 +33,8 @@ type PlayerActions = (MovementAction, RotateAction, ShootAction)
 data World = World
     { rndGen :: StdGen
       -- ^ The random generator for this world
+    , screenBounds :: Rectangle
+      -- ^ The screen bounds of this world
 
     , rotateAction :: RotateAction
       -- ^ The most recent rotation action
@@ -43,25 +45,25 @@ data World = World
 
     , player :: Player
       -- ^ Information about the player
-    , enemies :: [Enemy]
-      -- ^ All the enemies
     , bullets :: [Bullet]
       -- ^ All the bullets
+    , enemies :: [Enemy]
+      -- ^ All the enemies
+    , spawnTimer :: Float
+      -- ^ Time until another enemy spawns
     } deriving Show
 
 initial :: Int -> World
 initial seed = World
     { rndGen = mkStdGen seed
+    , screenBounds = rectangle Vector.zero cameraWidth cameraHeight
     , rotateAction = NoRotation
     , movementAction = NoMovement
     , shootAction = DontShoot
     , player = defaultPlayer
-    , enemies =
-        -- TODO: spawn enemies over time
-        take 50
-            $ iterateState (spawn (square Vector.zero 100) (square Vector.zero 80))
-            $ mkStdGen seed
     , bullets = []
+    , enemies = []
+    , spawnTimer = spawnTime
     }
 
 _player :: (Player -> Player) -> World -> World
@@ -73,8 +75,12 @@ _bullets f world @ World { bullets } =
     world { bullets = f bullets }
 
 _enemies :: ([Enemy] -> [Enemy]) -> World -> World
-_enemies f world @ World { enemies} =
+_enemies f world @ World { enemies } =
     world { enemies = f enemies }
+
+_spawnTimer :: (Float -> Float) -> World -> World
+_spawnTimer f world @ World { spawnTimer } =
+    world { spawnTimer = f spawnTimer }
 
 playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =

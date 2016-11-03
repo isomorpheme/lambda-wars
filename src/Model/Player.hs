@@ -7,6 +7,7 @@ import Graphics.Gloss.Geometry.Angle
 
 import Draw
 import Physics
+import Rectangle
 import Vector (Vector(..))
 import qualified Vector
 import Util
@@ -19,7 +20,12 @@ data Player = Player
     } deriving Show
 
 defaultPlayer :: Player
-defaultPlayer = Player initialPhysics 0 0
+defaultPlayer = Player
+    { physics = initialPhysics
+        { localBounds = square Vector.zero 10 }
+    , direction = 0
+    , shootCooldown = 0
+    }
 
 instance HasPhysics Player where
     physics' = physics

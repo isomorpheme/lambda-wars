@@ -14,6 +14,7 @@ module Config
     , shootDelay
     , backfire
     -- * Enemy parameters
+    , spawnTime
     , seekerFrequency
     , seekerSpeed
     , asteroidFrequency
@@ -43,6 +44,9 @@ shootDelay = 0.2
 backfire = -5
 
 -- * Enemy settings
+
+spawnTime :: Float
+spawnTime = 2
 
 -- ** Seekers
 
