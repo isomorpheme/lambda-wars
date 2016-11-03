@@ -39,7 +39,7 @@ updateShooting action dt player @ Player { physics = position -> pos, .. } =
         (player & _shootCooldown (subtract dt), Nothing)
     where
         player' = player
-            & thrust (dt * backfire)
+            & thrust (backfire)
             . set _shootCooldown shootDelay
 
 updateEmitter :: MovementAction -> Float -> Player -> Player
