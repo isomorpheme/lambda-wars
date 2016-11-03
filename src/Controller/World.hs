@@ -39,7 +39,7 @@ updateSpawning dt world @ World { .. } =
             & spawnEnemy
             & set _spawnTimer spawnTime
     else
-        world & set _spawnTimer (spawnTimer - dt)
+        world & _spawnTimer (subtract dt)
 
 spawnEnemy :: World -> World
 spawnEnemy world @ World { .. } =

@@ -30,12 +30,11 @@ updateRotation NoRotation _ = id
 
 updateShooting :: ShootAction -> Float -> Player -> (Player, Maybe Bullet)
 updateShooting action dt player @ Player { physics = position -> pos, .. } =
-    if action == Shoot && cooldown' <= 0 then
+    if action == Shoot && shootCooldown <= 0 then
         (player', Just $ Bullet.create pos direction bulletSpeed)
     else
-        (player & set _shootCooldown cooldown', Nothing)
+        (player & _shootCooldown (subtract dt), Nothing)
     where
-        cooldown' = shootCooldown - dt
         player' = player
             & thrust (dt * backfire)
             . set _shootCooldown shootDelay
