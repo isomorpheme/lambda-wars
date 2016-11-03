@@ -59,3 +59,10 @@ updateParticles dt world =
     where
         updateParticles' [] = []
         updateParticles' (x:xs) = maybe id (:) (Particle.update dt x) (updateParticles' xs)
+
+updatePlayerCollisions :: World -> World
+updatePlayerCollisions world @ World { enemies, player, rndGen } =
+    if any (collides player) enemies then
+        initial rndGen
+    else
+        world

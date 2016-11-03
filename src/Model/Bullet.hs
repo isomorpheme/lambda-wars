@@ -8,7 +8,7 @@ import Graphics.Gloss.Geometry.Angle
 
 import Draw
 import Physics
-import qualified Physics
+import Rectangle
 import Vector
 
 data Bullet = Bullet
@@ -27,6 +27,7 @@ create position direction speed =
         { physics = initialPhysics
             { position
             , velocity = fromAngleLength direction speed
+            , localBounds = square 0 4
             }
         , direction = direction
         }

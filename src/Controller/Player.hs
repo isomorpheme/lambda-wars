@@ -5,6 +5,7 @@ module Controller.Player where
 
 import Config (backfire, bulletSpeed, rotationSpeed, shootDelay, thrustForce)
 import qualified Controller.Particle as Particle
+import Model.Enemy
 import Model.Particle
 import Model.Player as Player
 import Model.World

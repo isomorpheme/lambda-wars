@@ -87,7 +87,7 @@ spawn bounds avoid = runState $ do
         state $ spawn bounds avoid
     else
         return $ Enemy
-            { physics = initialPhysics { position }
+            { physics = initialPhysics { position, localBounds = square 0 16 }
             , enemyType
             }
 

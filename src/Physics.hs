@@ -56,4 +56,11 @@ accelerate = _velocity . (+)
 
 step :: Float -> Physics -> Physics
 step deltaTime physics @ Physics { velocity } =
-    physics & _position (screenWrap (rectangle 0 cameraWidth cameraHeight) . (+ deltaTime `mul` velocity))  
+    physics & _position
+        ( screenWrap (rectangle 0 cameraWidth cameraHeight)
+        . (+ deltaTime `mul` velocity)
+        )
+
+collides :: (HasPhysics a, HasPhysics b) => a -> b -> Bool
+collides a b =
+    (a & physics' & bounds) `intersects` (b & physics' & bounds)
