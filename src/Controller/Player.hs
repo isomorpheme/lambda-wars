@@ -4,6 +4,8 @@
 module Controller.Player where
 
 import Config (backfire, bulletSpeed, rotationSpeed, shootDelay, thrustForce)
+import qualified Controller.Emitter as Emitter
+import Model.Emitter
 import Model.Player
 import Model.World
 import Model.Bullet as Bullet
@@ -17,6 +19,7 @@ update (movement, rotation, shoot) dt =
     ( updateShooting shoot dt
     . updateMovement movement dt
     . updateRotation rotation dt
+    . updateEmitter movement dt
     )
 
 updateMovement :: MovementAction -> Float -> Player -> Player
@@ -38,3 +41,18 @@ updateShooting action dt player @ Player { physics = position -> pos, .. } =
         player' = player
             & thrust (dt * backfire)
             . set _shootCooldown shootDelay
+
+updateEmitter :: MovementAction -> Float -> Player -> Player
+updateEmitter move dt player @ Player { physics = position -> pos, direction } =
+    (_emitter $ Emitter.update particle dt) player
+    where
+        particle = 
+            if 
+                move == Thrust
+            then
+                Just $ Particle initialPhysics 
+                    { position = pos
+                    , velocity = Vector.fromAngleLength direction (-100)
+                    } direction 0.3
+            else
+                Nothing
