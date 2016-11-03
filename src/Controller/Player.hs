@@ -4,8 +4,8 @@
 module Controller.Player where
 
 import Config (backfire, bulletSpeed, rotationSpeed, shootDelay, thrustForce)
-import qualified Controller.Emitter as Emitter
-import Model.Emitter
+import qualified Controller.Particle as Particle
+import Model.Particle
 import Model.Player
 import Model.World
 import Model.Bullet as Bullet
@@ -14,13 +14,15 @@ import Vector (mul, add)
 import qualified Vector
 import Util
 
-update :: PlayerActions -> Float -> Player -> (Player, Maybe Bullet)
-update (movement, rotation, shoot) dt =
-    ( updateShooting shoot dt
-    . updateMovement movement dt
-    . updateRotation rotation dt
-    . updateEmitter movement dt
-    )
+update :: PlayerActions -> Float -> Player -> (Player, Maybe Bullet, [Particle])
+update (movement, rotation, shoot) dt player = (player', bullet, particles)
+    where
+        (player', bullet) =
+            ( updateShooting shoot dt
+            . updateMovement movement dt
+            . updateRotation rotation dt
+            ) player
+        particles = addParticles movement player        
 
 updateMovement :: MovementAction -> Float -> Player -> Player
 updateMovement Thrust dt = thrust $ thrustForce * dt
@@ -42,17 +44,11 @@ updateShooting action dt player @ Player { physics = position -> pos, .. } =
             & thrust (backfire)
             . set _shootCooldown shootDelay
 
-updateEmitter :: MovementAction -> Float -> Player -> Player
-updateEmitter move dt player @ Player { physics = position -> pos, direction } =
-    (_emitter $ Emitter.update particle dt) player
-    where
-        particle = 
-            if 
-                move == Thrust
-            then
-                Just $ Particle initialPhysics 
-                    { position = pos
-                    , velocity = Vector.fromAngleLength direction (-100)
-                    } direction 0.3
-            else
-                Nothing
+addParticles :: MovementAction -> Player -> [Particle]
+addParticles NoMovement _ = []
+addParticles _ Player { physics = position -> pos, direction } = 
+    Particle initialPhysics
+        { position = pos `add` Vector.fromAngleLength direction (-10)
+        , velocity = Vector.fromAngleLength direction (-100)
+        } direction 0.3
+        :[]

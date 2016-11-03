@@ -12,6 +12,7 @@ import Config
 import Draw
 import Model.Bullet
 import Model.Enemy
+import Model.Particle
 import Model.Player
 import Physics
 import Rectangle
@@ -51,6 +52,8 @@ data World = World
       -- ^ All the enemies
     , spawnTimer :: Float
       -- ^ Time until another enemy spawns
+    , particles :: [Particle]
+      -- ^ All the particles
     } deriving Show
 
 initial :: Int -> World
@@ -64,6 +67,7 @@ initial seed = World
     , bullets = []
     , enemies = []
     , spawnTimer = spawnTime
+    , particles = []
     }
 
 _player :: (Player -> Player) -> World -> World
@@ -82,6 +86,10 @@ _spawnTimer :: (Float -> Float) -> World -> World
 _spawnTimer f world @ World { spawnTimer } =
     world { spawnTimer = f spawnTimer }
 
+_particles :: ([Particle] -> [Particle]) -> World -> World
+_particles f world @ World { particles } =
+    world { particles = f particles }
+
 playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =
     (movementAction, rotateAction, shootAction)
@@ -95,7 +103,8 @@ instance Draw World where
             , draw bullets
             ]
             ++
-            [ drawBorder
+            [ draw particles
+            , drawBorder
             , drawCamera
             , drawHearts 5
             ]

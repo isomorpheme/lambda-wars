@@ -6,7 +6,7 @@ import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
 
 import Draw
-import Model.Emitter hiding (physics, direction)
+import Model.Particle hiding (physics, direction)
 import Physics
 import Rectangle
 import Vector (Vector(..))
@@ -18,7 +18,6 @@ data Player = Player
     { physics :: Physics
     , direction :: Float
     , shootCooldown :: Float
-    , emitter :: Emitter
     } deriving Show
 
 defaultPlayer :: Player
@@ -27,7 +26,6 @@ defaultPlayer = Player
         { localBounds = square Vector.zero 10 }
     , direction = 0
     , shootCooldown = 0
-    , emitter = defaultEmitter
     }
 
 instance HasPhysics Player where
@@ -38,10 +36,6 @@ instance HasPhysics Player where
 _direction :: (Float -> Float) -> Player -> Player
 _direction f player @ Player { direction } =
     player { direction = f direction }
-
-_emitter :: (Emitter -> Emitter) -> Player -> Player
-_emitter f player @ Player { emitter } =
-    player { emitter = f emitter }
 
 _shootCooldown :: (Float -> Float) -> Player -> Player
 _shootCooldown f player @ Player { shootCooldown } =
@@ -55,21 +49,15 @@ thrust strength player = player & _physics (accelerate a)
     where a = Vector.fromAngleLength (player & direction) strength
 
 instance Draw Player where
-    draw Player { physics = position -> Vector x y, direction, emitter } =
-        Pictures
-            [ drawPlayer
-            , draw emitter
-            ]
-            where
-                drawPlayer =
-                    Color white
-                        $ Translate x y
-                        $ Rotate (radToDeg direction) ship
-                    where
-                        ship = Scale 3 3 $ Line
-                            [ (0, 4)
-                            , (2, -2)
-                            , (0, -1)
-                            , (-2, -2)
-                            , (0, 4)
-                            ]
+    draw Player { physics = position -> Vector x y, direction } =
+        Color white
+            $ Translate x y
+            $ Rotate (radToDeg direction) ship
+        where
+            ship = Scale 3 3 $ Line
+                [ (0, 4)
+                , (2, -2)
+                , (0, -1)
+                , (-2, -2)
+                , (0, 4)
+                ]
