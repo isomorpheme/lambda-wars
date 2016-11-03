@@ -6,9 +6,8 @@
 module Main where
 
 import Control.Applicative
-
-import Data.Time.Clock.POSIX (getPOSIXTime)
 import System.Environment (getArgs)
+import System.Random (getStdGen)
 
 import Graphics.Gloss
 
@@ -21,8 +20,8 @@ import Controller
 main :: IO ()
 main = do
     args <- getArgs
-    time <- round <$> getPOSIXTime
-    let initial' = initial time
+    rndGen <- getStdGen
+    let initial' = initial rndGen
     let (w, h, display) = chooseDisplay args
     let background = black
     let fps = 60

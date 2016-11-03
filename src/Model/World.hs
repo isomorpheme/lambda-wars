@@ -59,9 +59,9 @@ data World = World
       -- ^ All the stars
     } deriving Show
 
-initial :: Int -> World
-initial seed = World
-    { rndGen = mkStdGen seed
+initial :: StdGen -> World
+initial rndGen = World
+    { rndGen
     , screenBounds = rectangle 0 cameraWidth cameraHeight
     , rotateAction = NoRotation
     , movementAction = NoMovement
