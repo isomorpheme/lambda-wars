@@ -7,9 +7,8 @@ import Draw
 import Model.Particle hiding (physics, direction)
 import Physics
 import Rectangle
-import Vector (Vector(..))
-import qualified Vector
 import Util
+import Vector
 
 -- | The player's space ship
 data Player = Player
