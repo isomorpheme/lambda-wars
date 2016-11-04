@@ -51,7 +51,12 @@ contains rect (x, y) =
 
 intersects :: Rectangle -> Rectangle -> Bool
 intersects a b =
-    any (b `contains`) $ corners a
+    not $ or
+        [ right a < left b
+        , left a > right b
+        , top a < bottom b
+        , bottom a > top b
+        ]
 
 instance Draw Rectangle where
     draw = lineLoop . corners
