@@ -66,11 +66,11 @@ intersects a b =
 instance Draw Rectangle where
     draw = lineLoop . corners
 
-screenWrap :: Rectangle -> Vector -> Vector
-screenWrap screen (x, y) =
-    (wrap (width screen) x, wrap (height screen) y)
-        where
-            wrap size value
-                | value < 0 - size / 2 = value + size
-                | value > size / 2 = value - size
-                | otherwise = value
+wrap :: Rectangle -> Vector -> Vector
+wrap area (x, y) =
+    (wrap' (width area) x, wrap' (height area) y)
+    where
+        wrap' size value
+            | value < 0 - size / 2 = value + size
+            | value > size / 2 = value - size
+            | otherwise = value
