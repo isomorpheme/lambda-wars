@@ -67,5 +67,5 @@ screenWrap screen (x, y) =
         where
             wrap size value
                 | value < 0 - size / 2 = value + size
-                | value > size / 2     = value - size
-                | otherwise            = value
+                | value > size / 2 = value - size
+                | otherwise = value
