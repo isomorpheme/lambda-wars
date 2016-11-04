@@ -67,13 +67,19 @@ updatePlayerCollisions world @ World { enemies, player, rndGen } =
         world
 
 updateEnemyCollisions :: World -> World
-updateEnemyCollisions world @ World { enemies, bullets } =
-    world { enemies = enemies', bullets = bullets' }
+updateEnemyCollisions world @ World { enemies, bullets, score, multiplier } =
+    case go enemies bullets [] [] of
+        Just (enemies', bullets') ->
+            world
+                { enemies = enemies'
+                , bullets = bullets'
+                , score = score + 1 * multiplier
+                }
+        Nothing ->
+            world
     where
-        (enemies', bullets') = go enemies bullets [] []
-
-        go [] bs eacc bacc = (eacc, bacc ++ bs)
+        go [] bs eacc bacc = Nothing
         go (e:es) [] eacc bacc = go es bacc (eacc ++ [e]) []
         go (e:es) (b:bs) eacc bacc
-            | collides e b = (eacc ++ es, bacc ++ bs)
+            | collides e b = Just (eacc ++ es, bacc ++ bs)
             | otherwise = go (e:es) bs eacc (bacc ++ [b])
