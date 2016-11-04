@@ -4,6 +4,7 @@ module Util
     ( (&)
     , compose
     , set
+    , tmap
     , getRandom, getRandomR
     , choose, frequency
     , iterateState
@@ -23,6 +24,10 @@ compose = foldr (.) id
 --   general.
 set :: ((a -> a) -> b -> b) -> a -> b -> b
 set = (. const)
+
+-- | Map a function over a 2-tuple with elemens of the same type.
+tmap :: (a -> b) -> (a, a) -> (b, b)
+tmap f (x, y) = (f x, f y)
 
 -- * Helpers for 'Random'
 

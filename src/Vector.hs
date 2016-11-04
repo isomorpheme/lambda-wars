@@ -4,7 +4,6 @@
 module Vector
     ( -- * The 'Vector' and 'Point' Types
       Vector, Point
-    , vmap
       -- ** Creating Vectors
     , fromAngleLength, unitX, unitY
       -- ** Basic Arithmetic
@@ -25,9 +24,6 @@ import Graphics.Gloss.Data.Point
 import Graphics.Gloss.Data.Vector
 
 import Util
-
-vmap :: (Float -> Float) -> Vector -> Vector
-vmap f (x, y) = (f x, f y)
 
 instance Monoid Vector where
     mempty = (0, 0)

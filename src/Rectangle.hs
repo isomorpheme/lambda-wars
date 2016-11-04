@@ -16,7 +16,7 @@ rectangleCorners = (,)
 
 rectangle :: Point -> Float -> Float -> Rectangle
 rectangle center width height =
-    let offset = vmap (/ 2) (width, -height)
+    let offset = tmap (/ 2) (width, -height)
     in (center - offset, center + offset)
 
 square :: Point -> Float -> Rectangle
