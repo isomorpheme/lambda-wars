@@ -4,6 +4,8 @@
 module Rectangle where
 
 import Control.Arrow ((&&&))
+import Control.Monad.State
+import System.Random
 
 import Graphics.Gloss.Data.Picture
 
@@ -74,3 +76,11 @@ wrap area (x, y) =
             | value < 0 - size / 2 = value + size
             | value > size / 2 = value - size
             | otherwise = value
+
+randomAvoid :: RandomGen g => Rectangle -> Rectangle -> State g Vector
+randomAvoid bounds avoid = do
+    position <- getRandomR bounds
+    if avoid `contains` position then
+        randomAvoid bounds avoid
+    else
+        return position

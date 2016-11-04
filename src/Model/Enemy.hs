@@ -51,12 +51,9 @@ seeker position =
 
 spawn :: RandomGen g => Rectangle -> Rectangle -> g -> (Enemy, g)
 spawn bounds avoid = runState $ do
+    position <- randomAvoid bounds avoid
     enemyType <- getRandom
-    position <- getRandomR bounds
-    if avoid `contains` position then
-        state $ spawn bounds avoid
-    else
-        return $ Enemy
-            { physics = initialPhysics { position, localBounds = square 0 16 }
-            , enemyType
-            }
+    return Enemy
+        { physics = initialPhysics { position, localBounds = square 0 16 }
+        , enemyType
+        }
