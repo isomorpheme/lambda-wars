@@ -12,6 +12,7 @@ import Config
 import Model.Bullet
 import Model.Enemy
 import Model.Particle
+import Model.Pickup
 import Model.Player
 import Model.Star
 import Physics
@@ -56,8 +57,13 @@ data World = World
 
     , enemies :: [Enemy]
       -- ^ All the enemies
-    , spawnTimer :: Float
+    , enemyTimer :: Float
       -- ^ Time until another enemy spawns
+
+    , pickups :: [Pickup]
+      -- ^ All pickups
+    , pickupTimer :: Float
+      -- ^ Time until another pickup spawns
 
     , particles :: [Particle]
       -- ^ All the particles
@@ -78,7 +84,9 @@ initial rndGen = World
     , multiplier = 1
     , bullets = []
     , enemies = []
-    , spawnTimer = spawnTime
+    , enemyTimer = spawnTime
+    , pickups = []
+    , pickupTimer = spawnTime
     , particles = []
     , stars = [defaultStar]
     }
@@ -95,9 +103,17 @@ _enemies :: ([Enemy] -> [Enemy]) -> World -> World
 _enemies f world @ World { enemies } =
     world { enemies = f enemies }
 
-_spawnTimer :: (Float -> Float) -> World -> World
-_spawnTimer f world @ World { spawnTimer } =
-    world { spawnTimer = f spawnTimer }
+_pickups :: ([Pickup] -> [Pickup]) -> World -> World
+_pickups f world @ World { pickups } =
+    world { pickups = f pickups }
+
+_enemyTimer :: (Float -> Float) -> World -> World
+_enemyTimer f world @ World { enemyTimer } =
+    world { enemyTimer = f enemyTimer }
+
+_pickupTimer :: (Float -> Float) -> World -> World
+_pickupTimer f world @ World { pickupTimer } =
+    world { pickupTimer = f pickupTimer }
 
 _particles :: ([Particle] -> [Particle]) -> World -> World
 _particles f world @ World { particles } =

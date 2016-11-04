@@ -19,6 +19,7 @@ instance Draw World where
                 [ draw player
                 , draw enemies
                 , draw bullets
+                , draw pickups
                 ]
             rest =
                 [ draw stars

@@ -52,7 +52,8 @@ handleTime dt world @ World { .. } =
         ( stepPhysics dt
         . updatePlayer dt
         . updateEnemies dt
-        . updateSpawning dt
+        . updateEnemySpawning dt
+        . updatePickupSpawning dt
         . updateParticles dt
         . updatePlayerCollisions
         . updateEnemyCollisions
