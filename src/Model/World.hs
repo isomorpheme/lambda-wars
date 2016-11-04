@@ -46,14 +46,22 @@ data World = World
 
     , player :: Player
       -- ^ Information about the player
+    , score :: Int
+      -- ^ The player's score
+    , multiplier :: Int
+      -- ^ The current multipler
+
     , bullets :: [Bullet]
       -- ^ All the bullets
+
     , enemies :: [Enemy]
       -- ^ All the enemies
     , spawnTimer :: Float
       -- ^ Time until another enemy spawns
+
     , particles :: [Particle]
       -- ^ All the particles
+
     , stars :: [Star]
       -- ^ All the stars
     } deriving Show
@@ -66,6 +74,8 @@ initial rndGen = World
     , movementAction = NoMovement
     , shootAction = DontShoot
     , player = defaultPlayer
+    , score = 0
+    , multiplier = 1
     , bullets = []
     , enemies = []
     , spawnTimer = spawnTime
