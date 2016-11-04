@@ -1,5 +1,3 @@
-{-# LANGUAGE ViewPatterns #-}
-
 module Model.Player where
 
 import Graphics.Gloss
@@ -53,17 +51,3 @@ rotate = _direction . (+)
 thrust :: Float -> Player -> Player
 thrust strength player = player & _physics (accelerate a)
     where a = Vector.fromAngleLength (player & direction) strength
-
-instance Draw Player where
-    draw Player { physics = position -> (x, y), direction } =
-        Color white
-            $ Translate x y
-            $ Rotate (radToDeg direction) ship
-        where
-            ship = Scale 3 3 $ Line
-                [ (0, 4)
-                , (2, -2)
-                , (0, -1)
-                , (-2, -2)
-                , (0, 4)
-                ]

@@ -3,6 +3,8 @@
 
 module Rectangle where
 
+import Control.Arrow ((&&&))
+
 import Graphics.Gloss.Data.Picture
 
 import Draw
@@ -27,6 +29,9 @@ width ((l, _), (r, _) ) = r - l
 
 height :: Rectangle -> Float
 height ((_, t), (_, b)) = t - b
+
+dimensions :: Rectangle -> (Float, Float)
+dimensions = width &&& height
 
 top :: Rectangle -> Float
 top ((_, y), _) = y

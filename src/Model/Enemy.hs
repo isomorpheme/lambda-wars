@@ -25,36 +25,6 @@ instance Random EnemyType where
     random = runState $ return Seeker
         -- TODO: randomly choose between seekers and asteroids
 
-instance Draw EnemyType where
-    draw (Asteroid size rotation) =
-        Rotate rotation
-            $ Scale size size
-            $ Line
-                [ (-1, 3)
-                , (1, 3)
-                , (3, 1)
-                , (3, -1)
-                , (1, -3)
-                , (-1, -3)
-                , (-3, -1)
-                , (-3, 1)
-                , (-1, 3)
-                ]
-
-    draw Seeker =
-        Scale 4 4
-            $ Line
-                [ (-2, 2)
-                , (0, 1)
-                , (2, 2)
-                , (1, 0)
-                , (2, -2)
-                , (0, -1)
-                , (-2, -2)
-                , (-1, 0)
-                , (-2, 2)
-                ]
-
 data Enemy = Enemy
     { physics :: Physics
     , enemyType :: EnemyType
@@ -90,9 +60,3 @@ spawn bounds avoid = runState $ do
             { physics = initialPhysics { position, localBounds = square 0 16 }
             , enemyType
             }
-
-instance Draw Enemy where
-    draw Enemy { physics = position -> (x, y), enemyType = enemyType } =
-        Color white
-            $ Translate x y
-            $ draw enemyType

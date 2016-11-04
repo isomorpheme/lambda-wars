@@ -12,9 +12,10 @@ import System.Random (getStdGen)
 import Graphics.Gloss
 
 import Config
+import Controller
 import Draw
 import Model.World
-import Controller
+import View.World
 
 -- | Main
 main :: IO ()

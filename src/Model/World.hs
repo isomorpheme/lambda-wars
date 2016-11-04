@@ -9,7 +9,6 @@ import System.Random
 import Graphics.Gloss
 
 import Config
-import Draw
 import Model.Bullet
 import Model.Enemy
 import Model.Particle
@@ -97,62 +96,3 @@ _particles f world @ World { particles } =
 playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =
     (movementAction, rotateAction, shootAction)
-
-instance Draw World where
-    draw World { .. } =
-        Pictures $
-            map drawWrapped
-            [ draw player
-            , draw enemies
-            , draw bullets
-            ]
-            ++
-            [ draw stars
-            , draw particles
-            , drawBorder
-            , drawCamera
-            , drawHearts 5
-            ]
-
-drawHeart :: Picture
-drawHeart = Color white $ draw $ rectangle 0 6 12
-
-drawHearts :: Integer -> Picture
-drawHearts n = Pictures [Translate (x + fromInteger dx * 8) y drawHeart | dx <- [0..n]]
-    where
-        x = 0 - cameraWidth / 2 + 5
-        y = 0 - cameraHeight / 2 - 10
-
-drawBorder :: Picture
-drawBorder =
-    Pictures
-        [ Polygon [(w, h), (4.5 * w, 4.5 * h), (4.5 * w, -4.5 * h), (w, -h)]
-        , Polygon [(w, h), (4.5 * w, 4.5 * h), (-4.5 * w, 4.5 * h), (-w, h)]
-        , Polygon [(-w, -h), (-4.5 * w, -4.5 * h), (-4.5 * w, 4.5 * h), (-w, h)]
-        , Polygon [(-w, -h), (-4.5 * w, -4.5 * h), (4.5 * w, -4.5 * h), (w, -h)]
-        ]
-            where
-                w = cameraWidth / 2
-                h = cameraHeight / 2
-
-
-drawCamera :: Picture
-drawCamera =
-    Color white $ Line
-        [ (-w, h)
-        , (w, h)
-        , (w, -h)
-        , (-w, -h)
-        , (-w, h)
-        ]
-            where
-                w = cameraWidth / 2
-                h = cameraHeight / 2
-
-drawWrapped :: Picture -> Picture
-drawWrapped picture =
-    Pictures
-        [ Translate (cameraWidth * w) (cameraHeight * h) picture
-        | w <- [-1, 0, 1]
-        , h <- [-1, 0, 1]
-        ]

@@ -38,11 +38,10 @@ instance Draw Bullet where
             $ Translate x y
             $ Rotate (radToDeg direction) bullet
         where
-            bullet = Scale 2 2 $ Line
+            bullet = Scale 2 2 $ lineLoop
                 [ (0, 2)
                 , (1, 1)
                 , (1, -1)
                 , (-1, -1)
                 , (-1, 1)
-                , (0, 2)
                 ]
