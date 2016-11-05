@@ -12,6 +12,7 @@ import Controller.Enemy as Enemy
 import Controller.Particle as Particle
 import Controller.Player as Player
 import Controller.Star as Star
+import Model.Bullet as Bullet
 import Model.Enemy as Enemy
 import Model.Particle as Particle
 import Model.Pickup as Pickup
@@ -105,12 +106,16 @@ updatePlayerCollisions world @ World { player = player @ (physics' -> position -
 updateEnemyCollisions :: World -> World
 updateEnemyCollisions world @ World { .. } =
     case checkCollisions enemies bullets of
-        Just (enemy, _, enemies', bullets') ->
+        Just (_, bullet, enemies', bullets') ->
             world
                 { enemies = enemies'
                 , bullets = bullets'
                 , score = score + 1 * multiplier
                 }
+                & _particles (++ explodeBullet bullet)
+                where
+                    explodeBullet Bullet { Bullet.physics = Physics { .. } } =
+                        explosion position velocity 30 rndGen
         Nothing ->
             world
 
