@@ -19,6 +19,10 @@ data Particle = Particle
 defaultParticle :: Particle
 defaultParticle = Particle initialPhysics 0 0
 
+particle :: Point -> Float -> Float -> Float -> Particle
+particle position speed lifeTime direction = 
+    Particle initialPhysics { position, velocity = fromAngleLength direction speed } direction lifeTime
+
 _lifeTime :: (Float -> Float) -> Particle -> Particle
 _lifeTime f particle @ Particle { lifeTime } =
     particle { lifeTime = f lifeTime }

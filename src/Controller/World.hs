@@ -12,6 +12,7 @@ import Controller.Particle as Particle
 import Controller.Player as Player
 import Controller.Star as Star
 import Model.Enemy as Enemy
+import Model.Particle as Particle
 import Model.Pickup as Pickup
 import Model.Player
 import Model.World
@@ -85,9 +86,10 @@ updateStars dt world =
     world & _stars (map $ Star.update dt)
 
 updatePlayerCollisions :: World -> World
-updatePlayerCollisions world @ World { .. } =
+updatePlayerCollisions world @ World { player = player @ (physics' -> position -> pos), .. } =
     if any (collides player) enemies then
-        initial rndGen
+        initial rndGen 
+            & _particles (++ explosion)
     else case checkCollisions [player] pickups of
         Just (_, pickups') ->
             world
@@ -96,6 +98,8 @@ updatePlayerCollisions world @ World { .. } =
                 }
         Nothing ->
             world
+        where
+            explosion = map (particle pos 150 0.5) [0,10..350]
 
 updateEnemyCollisions :: World -> World
 updateEnemyCollisions world @ World { .. } =
