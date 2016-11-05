@@ -61,7 +61,7 @@ spawnEnemy world @ World { .. } =
 
 updatePickupSpawning :: Float -> World -> World
 updatePickupSpawning dt world @ World { .. } =
-    if pickupTimer <= 0 then
+    if pickupTimer <= 0 && length pickups < 3 then
         world
             & spawnPickup
             & set _pickupTimer spawnTime
