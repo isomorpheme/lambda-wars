@@ -21,7 +21,7 @@ data Particle = Particle
     } deriving (Show)
 
 defaultParticle :: Particle
-defaultParticle = Particle initialPhysics 0 0
+defaultParticle = Particle defaultPhysics 0 0
 
 explosion :: RandomGen g => Point -> Vector -> Int -> g -> [Particle]
 explosion position direction amount rndGen =
@@ -32,11 +32,11 @@ explosion position direction amount rndGen =
             lifeTime <- getRandomR (0.3, 0.6)
             speed <- getRandomR (100, 200)
             let direction'' = direction + fromAngleLength direction' speed
-            return $ Particle initialPhysics { position, velocity = direction'' } (angle direction'') lifeTime
+            return $ Particle defaultPhysics { position, velocity = direction'' } (angle direction'') lifeTime
 
 particle :: Point -> Float -> Float -> Float -> Particle
-particle position speed lifeTime direction = 
-    Particle initialPhysics { position, velocity = fromAngleLength direction speed } direction lifeTime
+particle position speed lifeTime direction =
+    Particle defaultPhysics { position, velocity = fromAngleLength direction speed } direction lifeTime
 
 _lifeTime :: (Float -> Float) -> Particle -> Particle
 _lifeTime f particle @ Particle { lifeTime } =

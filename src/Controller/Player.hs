@@ -51,7 +51,7 @@ addParticle :: RandomGen g => MovementAction -> g -> Float -> Player -> (Player,
 addParticle move rndGen dt player @ Player { physics = position -> pos, .. } =
     if move == Thrust && exhaustCooldown <= 0 then
         ( player & set _exhaustCooldown coolDown
-        , Just $ Particle initialPhysics
+        , Just $ Particle defaultPhysics
             { position = pos + fromAngleLength direction (-10)
             , velocity = fromAngleLength direction' (-100)
             } direction' 0.3

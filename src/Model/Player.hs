@@ -20,8 +20,7 @@ data Player = Player
 
 defaultPlayer :: Player
 defaultPlayer = Player
-    { physics = initialPhysics
-        { localBounds = square 0 10 }
+    { physics = defaultPhysics { localBounds = square 0 10 }
     , direction = 0
     , shootCooldown = 0
     , exhaustCooldown = 0

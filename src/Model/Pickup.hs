@@ -29,7 +29,7 @@ instance Spawn Pickup where
         direction <- getRandomR (0, 2 * pi)
         speed <- getRandomR (0, 5)
         return Pickup
-            { physics = initialPhysics
+            { physics = defaultPhysics
                 { position
                 , velocity = fromAngleLength direction speed
                 , localBounds = square 0 14

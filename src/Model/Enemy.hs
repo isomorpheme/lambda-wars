@@ -39,14 +39,14 @@ instance HasPhysics Enemy where
 asteroid :: Float -> Float -> Point -> Enemy
 asteroid size rotation position =
     Enemy
-        { physics = initialPhysics { position }
+        { physics = defaultPhysics { position }
         , enemyType = Asteroid size rotation
         }
 
 seeker :: Point -> Enemy
 seeker position =
     Enemy
-        { physics = initialPhysics { position }
+        { physics = defaultPhysics { position }
         , enemyType = Seeker
         }
 
@@ -55,6 +55,6 @@ instance Spawn Enemy where
         position <- randomAvoid bounds avoid
         enemyType <- getRandom
         return Enemy
-            { physics = initialPhysics { position, localBounds = square 0 16 }
+            { physics = defaultPhysics { position, localBounds = square 0 16 }
             , enemyType
             }

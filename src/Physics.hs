@@ -21,8 +21,8 @@ class HasPhysics a where
     physics' :: a -> Physics
     _physics :: (Physics -> Physics) -> a -> a
 
-initialPhysics :: Physics
-initialPhysics = Physics
+defaultPhysics :: Physics
+defaultPhysics = Physics
     { position = 0
     , velocity = 0
     , localBounds = square 0 0

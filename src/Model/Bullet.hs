@@ -24,7 +24,7 @@ instance HasPhysics Bullet where
 create :: Point -> Float -> Float -> Bullet
 create position direction speed =
     Bullet
-        { physics = initialPhysics
+        { physics = defaultPhysics
             { position
             , velocity = fromAngleLength direction speed
             , localBounds = square 0 4
