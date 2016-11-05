@@ -37,7 +37,7 @@ instance Draw EnemyType where
                 ]
 
 instance Draw Enemy where
-    draw Enemy { physics = position -> (x, y), enemyType = enemyType } =
+    draw Enemy { physics = position -> pos, enemyType = enemyType } =
         Color white
-            $ Translate x y
+            $ uncurry Translate pos
             $ draw enemyType
