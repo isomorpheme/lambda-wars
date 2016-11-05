@@ -40,5 +40,5 @@ instance Draw Star where
 spawn :: RandomGen g => Rectangle -> g -> (Star, g)
 spawn bounds = runState $ do
     position <- getRandomR bounds
-    depth <- getRandomR (1.5, 5)
+    depth <- getRandomR (2.5, 7.5)
     return $ Star position depth

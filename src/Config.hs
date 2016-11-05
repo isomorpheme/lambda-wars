@@ -41,7 +41,7 @@ cameraHeight = cameraWidth / cameraRatio
 
 rotationSpeed, thrustForce, bulletSpeed, shootDelay, backfire :: Float
 rotationSpeed = 2 * pi
-thrustForce = 40
+thrustForce = 60
 bulletSpeed = 200
 shootDelay = 0.2
 backfire = -5
