@@ -16,14 +16,14 @@ instance Draw World where
         Pictures $ wrapped ++ rest
         where
             wrapped = map (screenWrap screenBounds)
-                [ draw player
+                [ draw stars
+                , draw player
                 , draw enemies
                 , draw bullets
                 , draw pickups
                 ]
             rest =
-                [ draw stars
-                , draw particles
+                [ draw particles
                 , mask screenBounds
                 , border screenBounds
                 , showScore score screenBounds
