@@ -7,15 +7,15 @@ import Util
 import Vector
 
 data Star = Star
-    { position :: Vector
-    , depth :: Integer
+    { offset :: Vector
+    , depth :: Float
     } deriving (Show)
 
 defaultStar :: Star
-defaultStar = Star 0 3
+defaultStar = Star 0 1.8
 
 instance Draw Star where
-    draw Star { position = (x, y), depth } = 
+    draw Star { offset = (x, y), depth } = 
         Color (greyN proximity)
             $ Translate x y
             $ Scale size size
@@ -25,4 +25,6 @@ instance Draw Star where
                 ]
                 where
                     size = 10 * proximity
-                    proximity = 1 / fromInteger depth
+                    proximity = 1 / depth
+
+
