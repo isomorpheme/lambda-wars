@@ -10,6 +10,7 @@ import Config (spawnTime)
 import Controller.Enemy as Enemy
 import Controller.Particle as Particle
 import Controller.Player as Player
+import Controller.Star as Star
 import Model.Enemy as Enemy
 import Model.Pickup as Pickup
 import Model.Player
@@ -78,6 +79,10 @@ spawnPickup world @ World { .. } =
 updateParticles :: Float -> World -> World
 updateParticles dt world =
     world & _particles (mapMaybe $ Particle.update dt)
+
+updateStars :: Float -> World -> World
+updateStars dt world =
+    world & _stars (map $ Star.update dt)
 
 updatePlayerCollisions :: World -> World
 updatePlayerCollisions world @ World { .. } =

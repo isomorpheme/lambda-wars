@@ -1,23 +1,33 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Model.Star where
+
+import Control.Monad.State
+import System.Random
 
 import Graphics.Gloss
 
 import Draw
+import Rectangle
 import Util
 import Vector
 
 data Star = Star
-    { offset :: Vector
+    { position :: Vector
     , depth :: Float
     } deriving (Show)
 
 defaultStar :: Star
-defaultStar = Star 0 1.8
+defaultStar = Star 0 2
+
+_position :: (Point -> Point) -> Star -> Star
+_position f star @ Star { position } =
+    star { position = f position }
 
 instance Draw Star where
-    draw Star { offset = (x, y), depth } = 
+    draw Star { .. } = 
         Color (greyN proximity)
-            $ Translate x y
+            $ uncurry Translate position
             $ Scale size size
             $ Pictures
                 [ Line [(0, -1), (0, 1)]
@@ -27,4 +37,15 @@ instance Draw Star where
                     size = 10 * proximity
                     proximity = 1 / depth
 
+spawn :: RandomGen g => Rectangle -> g -> (Star, g)
+spawn bounds = runState $ do
+    position <- getRandomR bounds
+    depth <- getRandomR (1.5, 5)
+    return $ Star position depth
 
+spawnMultiple :: RandomGen g => Rectangle -> Int -> g -> ([Star], g)
+spawnMultiple bounds amount rndGen =
+    ( map fst stars, snd $ last stars)
+    where
+        stars = take amount $ iterate spawnSingle (spawn bounds rndGen)
+        spawnSingle (_, rng) = spawn bounds rng

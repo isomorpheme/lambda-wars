@@ -75,8 +75,8 @@ data World = World
 
 initial :: StdGen -> World
 initial rndGen = World
-    { rndGen
-    , screenBounds = rectangle 0 cameraWidth cameraHeight
+    { rndGen = rndGen'
+    , screenBounds = screenBounds
     , rotateAction = NoRotation
     , movementAction = NoMovement
     , shootAction = DontShoot
@@ -89,8 +89,11 @@ initial rndGen = World
     , pickups = []
     , pickupTimer = spawnTime
     , particles = []
-    , stars = [defaultStar]
+    , stars = stars
     }
+    where 
+        (stars, rndGen') = spawnMultiple screenBounds 100 rndGen
+        screenBounds = rectangle 0 cameraWidth cameraHeight
 
 _player :: (Player -> Player) -> World -> World
 _player f world @ World { player } =
@@ -119,6 +122,10 @@ _pickupTimer f world @ World { pickupTimer } =
 _particles :: ([Particle] -> [Particle]) -> World -> World
 _particles f world @ World { particles } =
     world { particles = f particles }
+
+_stars :: ([Star] -> [Star]) -> World -> World
+_stars f world @ World { stars } =
+    world { stars = f stars }
 
 playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =

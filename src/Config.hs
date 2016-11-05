@@ -19,6 +19,9 @@ module Config
     , seekerSpeed
     , asteroidFrequency
     , asteroidSize
+    -- * Star parameters
+    , starAngle
+    , starSpeed
     ) where
 
 -- | Default window configuration
@@ -63,3 +66,11 @@ asteroidFrequency = 0
 
 asteroidSize :: (Float, Float)
 asteroidSize = (20, 100)
+
+-- * Star settings
+
+starAngle :: Float
+starAngle = 5
+
+starSpeed :: Float
+starSpeed = 1
