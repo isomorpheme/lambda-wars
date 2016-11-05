@@ -12,6 +12,7 @@ import Config (rotationSpeed, thrustForce, bulletSpeed, shootDelay)
 import Controller.World
 import Model.World
 import Physics
+import Util
 
 -- | Event handling
 
@@ -48,15 +49,16 @@ handleKey key keyState world =
 -- | Time handling
 
 handleTime :: Float -> World -> World
-handleTime dt world @ World { .. } =
-        ( stepPhysics dt
-        . updatePlayer dt
-        . updateEnemies dt
-        . updateEnemySpawning dt
-        . updatePickupSpawning dt
-        . updateParticles dt
-        . updateStars dt
-        . updatePlayerCollisions
-        . updateEnemyCollisions
-        . updatePickupCollisions
-        ) world
+handleTime dt =
+    compose
+        [ stepPhysics dt
+        , updatePlayer dt
+        , updateEnemies dt
+        , updateEnemySpawning dt
+        , updatePickupSpawning dt
+        , updateParticles dt
+        , updateStars dt
+        , updatePlayerCollisions
+        , updateEnemyCollisions
+        , updatePickupCollisions
+        ]
