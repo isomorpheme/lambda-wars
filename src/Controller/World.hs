@@ -91,10 +91,10 @@ updateStars dt world =
 updatePlayerCollisions :: World -> World
 updatePlayerCollisions world @ World { player = player @ (physics' -> position -> pos), .. } =
     if any (collides player) enemies then
-        initial rndGen 
+        initial rndGen
             & _particles (++ explosion pos 0 80 rndGen)
     else case checkCollisions [player] pickups of
-        Just (_, pickups') ->
+        Just (_, _, _, pickups') ->
             world
                 { pickups = pickups'
                 , multiplier = multiplier + 1
@@ -105,7 +105,7 @@ updatePlayerCollisions world @ World { player = player @ (physics' -> position -
 updateEnemyCollisions :: World -> World
 updateEnemyCollisions world @ World { .. } =
     case checkCollisions enemies bullets of
-        Just (enemies', bullets') ->
+        Just (enemy, _, enemies', bullets') ->
             world
                 { enemies = enemies'
                 , bullets = bullets'
@@ -117,7 +117,7 @@ updateEnemyCollisions world @ World { .. } =
 updatePickupCollisions :: World -> World
 updatePickupCollisions world @ World { .. } =
     case checkCollisions pickups bullets of
-        Just (pickups', bullets') ->
+        Just (_, _, pickups', bullets') ->
             world
                 { pickups = pickups'
                 , bullets = bullets'
@@ -125,11 +125,11 @@ updatePickupCollisions world @ World { .. } =
         Nothing ->
             world
 
-checkCollisions :: (HasPhysics a, HasPhysics b) => [a] -> [b] -> Maybe ([a], [b])
+checkCollisions :: (HasPhysics a, HasPhysics b) => [a] -> [b] -> Maybe (a, b, [a], [b])
 checkCollisions xs ys = go xs ys [] []
     where
         go [] bs aacc bacc = Nothing
         go (a:as) [] aacc bacc = go as bacc (aacc ++ [a]) []
         go (a:as) (b:bs) aacc bacc
-            | collides a b = Just (aacc ++ as, bacc ++ bs)
+            | collides a b = Just (a, b, aacc ++ as, bacc ++ bs)
             | otherwise = go (a:as) bs aacc (bacc ++ [b])
