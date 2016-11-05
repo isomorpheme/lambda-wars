@@ -27,10 +27,10 @@ square :: Point -> Float -> Rectangle
 square center size = rectangle center size size
 
 width :: Rectangle -> Float
-width ((l, _), (r, _) ) = r - l
+width ((l, _), (r, _) ) = abs $ r - l
 
 height :: Rectangle -> Float
-height ((_, t), (_, b)) = t - b
+height ((_, t), (_, b)) = abs $ t - b
 
 dimensions :: Rectangle -> (Float, Float)
 dimensions = width &&& height
