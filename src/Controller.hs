@@ -57,4 +57,5 @@ handleTime dt world @ World { .. } =
         . updateParticles dt
         . updatePlayerCollisions
         . updateEnemyCollisions
+        . updatePickupCollisions
         ) world

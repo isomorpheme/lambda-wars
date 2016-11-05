@@ -80,15 +80,21 @@ updateParticles dt world =
     world & _particles (mapMaybe $ Particle.update dt)
 
 updatePlayerCollisions :: World -> World
-updatePlayerCollisions world @ World { enemies, player, rndGen } =
+updatePlayerCollisions world @ World { .. } =
     if any (collides player) enemies then
         initial rndGen
-    else
-        world
+    else case checkCollisions [player] pickups of
+        Just (_, pickups') ->
+            world
+                { pickups = pickups'
+                , multiplier = multiplier + 1
+                }
+        Nothing ->
+            world
 
 updateEnemyCollisions :: World -> World
-updateEnemyCollisions world @ World { enemies, bullets, score, multiplier } =
-    case go enemies bullets [] [] of
+updateEnemyCollisions world @ World { .. } =
+    case checkCollisions enemies bullets of
         Just (enemies', bullets') ->
             world
                 { enemies = enemies'
@@ -97,9 +103,23 @@ updateEnemyCollisions world @ World { enemies, bullets, score, multiplier } =
                 }
         Nothing ->
             world
+
+updatePickupCollisions :: World -> World
+updatePickupCollisions world @ World { .. } =
+    case checkCollisions pickups bullets of
+        Just (pickups', bullets') ->
+            world
+                { pickups = pickups'
+                , bullets = bullets'
+                }
+        Nothing ->
+            world
+
+checkCollisions :: (HasPhysics a, HasPhysics b) => [a] -> [b] -> Maybe ([a], [b])
+checkCollisions xs ys = go xs ys [] []
     where
-        go [] bs eacc bacc = Nothing
-        go (e:es) [] eacc bacc = go es bacc (eacc ++ [e]) []
-        go (e:es) (b:bs) eacc bacc
-            | collides e b = Just (eacc ++ es, bacc ++ bs)
-            | otherwise = go (e:es) bs eacc (bacc ++ [b])
+        go [] bs aacc bacc = Nothing
+        go (a:as) [] aacc bacc = go as bacc (aacc ++ [a]) []
+        go (a:as) (b:bs) aacc bacc
+            | collides a b = Just (aacc ++ as, bacc ++ bs)
+            | otherwise = go (a:as) bs aacc (bacc ++ [b])
