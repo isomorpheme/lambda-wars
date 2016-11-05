@@ -21,10 +21,6 @@ class HasPhysics a where
     physics' :: a -> Physics
     _physics :: (Physics -> Physics) -> a -> a
 
-instance HasPhysics a => HasPhysics [a] where
-    physics' = error "yeah, this is kinda dumb"
-    _physics = map . _physics
-
 initialPhysics :: Physics
 initialPhysics = Physics
     { position = 0

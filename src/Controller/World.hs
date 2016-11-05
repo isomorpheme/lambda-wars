@@ -26,12 +26,15 @@ import Util
 stepPhysics :: Float -> World -> World
 stepPhysics dt =
     compose
-        [ _player . _physics $ step dt
-        , _bullets . _physics $ step dt
-        , _enemies . _physics $ step dt
-        , _pickups . _physics $ step dt
-        , _particles . _physics $ step dt
+        [ _player step'
+        , _bullets $ map step'
+        , _enemies $ map step'
+        , _pickups $ map step'
+        , _particles $ map step'
         ]
+    where
+        step' :: HasPhysics a => a -> a
+        step' = _physics $ step dt
 
 updatePlayer :: Float -> World -> World
 updatePlayer dt world @ World { player , rndGen } =
