@@ -3,6 +3,9 @@
 
 module Controller.Player where
 
+import Control.Monad.State
+import System.Random
+
 import Config (backfire, bulletSpeed, rotationSpeed, shootDelay, thrustForce)
 import qualified Controller.Particle as Particle
 import Model.Enemy
@@ -14,15 +17,15 @@ import Physics
 import Vector
 import Util
 
-update :: PlayerActions -> Float -> Player -> (Player, Maybe Bullet, Maybe Particle)
-update (movement, rotation, shoot) dt player = (player'', bullet, particle)
+update :: RandomGen g => PlayerActions -> g -> Float -> Player -> (Player, Maybe Bullet, Maybe Particle, g)
+update (movement, rotation, shoot) rndGen dt player = (player'', bullet, particle, rndGen')
     where
         (player'', bullet) =
             ( updateShooting shoot dt
             . updateMovement movement dt
             . updateRotation rotation dt
             ) player'
-        (player', particle) = addParticle movement dt player
+        (player', particle, rndGen') = addParticle movement rndGen dt player
 
 updateMovement :: MovementAction -> Float -> Player -> Player
 updateMovement Thrust dt = thrust $ thrustForce * dt
@@ -44,14 +47,21 @@ updateShooting action dt player @ Player { physics = position -> pos, .. } =
             & thrust (backfire)
             . set _shootCooldown shootDelay
 
-addParticle :: MovementAction -> Float -> Player -> (Player, Maybe Particle)
-addParticle move dt player @ Player { physics = position -> pos, .. } =
+addParticle :: RandomGen g => MovementAction -> g -> Float -> Player -> (Player, Maybe Particle, g)
+addParticle move rndGen dt player @ Player { physics = position -> pos, .. } =
     if move == Thrust && exhaustCooldown <= 0 then
-        ( player & set _exhaustCooldown 0.01 -- TODO: Random??
+        ( player & set _exhaustCooldown coolDown
         , Just $ Particle initialPhysics
             { position = pos + fromAngleLength direction (-10)
-            , velocity = fromAngleLength direction (-100)
-            } direction 0.3
+            , velocity = fromAngleLength direction' (-100)
+            } direction' 0.3
+        , rndGen'
         )
     else
-        (player & _exhaustCooldown (subtract dt), Nothing)
+        (player & _exhaustCooldown (subtract dt), Nothing, rndGen)
+        where
+            ((direction', coolDown), rndGen') = (rndGen &) $
+                runState $ do
+                    d <- getRandomR (-0.5, 0.5)
+                    c <- getRandomR (0.005, 0.02)
+                    return (direction + d, c)

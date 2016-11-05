@@ -28,9 +28,9 @@ stepPhysics dt =
         ]
 
 updatePlayer :: Float -> World -> World
-updatePlayer dt world @ World { player } =
-    let (player', bullet, particle) = Player.update (world & playerActions) dt player
-    in world
+updatePlayer dt world @ World { player , rndGen } =
+    let (player', bullet, particle, rndGen') = Player.update (world & playerActions) rndGen dt player
+    in world { rndGen = rndGen' }
         & set _player player'
         & _bullets (maybe id (:) bullet)
         . _particles (maybe id (:) particle)

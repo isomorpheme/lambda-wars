@@ -31,7 +31,7 @@ defaultHorizontalResolution = 1024
 -- * Camera settings
 cameraRatio, cameraWidth, cameraHeight :: Float
 cameraRatio  = 1
-cameraWidth  = 256
+cameraWidth  = 512
 cameraHeight = cameraWidth / cameraRatio
 
 -- * Player settings
