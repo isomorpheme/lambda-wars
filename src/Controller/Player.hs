@@ -39,7 +39,7 @@ updateRotation NoRotation _ = id
 updateShooting :: ShootAction -> Float -> Player -> (Player, Maybe Bullet)
 updateShooting action dt player @ Player { physics = position -> pos, .. } =
     if action == Shoot && shootCooldown <= 0 then
-        (player', Just $ Bullet.create pos direction bulletSpeed)
+        (player', Just $ Bullet.create (pos + fromAngleLength direction 10) direction bulletSpeed)
     else
         (player & _shootCooldown (subtract dt), Nothing)
     where
