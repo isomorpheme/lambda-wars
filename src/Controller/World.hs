@@ -89,7 +89,7 @@ updatePlayerCollisions :: World -> World
 updatePlayerCollisions world @ World { player = player @ (physics' -> position -> pos), .. } =
     if any (collides player) enemies then
         initial rndGen 
-            & _particles (++ explosion)
+            & _particles (++ explosion pos 0 80 rndGen)
     else case checkCollisions [player] pickups of
         Just (_, pickups') ->
             world
@@ -98,8 +98,6 @@ updatePlayerCollisions world @ World { player = player @ (physics' -> position -
                 }
         Nothing ->
             world
-        where
-            explosion = map (particle pos 150 0.5) [0,10..350]
 
 updateEnemyCollisions :: World -> World
 updateEnemyCollisions world @ World { .. } =

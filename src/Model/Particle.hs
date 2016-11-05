@@ -3,12 +3,16 @@
 
 module Model.Particle where
 
+import Control.Monad.State
+import System.Random
+
 import Graphics.Gloss
 import Graphics.Gloss.Geometry.Angle
 
 import Draw
 import Physics
 import Vector
+import Util
 
 data Particle = Particle
     { physics :: Physics
@@ -18,6 +22,17 @@ data Particle = Particle
 
 defaultParticle :: Particle
 defaultParticle = Particle initialPhysics 0 0
+
+explosion :: RandomGen g => Point -> Vector -> Int -> g -> [Particle]
+explosion position direction amount rndGen =
+    take amount $ iterateState single rndGen
+    where
+        single = runState $ do
+            direction' <- getRandomR (0, 2 * pi)
+            lifeTime <- getRandomR (0.3, 0.6)
+            speed <- getRandomR (100, 200)
+            let direction'' = direction + fromAngleLength direction' speed
+            return $ Particle initialPhysics { position, velocity = direction'' } (angle direction'') lifeTime
 
 particle :: Point -> Float -> Float -> Float -> Particle
 particle position speed lifeTime direction = 
