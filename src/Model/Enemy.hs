@@ -12,8 +12,9 @@ import Config (asteroidSize, asteroidFrequency, seekerFrequency)
 import Draw
 import Physics
 import Rectangle
-import Vector
+import Spawn
 import Util
+import Vector
 
 data EnemyType
     = Asteroid Float Float
@@ -49,11 +50,11 @@ seeker position =
         , enemyType = Seeker
         }
 
-spawn :: RandomGen g => Rectangle -> Rectangle -> g -> (Enemy, g)
-spawn bounds avoid = runState $ do
-    position <- randomAvoid bounds avoid
-    enemyType <- getRandom
-    return Enemy
-        { physics = initialPhysics { position, localBounds = square 0 16 }
-        , enemyType
-        }
+instance Spawn Enemy where
+    spawn bounds avoid = do
+        position <- randomAvoid bounds avoid
+        enemyType <- getRandom
+        return Enemy
+            { physics = initialPhysics { position, localBounds = square 0 16 }
+            , enemyType
+            }

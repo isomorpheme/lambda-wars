@@ -4,9 +4,10 @@
 
 module Controller.World where
 
+import Control.Monad.State
 import Data.Maybe
 
-import Config (spawnTime)
+import Config (spawnMargins, spawnTime)
 import Controller.Enemy as Enemy
 import Controller.Particle as Particle
 import Controller.Player as Player
@@ -17,6 +18,8 @@ import Model.Pickup as Pickup
 import Model.Player
 import Model.World
 import Physics
+import Rectangle
+import Spawn
 import Util
 
 stepPhysics :: Float -> World -> World
@@ -41,6 +44,14 @@ updateEnemies :: Float -> World -> World
 updateEnemies dt world @ (player -> physics' -> position -> pos) =
     world & _enemies (map $ Enemy.update pos dt)
 
+spawnObject :: Spawn a => World -> (a, World)
+spawnObject world @ World { .. } =
+    let
+        playerBounds = grow spawnMargins $ player & physics' & bounds
+        (x, rndGen') = runState (spawn screenBounds playerBounds) rndGen
+    in
+        (x, world { rndGen = rndGen' })
+
 updateEnemySpawning :: Float -> World -> World
 updateEnemySpawning dt world @ World { .. } =
     if enemyTimer <= 0 then
@@ -52,13 +63,8 @@ updateEnemySpawning dt world @ World { .. } =
 
 spawnEnemy :: World -> World
 spawnEnemy world @ World { .. } =
-    let
-        playerBounds = player & physics' & bounds
-        (enemy, rndGen') = Enemy.spawn screenBounds playerBounds rndGen
-    in
-        world { enemies = enemy:enemies, rndGen = rndGen' }
-
--- TODO: make this bit more DRY
+    let (enemy, world') = spawnObject world
+    in world' { enemies = enemy:enemies }
 
 updatePickupSpawning :: Float -> World -> World
 updatePickupSpawning dt world @ World { .. } =
@@ -71,11 +77,8 @@ updatePickupSpawning dt world @ World { .. } =
 
 spawnPickup :: World -> World
 spawnPickup world @ World { .. } =
-    let
-        playerBounds = player & physics' & bounds
-        (pickup, rndGen') = Pickup.spawn screenBounds playerBounds rndGen
-    in
-        world { pickups = pickup:pickups, rndGen = rndGen' }
+    let (pickup, world') = spawnObject world
+    in world' { pickups = pickup:pickups }
 
 updateParticles :: Float -> World -> World
 updateParticles dt world =

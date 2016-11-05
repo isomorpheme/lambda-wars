@@ -13,6 +13,7 @@ module Config
     , bulletSpeed
     , shootDelay
     , backfire
+    , spawnMargins
     -- * Enemy parameters
     , spawnTime
     , seekerFrequency
@@ -45,6 +46,9 @@ thrustForce = 60
 bulletSpeed = 200
 shootDelay = 0.2
 backfire = -5
+
+spawnMargins :: (Float, Float)
+spawnMargins = (50, 50)
 
 -- * Enemy settings
 

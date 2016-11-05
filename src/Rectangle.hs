@@ -35,6 +35,9 @@ height ((_, t), (_, b)) = t - b
 dimensions :: Rectangle -> (Float, Float)
 dimensions = width &&& height
 
+center :: Rectangle -> Point
+center (topLeft, bottomRight) = topLeft + (bottomRight - topLeft) / 2
+
 top :: Rectangle -> Float
 top ((_, y), _) = y
 
@@ -64,6 +67,10 @@ intersects a b =
         , top a < bottom b
         , bottom a > top b
         ]
+
+grow :: (Float, Float) -> Rectangle -> Rectangle
+grow amount rect = rectangle (center rect) w h
+    where (w, h) = dimensions rect + amount
 
 instance Draw Rectangle where
     draw = lineLoop . corners

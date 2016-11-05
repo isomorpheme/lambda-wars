@@ -10,6 +10,7 @@ import Graphics.Gloss
 import Draw
 import Physics
 import Rectangle
+import Spawn
 import Util
 import Vector
 
@@ -22,18 +23,18 @@ instance HasPhysics Pickup where
     _physics f pickup @ Pickup { physics } =
         pickup { physics = f physics }
 
-spawn :: RandomGen g => Rectangle -> Rectangle -> g -> (Pickup, g)
-spawn bounds avoid = runState $ do
-    position <- randomAvoid bounds avoid
-    direction <- getRandomR (0, 2 * pi)
-    speed <- getRandomR (0, 5)
-    return Pickup
-        { physics = initialPhysics
-            { position
-            , velocity = fromAngleLength direction speed
-            , localBounds = square 0 14
+instance Spawn Pickup where
+    spawn bounds avoid = do
+        position <- randomAvoid bounds avoid
+        direction <- getRandomR (0, 2 * pi)
+        speed <- getRandomR (0, 5)
+        return Pickup
+            { physics = initialPhysics
+                { position
+                , velocity = fromAngleLength direction speed
+                , localBounds = square 0 14
+                }
             }
-        }
 
 instance Draw Pickup where
     draw pickup @ (physics -> position -> (x, y)) =
