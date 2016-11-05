@@ -2,19 +2,8 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 module Vector
-    ( -- * The 'Vector' and 'Point' Types
-      Vector, Point
-      -- ** Creating Vectors
-    , fromAngleLength, unitX, unitY
-      -- ** Basic Arithmetic
-    , mul, dot
-      -- ** Other Functions
-    , magnitude, magnitude2, normalize, rotate, angle, angle'
-      -- ** Converting vectors
-      -- * The 'Point' Type
-    , Point
-    , distance, distance2
-      -- * Useful Aliases
+    ( Vector, Point
+    , module Vector
     ) where
 
 import Control.Monad.State
@@ -24,11 +13,6 @@ import Graphics.Gloss.Data.Point
 import Graphics.Gloss.Data.Vector
 
 import Util
-
-instance Monoid Vector where
-    mempty = (0, 0)
-    mappend (a, b) (c, d) =
-        (a + c, b + d)
 
 instance Random Vector where
     randomR ((lx, ly), (hx, hy)) =
@@ -44,7 +28,7 @@ instance Random Vector where
 
 instance Fractional Vector where
     (a, b) / (c, d) = (a / c, b / d)
-    fromRational x = (fromRational x, fromRational x)
+    fromRational x = tmap fromRational (x, x)
 
 -- | Create a vector from an angle (to the positive Y axis) and a length.
 fromAngleLength :: Float -> Float -> Vector
