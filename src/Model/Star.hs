@@ -42,10 +42,3 @@ spawn bounds = runState $ do
     position <- getRandomR bounds
     depth <- getRandomR (1.5, 5)
     return $ Star position depth
-
-spawnMultiple :: RandomGen g => Rectangle -> Int -> g -> ([Star], g)
-spawnMultiple bounds amount rndGen =
-    ( map fst stars, snd $ last stars)
-    where
-        stars = take amount $ iterate spawnSingle (spawn bounds rndGen)
-        spawnSingle (_, rng) = spawn bounds rng

@@ -15,7 +15,7 @@ import Model.Enemy
 import Model.Particle
 import Model.Pickup
 import Model.Player
-import Model.Star
+import Model.Star as Star
 import Physics
 import Rectangle
 import Util
@@ -75,7 +75,7 @@ data World = World
 
 initial :: StdGen -> World
 initial rndGen = World
-    { rndGen = rndGen'
+    { rndGen
     , screenBounds = screenBounds
     , rotateAction = NoRotation
     , movementAction = NoMovement
@@ -92,7 +92,7 @@ initial rndGen = World
     , stars = stars
     }
     where 
-        (stars, rndGen') = spawnMultiple screenBounds 100 rndGen
+        stars = take 100 $ iterateState (Star.spawn screenBounds) rndGen
         screenBounds = rectangle 0 cameraWidth cameraHeight
 
 _player :: (Player -> Player) -> World -> World
