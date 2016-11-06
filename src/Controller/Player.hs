@@ -39,7 +39,7 @@ updateRotation RotateRight dt = Player.rotate $ rotationSpeed * dt
 updateRotation RotateLeft dt = Player.rotate $ -rotationSpeed * dt
 updateRotation NoRotation _ = id
 
--- | Updates the shootCooldown and returns a bullet and applies backfire to the player if the player shoots.
+-- | Updates the shootCooldown and returns a bullet and applies knockback to the player if the player shoots.
 updateShooting :: ShootAction -> Float -> Player -> (Player, Maybe Bullet)
 updateShooting action dt player @ Player { physics = position -> pos, .. } =
     if action == Shoot && shootCooldown <= 0 then
@@ -48,7 +48,7 @@ updateShooting action dt player @ Player { physics = position -> pos, .. } =
         (player & _shootCooldown (subtract dt), Nothing)
     where
         player' = player
-            & thrust backfire
+            & thrust knockback
             . set _shootCooldown shootDelay
 
 -- | Updates the exhaustCooldown and returns new exhaust-particles when the player is thrusting.

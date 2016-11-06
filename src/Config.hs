@@ -16,13 +16,13 @@ cameraHeight = cameraWidth / cameraRatio
 
 -- * Player settings
 
-rotationSpeed, thrustForce, bulletSpeed, bulletLifeTime, shootDelay, backfire :: Float
+rotationSpeed, thrustForce, bulletSpeed, bulletLifeTime, shootDelay, knockback :: Float
 rotationSpeed = 2 * pi
 thrustForce = 60
 bulletLifeTime = 2
 bulletSpeed = 300
 shootDelay = 0.4
-backfire = -15
+knockback = -15
 
 spawnMargins :: (Float, Float)
 spawnMargins = (50, 50)
