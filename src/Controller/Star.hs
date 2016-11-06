@@ -8,6 +8,7 @@ import Rectangle
 import Vector
 import Util
 
+-- | Updates the position of a star based on its depth and wraps it around the screen.
 update :: Float -> Star -> Star
 update dt star @ Star { .. } =
     star

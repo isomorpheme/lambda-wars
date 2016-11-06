@@ -9,6 +9,7 @@ import Physics
 import Vector
 import Util
 
+-- | Updates the lifeTime of a particle and returns it if it is still alive.
 update :: Float -> Particle -> Maybe Particle
 update dt particle @ Particle { lifeTime }
     | lifeTime > 0 = Just $ particle & _lifeTime (subtract dt)

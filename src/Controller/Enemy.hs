@@ -8,6 +8,8 @@ import Physics
 import Vector
 import Util
 
+-- | Updates the velocity of a Seeker to accelerate towards the player.
+--   Updates the rotation of an Asteroid. 
 update :: Point -> Float -> Enemy -> Enemy
 update playerPosition dt enemy @ Enemy { .. } =
     case enemyType of
