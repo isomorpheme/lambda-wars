@@ -127,18 +127,16 @@ updateEnemyCollisions world @ World { .. } =
     case checkCollisions enemies bullets of
         Just (enemy, bullet, enemies', bullets') ->
             world
-                { enemies = maybe id (++) (splitAsteroid enemy) enemies'
+                { enemies = enemies' ++ splitAsteroid enemy
                 , bullets = bullets'
-                , score = score + 1 * multiplier
+                , score = score + value enemy * multiplier
                 }
-                & _particles (++ explodeBullet bullet)
-                where
-                    explosionSize Seeker = 30
-                    explosionSize (Asteroid size _ _) = round $ 3 * size
-                    explodeBullet Bullet { Bullet.physics = Physics { .. } } =
-                        explosion position (velocity * 0.75) (explosionSize $ enemyType enemy) rndGen
+                & _particles (++ explodeBullet bullet enemy)
         Nothing ->
             world
+    where
+        explodeBullet (physics' -> Physics { .. }) enemy =
+            explosion position (velocity * 0.75) (explosionSize enemy) rndGen
 
 updatePickupCollisions :: World -> World
 updatePickupCollisions world @ World { .. } =

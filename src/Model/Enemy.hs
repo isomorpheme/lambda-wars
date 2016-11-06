@@ -31,6 +31,14 @@ instance HasPhysics Enemy where
     _physics f enemy @ Enemy { physics } =
         enemy { physics = f physics }
 
+value :: Enemy -> Int
+value Enemy { enemyType = Seeker } = 5
+value Enemy { enemyType = Asteroid _ _ _ } = 1
+
+explosionSize :: Enemy -> Int
+explosionSize Enemy { enemyType = Seeker } = 30
+explosionSize Enemy { enemyType = Asteroid size _ _ } = round $ 3 * size
+
 asteroid :: Float -> Float -> Float -> Vector -> Point -> Enemy
 asteroid size rotation rotationSpeed velocity position =
     Enemy
@@ -42,9 +50,6 @@ asteroid size rotation rotationSpeed velocity position =
         , enemyType = Asteroid size rotation rotationSpeed
         }
 
-asteroidBounds :: Float -> (Float, Float)
-asteroidBounds size = tmap (* size) 5
-
 seeker :: Point -> Enemy
 seeker position =
     Enemy
@@ -55,14 +60,16 @@ seeker position =
         , enemyType = Seeker
         }
 
-splitAsteroid :: Enemy -> Maybe [Enemy]
+asteroidBounds :: Float -> (Float, Float)
+asteroidBounds size = tmap (* size) 5
+
+splitAsteroid :: Enemy -> [Enemy]
 splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotationSpeed) }
-    | size < 4 = Nothing
+    | size < 4 = []
     | otherwise =
-        Just
-            [ smallerAsteroid enemy (-1)
-            , smallerAsteroid enemy 1
-            ]
+        [ smallerAsteroid enemy (-1)
+        , smallerAsteroid enemy 1
+        ]
     where
         size' = size / 2
         smallerAsteroid enemy direction =
@@ -71,7 +78,7 @@ splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotat
                 , physics = physics { localBounds = rectangle 0 $ asteroidBounds size' }
                     & _velocity ((*1.5) . Vector.rotate (direction * pi / 2))
                 }
-splitAsteroid _ = Nothing
+splitAsteroid _ = []
 
 instance Spawn Enemy where
     spawn bounds avoid = do
