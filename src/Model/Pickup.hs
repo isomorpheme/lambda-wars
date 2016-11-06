@@ -25,7 +25,7 @@ instance HasPhysics Pickup where
 
 instance Spawn Pickup where
     spawn bounds avoid = do
-        position <- randomAvoid bounds avoid
+        position <- randomAvoid bounds avoid 14
         direction <- getRandomR (0, 2 * pi)
         speed <- getRandomR (0, 5)
         return Pickup

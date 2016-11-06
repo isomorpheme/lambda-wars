@@ -66,7 +66,7 @@ step :: Float -> Physics -> Physics
 step deltaTime physics @ Physics { velocity } =
     physics & _position
         -- TODO: the screen wrap really shouldn't be hardcoded.
-        ( wrap (rectangle 0 cameraWidth cameraHeight)
+        ( wrap (rectangle 0 (cameraWidth, cameraHeight))
         . (+ deltaTime `mul` velocity)
         )
 

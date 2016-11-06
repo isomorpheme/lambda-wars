@@ -9,7 +9,7 @@ import Model.Enemy
 import Physics
 
 instance Draw EnemyType where
-    draw (Asteroid size rotation) =
+    draw (Asteroid size rotation _) =
         Rotate rotation
             $ Scale size size
             $ lineLoop

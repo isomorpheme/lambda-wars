@@ -15,4 +15,4 @@ update dt star @ Star { .. } =
         & _position (wrap rect)
         where
             velocity = fromAngleLength starAngle $ starSpeed / depth
-            rect = rectangle 0 cameraWidth cameraHeight
+            rect = rectangle 0 (cameraWidth, cameraHeight)

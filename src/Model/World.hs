@@ -93,7 +93,7 @@ initial rndGen = World
     }
     where 
         stars = take 100 $ iterateState (Star.spawn screenBounds) rndGen
-        screenBounds = rectangle 0 cameraWidth cameraHeight
+        screenBounds = rectangle 0 (cameraWidth, cameraHeight)
 
 _player :: (Player -> Player) -> World -> World
 _player f world @ World { player } =

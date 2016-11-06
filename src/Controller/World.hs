@@ -125,16 +125,18 @@ updatePlayerCollisions world @ World { player = player @ (physics' -> position -
 updateEnemyCollisions :: World -> World
 updateEnemyCollisions world @ World { .. } =
     case checkCollisions enemies bullets of
-        Just (_, bullet, enemies', bullets') ->
+        Just (enemy, bullet, enemies', bullets') ->
             world
-                { enemies = enemies'
+                { enemies = maybe id (++) (splitAsteroid enemy) enemies'
                 , bullets = bullets'
                 , score = score + 1 * multiplier
                 }
                 & _particles (++ explodeBullet bullet)
                 where
+                    explosionSize Seeker = 30
+                    explosionSize (Asteroid size _ _) = round $ 3 * size
                     explodeBullet Bullet { Bullet.physics = Physics { .. } } =
-                        explosion position (velocity * 0.75) 30 rndGen
+                        explosion position (velocity * 0.75) (explosionSize $ enemyType enemy) rndGen
         Nothing ->
             world
 

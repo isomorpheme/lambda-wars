@@ -19,8 +19,10 @@ module Config
     , spawnTime
     , seekerFrequency
     , seekerSpeed
+    , seekerSize
     , asteroidFrequency
     , asteroidSize
+    , asteroidSpeed
     -- * Star parameters
     , starAngle
     , starSpeed
@@ -60,18 +62,24 @@ spawnTime = 2
 -- ** Seekers
 
 seekerFrequency :: Int
-seekerFrequency = 100
+seekerFrequency = 20
 
 seekerSpeed :: Float
 seekerSpeed = 30
 
+seekerSize :: (Float, Float)
+seekerSize = (16, 16)
+
 -- ** Asteroids
 
 asteroidFrequency :: Int
-asteroidFrequency = 0
+asteroidFrequency = 20
 
 asteroidSize :: (Float, Float)
 asteroidSize = (20, 100)
+
+asteroidSpeed :: Float
+asteroidSpeed = 20
 
 -- * Star settings
 

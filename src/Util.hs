@@ -53,11 +53,11 @@ frequency [] = error "Called 'Util.frequency' on an empty list"
 frequency xs = do
     let total = sum $ map fst xs
     ix <- getRandomR (0, total)
-    pick total xs
+    pick ix xs
     where
         pick n ((w, y):ys)
             | n <= w = y
-            | otherwise = pick (n - w) xs
+            | otherwise = pick (n - w) ys
 
 -- | Infinitely apply a stateful function, chaining the result states.
 iterateState :: (g -> (a, g)) -> g -> [a]

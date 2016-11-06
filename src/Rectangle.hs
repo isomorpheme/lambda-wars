@@ -20,14 +20,14 @@ instance Draw Rectangle where
     draw = lineLoop . corners
 
 -- | Construct a rectangle from a center position, width and height.
-rectangle :: Point -> Float -> Float -> Rectangle
-rectangle center width height =
+rectangle :: Point -> (Float, Float) -> Rectangle
+rectangle center (width, height) =
     let offset = tmap (/ 2) (width, -height)
     in (center - offset, center + offset)
 
 -- | Construct a square rectangle.
 square :: Point -> Float -> Rectangle
-square center size = rectangle center size size
+square center size = rectangle center (size, size)
 
 -- | Calculate the width of a rectangle.
 width :: Rectangle -> Float
@@ -84,8 +84,7 @@ intersects a b =
 
 -- | Expand a rectangle by an amount, outward from the center.
 grow :: (Float, Float) -> Rectangle -> Rectangle
-grow amount rect = rectangle (center rect) w h
-    where (w, h) = dimensions rect + amount
+grow amount rect = rectangle (center rect) $ dimensions rect + amount
 
 -- | Wrap a position inside a rectangle.
 wrap :: Rectangle -> Vector -> Vector
@@ -98,10 +97,10 @@ wrap area (x, y) =
             | otherwise = value
 
 -- | Randomly generate a vector that is *not* inside a rectangle.
-randomAvoid :: RandomGen g => Rectangle -> Rectangle -> State g Vector
-randomAvoid bounds avoid = do
+randomAvoid :: RandomGen g => Rectangle -> Rectangle -> (Float, Float) -> State g Vector
+randomAvoid bounds avoid margins = do
     position <- getRandomR bounds
-    if avoid `contains` position then
-        randomAvoid bounds avoid
+    if avoid `intersects` (rectangle position margins) then
+        randomAvoid bounds avoid margins
     else
         return position

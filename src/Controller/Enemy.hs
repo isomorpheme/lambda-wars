@@ -10,7 +10,10 @@ import Util
 
 update :: Point -> Float -> Enemy -> Enemy
 update playerPosition dt enemy @ Enemy { .. } =
-    enemy & _physics (accelerate a)
-    where
-        a = (dt * seekerSpeed) `mul` toPlayer
-        toPlayer = Vector.normalize $ playerPosition - (physics & position)
+    case enemyType of
+        Seeker -> enemy & _physics (accelerate a)
+        Asteroid size rotation rotationSpeed -> 
+            enemy { enemyType = Asteroid size (rotation + rotationSpeed * dt) rotationSpeed }
+        where
+            a = (dt * seekerSpeed) `mul` toPlayer
+            toPlayer = Vector.normalize $ playerPosition - (physics & position)

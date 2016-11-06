@@ -35,7 +35,7 @@ showLives n screen =
     Pictures
         [Translate (x + dx * 8) y life | dx <- [0 .. fromIntegral n]]
     where
-        life = Color white $ draw $ rectangle 0 6 12
+        life = Color white $ draw $ rectangle 0 (6, 12)
         (x, y) = dimensions screen / (-2) + (5, -10)
 
 showScore :: Int -> Rectangle -> Picture
