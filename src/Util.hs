@@ -43,16 +43,18 @@ getRandomR = state . randomR
 -- but using 'Random' and 'RandomGen' instead of the 'Gen' monad.
 
 -- | Choose a random value from a list.
-choose :: RandomGen g => [a] -> g -> (a, g)
+choose :: RandomGen g => [State g a] -> State g a
 choose [] = error "Called 'Util.choose' on an empty list"
-choose xs = first (xs !!) . randomR (0, length xs - 1)
+choose xs = getRandomR (0, length xs - 1) >>= (xs !!)
 
 -- | Choose a random value from a list, given a frequency for each value.
-frequency :: RandomGen g => [(Int, a)] -> g -> (a, g)
+frequency :: RandomGen g => [(Int, State g a)] -> State g a
 frequency [] = error "Called 'Util.frequency' on an empty list"
-frequency xs = first (`pick` xs) . randomR (0, total)
+frequency xs = do
+    let total = sum $ map fst xs
+    ix <- getRandomR (0, total)
+    pick total xs
     where
-        total = sum $ map fst xs
         pick n ((w, y):ys)
             | n <= w = y
             | otherwise = pick (n - w) xs
