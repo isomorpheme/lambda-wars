@@ -5,6 +5,8 @@
 module Controller.World where
 
 import Control.Monad.State
+import Data.List
+import Data.Ord
 import Data.Maybe
 
 import Config (spawnMargins, spawnTime)
@@ -23,6 +25,7 @@ import Physics
 import Rectangle
 import Spawn
 import Util
+import Vector
 
 stepPhysics :: Float -> World -> World
 stepPhysics dt =
@@ -46,8 +49,16 @@ updatePlayer dt world @ World { player , rndGen } =
         . _particles (maybe id (:) particle)
 
 updateEnemies :: Float -> World -> World
-updateEnemies dt world @ (player -> physics' -> position -> pos) =
-    world & _enemies (map $ Enemy.update pos dt)
+updateEnemies dt world @ World { player = (physics' -> position -> playerPos), .. } =
+    world & _enemies (map $ \enemy -> Enemy.update (closestWay enemy) dt enemy)
+    where
+        closestWay (physics' -> position -> enemyPos) = 
+            minimumBy (\a b -> comparing (distance enemyPos) a b) $ positions screenBounds
+        positions bounds = 
+            [ playerPos + (width bounds * w, height bounds * h)
+            | w <- [-1, 0, 1]
+            , h <- [-1, 0, 1]
+            ]
 
 spawnObject :: Spawn a => World -> (a, World)
 spawnObject world @ World { .. } =
@@ -123,7 +134,7 @@ updateEnemyCollisions world @ World { .. } =
                 & _particles (++ explodeBullet bullet)
                 where
                     explodeBullet Bullet { Bullet.physics = Physics { .. } } =
-                        explosion position velocity 30 rndGen
+                        explosion position (velocity * 0.75) 30 rndGen
         Nothing ->
             world
 

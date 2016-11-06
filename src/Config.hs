@@ -45,7 +45,7 @@ rotationSpeed, thrustForce, bulletSpeed, bulletLifeTime, shootDelay, backfire ::
 rotationSpeed = 2 * pi
 thrustForce = 60
 bulletLifeTime = 2
-bulletSpeed = 250
+bulletSpeed = 300
 shootDelay = 0.4
 backfire = -15
 
@@ -63,7 +63,7 @@ seekerFrequency :: Int
 seekerFrequency = 100
 
 seekerSpeed :: Float
-seekerSpeed = 10
+seekerSpeed = 30
 
 -- ** Asteroids
 
