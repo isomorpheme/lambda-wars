@@ -8,6 +8,7 @@ import Control.Monad.State
 import Data.Maybe
 
 import Config (spawnMargins, spawnTime)
+import Controller.Bullet as Bullet
 import Controller.Enemy as Enemy
 import Controller.Particle as Particle
 import Controller.Player as Player
@@ -83,6 +84,10 @@ spawnPickup :: World -> World
 spawnPickup world @ World { .. } =
     let (pickup, world') = spawnObject world
     in world' { pickups = pickup:pickups }
+
+updateBullets :: Float -> World -> World
+updateBullets dt world =
+    world & _bullets (mapMaybe $ Bullet.update dt)
 
 updateParticles :: Float -> World -> World
 updateParticles dt world =

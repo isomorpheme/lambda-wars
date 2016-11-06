@@ -11,6 +11,7 @@ module Config
     , rotationSpeed
     , thrustForce
     , bulletSpeed
+    , bulletLifeTime
     , shootDelay
     , backfire
     , spawnMargins
@@ -40,12 +41,13 @@ cameraHeight = cameraWidth / cameraRatio
 
 -- * Player settings
 
-rotationSpeed, thrustForce, bulletSpeed, shootDelay, backfire :: Float
+rotationSpeed, thrustForce, bulletSpeed, bulletLifeTime, shootDelay, backfire :: Float
 rotationSpeed = 2 * pi
 thrustForce = 60
-bulletSpeed = 200
-shootDelay = 0.2
-backfire = -5
+bulletLifeTime = 2
+bulletSpeed = 250
+shootDelay = 0.4
+backfire = -15
 
 spawnMargins :: (Float, Float)
 spawnMargins = (50, 50)

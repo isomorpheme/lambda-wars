@@ -6,7 +6,7 @@ module Controller.Player where
 import Control.Monad.State
 import System.Random
 
-import Config (backfire, bulletSpeed, rotationSpeed, shootDelay, thrustForce)
+import Config (backfire, bulletSpeed, bulletLifeTime, rotationSpeed, shootDelay, thrustForce)
 import qualified Controller.Particle as Particle
 import Model.Enemy
 import Model.Particle
@@ -39,7 +39,7 @@ updateRotation NoRotation _ = id
 updateShooting :: ShootAction -> Float -> Player -> (Player, Maybe Bullet)
 updateShooting action dt player @ Player { physics = position -> pos, .. } =
     if action == Shoot && shootCooldown <= 0 then
-        (player', Just $ Bullet.create (pos + fromAngleLength direction 10) direction bulletSpeed)
+        (player', Just $ Bullet.create (pos + fromAngleLength direction 10) direction bulletSpeed bulletLifeTime)
     else
         (player & _shootCooldown (subtract dt), Nothing)
     where

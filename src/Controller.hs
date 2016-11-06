@@ -56,6 +56,7 @@ handleTime dt =
         , updateEnemies dt
         , updateEnemySpawning dt
         , updatePickupSpawning dt
+        , updateBullets dt
         , updateParticles dt
         , updateStars dt
         , updatePlayerCollisions

@@ -14,6 +14,7 @@ import Vector
 data Bullet = Bullet
     { physics :: Physics
     , direction :: Float
+    , lifeTime :: Float
     } deriving (Show)
 
 instance HasPhysics Bullet where
@@ -21,8 +22,8 @@ instance HasPhysics Bullet where
     _physics f bullet @ Bullet { physics } =
         bullet { physics = f physics }
 
-create :: Point -> Float -> Float -> Bullet
-create position direction speed =
+create :: Point -> Float -> Float -> Float -> Bullet
+create position direction speed lifeTime =
     Bullet
         { physics = defaultPhysics
             { position
@@ -30,7 +31,12 @@ create position direction speed =
             , localBounds = square 0 4
             }
         , direction = direction
+        , lifeTime = lifeTime
         }
+
+_lifeTime :: (Float -> Float) -> Bullet -> Bullet
+_lifeTime f bullet @ Bullet { lifeTime } =
+    bullet { lifeTime = f lifeTime }
 
 instance Draw Bullet where
     draw Bullet { physics = position -> (x, y), direction } =
