@@ -12,6 +12,7 @@ import View.Enemy
 import View.Player
 
 instance Draw World where
+    -- | Draws the world. Note that most moveable objects are drawn wrapped around the screen.
     draw World { .. } =
         Pictures $ wrapped ++ rest
         where
@@ -30,14 +31,7 @@ instance Draw World where
                 , showMultipler multiplier screenBounds
                 ]
 
-showLives :: Int -> Rectangle -> Picture
-showLives n screen =
-    Pictures
-        [Translate (x + dx * 8) y life | dx <- [0 .. fromIntegral n]]
-    where
-        life = Color white $ draw $ rectangle 0 (6, 12)
-        (x, y) = dimensions screen / (-2) + (5, -10)
-
+-- | Draws the score of the player.
 showScore :: Int -> Rectangle -> Picture
 showScore n screen =
     Color white
@@ -47,6 +41,7 @@ showScore n screen =
     where
         (x, y) = (left screen, bottom screen) + (0, -15)
 
+-- | Draws the multiplier of the player.
 showMultipler :: Int -> Rectangle -> Picture
 showMultipler n screen =
     Color white
@@ -56,6 +51,7 @@ showMultipler n screen =
     where
         (x, y) = (right screen, bottom screen) - (80, 15)
 
+-- | Masks all objects that are drawn outside of the screen.
 mask :: Rectangle -> Picture
 mask area =
     Pictures
@@ -67,9 +63,12 @@ mask area =
     where
         (w, h) = tmap (/ 2) $ dimensions area
 
+-- | Draws a border around the screen.
 border :: Rectangle -> Picture
 border = Color white . draw
 
+-- | Draws all objects that can wrap around the screen multiple times, 
+--   so you can see them going through the border.
 screenWrap :: Rectangle -> Picture -> Picture
 screenWrap bounds picture =
     Pictures
