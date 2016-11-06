@@ -73,6 +73,7 @@ data World = World
       -- ^ All the stars
     } deriving Show
 
+-- | The initial state of the world.
 initial :: StdGen -> World
 initial rndGen = World
     { rndGen
@@ -95,42 +96,52 @@ initial rndGen = World
         stars = take 100 $ iterateState (Star.spawn screenBounds) rndGen
         screenBounds = rectangle 0 (cameraWidth, cameraHeight)
 
+-- | Changes the player.
 _player :: (Player -> Player) -> World -> World
 _player f world @ World { player } =
     world { player = f player }
 
+-- | Changes the score.
 _score :: (Int -> Int) -> World -> World
 _score f world @ World { score } =
     world { score = f score }
 
+-- | Changes the bullets.
 _bullets :: ([Bullet] -> [Bullet]) -> World -> World
 _bullets f world @ World { bullets } =
     world { bullets = f bullets }
 
+-- | Changes the enemies.
 _enemies :: ([Enemy] -> [Enemy]) -> World -> World
 _enemies f world @ World { enemies } =
     world { enemies = f enemies }
 
+-- | Changes the pickups.
 _pickups :: ([Pickup] -> [Pickup]) -> World -> World
 _pickups f world @ World { pickups } =
     world { pickups = f pickups }
 
+-- | Changes the enemyTimer.
 _enemyTimer :: (Float -> Float) -> World -> World
 _enemyTimer f world @ World { enemyTimer } =
     world { enemyTimer = f enemyTimer }
 
+-- | Changes the pickupTimer.
 _pickupTimer :: (Float -> Float) -> World -> World
 _pickupTimer f world @ World { pickupTimer } =
     world { pickupTimer = f pickupTimer }
 
+-- | Changes the particles.
 _particles :: ([Particle] -> [Particle]) -> World -> World
 _particles f world @ World { particles } =
     world { particles = f particles }
 
+-- | Changes the stars.
 _stars :: ([Star] -> [Star]) -> World -> World
 _stars f world @ World { stars } =
     world { stars = f stars }
 
+-- | Returns all the playerActions.
 playerActions :: World -> PlayerActions
 playerActions World { movementAction, rotateAction, shootAction } =
     (movementAction, rotateAction, shootAction)

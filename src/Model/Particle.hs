@@ -20,12 +20,14 @@ data Particle = Particle
     , lifeTime :: Float
     } deriving (Show)
 
+-- | The default particle.
 defaultParticle :: Particle
 defaultParticle = Particle defaultPhysics 0 0
 
+-- | Returns a list of particles in the shape of an explosion.
 explosion :: RandomGen g => Point -> Vector -> Int -> g -> [Particle]
-explosion position direction amount rndGen =
-    take amount $ iterateState single rndGen
+explosion position direction size rndGen =
+    take size $ iterateState single rndGen
     where
         single = runState $ do
             direction' <- getRandomR (0, 2 * pi)
@@ -34,10 +36,12 @@ explosion position direction amount rndGen =
             let direction'' = direction + fromAngleLength direction' speed
             return $ Particle defaultPhysics { position, velocity = direction'' } (angle direction'') lifeTime
 
+-- | Returns a particle at a given position with a speed, lifeTime and direction.
 particle :: Point -> Float -> Float -> Float -> Particle
 particle position speed lifeTime direction =
     Particle defaultPhysics { position, velocity = fromAngleLength direction speed } direction lifeTime
 
+-- | Changes the lifeTime of a particle.
 _lifeTime :: (Float -> Float) -> Particle -> Particle
 _lifeTime f particle @ Particle { lifeTime } =
     particle { lifeTime = f lifeTime }

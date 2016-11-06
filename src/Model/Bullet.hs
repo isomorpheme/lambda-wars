@@ -22,6 +22,7 @@ instance HasPhysics Bullet where
     _physics f bullet @ Bullet { physics } =
         bullet { physics = f physics }
 
+-- | Returns a bullet at a certain position with a direction, speed and lifeTime.
 create :: Point -> Float -> Float -> Float -> Bullet
 create position direction speed lifeTime =
     Bullet
@@ -34,6 +35,7 @@ create position direction speed lifeTime =
         , lifeTime = lifeTime
         }
 
+-- | Changes the lifeTime of a bullet.
 _lifeTime :: (Float -> Float) -> Bullet -> Bullet
 _lifeTime f bullet @ Bullet { lifeTime } =
     bullet { lifeTime = f lifeTime }

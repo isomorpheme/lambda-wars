@@ -31,14 +31,17 @@ instance HasPhysics Enemy where
     _physics f enemy @ Enemy { physics } =
         enemy { physics = f physics }
 
+-- | The value added to your score when destroying an enemy.
 value :: Enemy -> Int
 value Enemy { enemyType = Seeker } = 5
 value Enemy { enemyType = Asteroid _ _ _ } = 1
 
+-- | The size of the explosion when destroying an enemy.
 explosionSize :: Enemy -> Int
 explosionSize Enemy { enemyType = Seeker } = 30
 explosionSize Enemy { enemyType = Asteroid size _ _ } = round $ 3 * size
 
+-- | Returns an asteroid with a size, rotation, rotationSpeed, velocity and position.
 asteroid :: Float -> Float -> Float -> Vector -> Point -> Enemy
 asteroid size rotation rotationSpeed velocity position =
     Enemy
@@ -50,6 +53,7 @@ asteroid size rotation rotationSpeed velocity position =
         , enemyType = Asteroid size rotation rotationSpeed
         }
 
+-- | Returns a seeker at a position.
 seeker :: Point -> Enemy
 seeker position =
     Enemy
@@ -60,9 +64,12 @@ seeker position =
         , enemyType = Seeker
         }
 
+-- | The bounds of an asteroid based on its size.
 asteroidBounds :: Float -> (Float, Float)
 asteroidBounds size = tmap (* size) 5
 
+-- | Returns two smaller asteroids moving in opposite directions.
+--   Trying to split a Seeker returns an empty list.
 splitAsteroid :: Enemy -> [Enemy]
 splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotationSpeed) }
     | size < 4 = []
@@ -81,6 +88,7 @@ splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotat
 splitAsteroid _ = []
 
 instance Spawn Enemy where
+    -- | Spawns either a Seeker or an Asteroid based on their frequency at a random position, avoiding the player.
     spawn bounds avoid = do
         frequency
             [ seekerFrequency ==> do

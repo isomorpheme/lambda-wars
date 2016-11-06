@@ -17,14 +17,18 @@ data Star = Star
     , depth :: Float
     } deriving (Show)
 
+-- | The default star.
 defaultStar :: Star
 defaultStar = Star 0 2
 
+-- | Changes the position of the star.
 _position :: (Point -> Point) -> Star -> Star
 _position f star @ Star { position } =
     star { position = f position }
 
 instance Draw Star where
+    -- | Draws the star based on its proximity.
+    --   Stars the are farther away are drawn smaller and less bright.
     draw Star { .. } = 
         Color (greyN proximity)
             $ uncurry Translate position
@@ -37,6 +41,7 @@ instance Draw Star where
                     size = 10 * proximity
                     proximity = 1 / depth
 
+-- | Returns a random star.
 spawn :: RandomGen g => Rectangle -> g -> (Star, g)
 spawn bounds = runState $ do
     position <- getRandomR bounds

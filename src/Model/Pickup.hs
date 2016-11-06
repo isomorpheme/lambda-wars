@@ -24,6 +24,7 @@ instance HasPhysics Pickup where
         pickup { physics = f physics }
 
 instance Spawn Pickup where
+    -- | Spawns a pickUp at a random position, avoiding the player.
     spawn bounds avoid = do
         position <- randomAvoid bounds avoid 14
         direction <- getRandomR (0, 2 * pi)
