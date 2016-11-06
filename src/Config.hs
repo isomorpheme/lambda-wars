@@ -35,7 +35,7 @@ spawnTime = 2
 -- ** Seekers
 
 seekerFrequency :: Int
-seekerFrequency = 20
+seekerFrequency = 10
 
 seekerSpeed :: Float
 seekerSpeed = 30
@@ -46,7 +46,7 @@ seekerSize = (16, 16)
 -- ** Asteroids
 
 asteroidFrequency :: Int
-asteroidFrequency = 20
+asteroidFrequency = 3
 
 asteroidSize :: (Float, Float)
 asteroidSize = (20, 100)
