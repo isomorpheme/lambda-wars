@@ -1,32 +1,4 @@
-module Config
-    ( -- * Display Options
-      aspectRatio
-    , defaultVerticalResolution
-    , defaultHorizontalResolution
-    -- * Camera Parameters
-    , cameraRatio
-    , cameraWidth
-    , cameraHeight
-    -- * Player Parameters
-    , rotationSpeed
-    , thrustForce
-    , bulletSpeed
-    , bulletLifeTime
-    , shootDelay
-    , backfire
-    , spawnMargins
-    -- * Enemy parameters
-    , spawnTime
-    , seekerFrequency
-    , seekerSpeed
-    , seekerSize
-    , asteroidFrequency
-    , asteroidSize
-    , asteroidSpeed
-    -- * Star parameters
-    , starAngle
-    , starSpeed
-    ) where
+module Config where
 
 -- | Default window configuration
 
@@ -36,6 +8,7 @@ defaultVerticalResolution   = defaultHorizontalResolution / aspectRatio
 defaultHorizontalResolution = 1024
 
 -- * Camera settings
+
 cameraRatio, cameraWidth, cameraHeight :: Float
 cameraRatio  = 1
 cameraWidth  = 512
