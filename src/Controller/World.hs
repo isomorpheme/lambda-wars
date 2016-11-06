@@ -42,7 +42,9 @@ stepPhysics dt =
 
 updatePlayer :: Float -> World -> World
 updatePlayer dt world @ World { player , rndGen } =
-    let (player', bullet, particle, rndGen') = Player.update (world & playerActions) rndGen dt player
+    let
+        (player', bullet, particle, rndGen') =
+            Player.update (world & playerActions) rndGen dt player
     in world { rndGen = rndGen' }
         & set _player player'
         & _bullets (maybe id (:) bullet)
@@ -109,11 +111,12 @@ updateStars dt world =
     world & _stars (map $ Star.update dt)
 
 updatePlayerCollisions :: World -> World
-updatePlayerCollisions world @ World { player = player @ (physics' -> position -> pos), .. } =
-    if any (collides player) enemies then
+updatePlayerCollisions world @ World { player = player @ (physics' -> position -> pos), .. }
+    | any (collides player) enemies =
         initial rndGen
             & _particles (++ explosion pos 0 80 rndGen)
-    else case checkCollisions [player] pickups of
+            & set _score score
+    | otherwise = case checkCollisions [player] pickups of
         Just (_, _, _, pickups') ->
             world
                 { pickups = pickups'

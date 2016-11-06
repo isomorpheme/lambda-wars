@@ -91,13 +91,17 @@ initial rndGen = World
     , particles = []
     , stars = stars
     }
-    where 
+    where
         stars = take 100 $ iterateState (Star.spawn screenBounds) rndGen
         screenBounds = rectangle 0 (cameraWidth, cameraHeight)
 
 _player :: (Player -> Player) -> World -> World
 _player f world @ World { player } =
     world { player = f player }
+
+_score :: (Int -> Int) -> World -> World
+_score f world @ World { score } =
+    world { score = f score }
 
 _bullets :: ([Bullet] -> [Bullet]) -> World -> World
 _bullets f world @ World { bullets } =
