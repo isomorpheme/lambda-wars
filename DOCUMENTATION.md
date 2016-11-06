@@ -23,17 +23,22 @@ our implementation. Instead, the player can thrust their spaceship forward,
 which accelerates it in the direction it is pointing. Since the game is supposed
 to be in space, the player's spaceship does not decelerate automatically.
 Instead, the player will have to thrust in the opposite direction of the ship's
-velocity.
+velocity. In addition, knockback is applied to the player when shooting, to
+make it even more realistic.
 
-<!-- TODO: wraparound -->
+Whereas the executable has a border that cannot be crossed, our game features
+wraparound borders. The player, enemies, bullets and pickups all wrap around 
+the world and are drawn multiple times so they can be seen at both sides when
+wrapping around the world.
 
 ## Enemy Spawning and Movement
 
 We implemented two enemy types: Seekers and Asteroids. Both types spawn
 randomly, but never too close to the player, to keep the game fair. Seekers are
-worth 5 points, whereas asteroids are only worth 1 point. Both types of enemy
-spawn an explosion when they are destroyed, and they both kill the player when
-they collide with the spaceship.
+worth 5 points, whereas asteroids are only worth 1 point. Keep in mind that a
+larger asteroid splits up into smaller ones and is thus worth more points in total.
+Both types of enemy spawn an explosion when they are destroyed, and they both 
+kill the player when they collide with the spaceship.
 
 Seekers accelerate towards the spaceship -- they do not simply move towards it.
 They also account for wraparound, always taking the shortest route to the
@@ -54,8 +59,12 @@ dies however, the multiplier is reset, but not the score.
 
 ## Particle Effects
 
-<!-- TODO -->
+When thrusting, the player leaves behind a small exhaust trail. When the player
+is destroyed, an explosion is created. When enemies are hit by a bullet, they
+also explode. The size of the explosion depends on the type and size of the enemy.
 
 ## Background
 
-<!-- TODO -->
+The background consists of a multitude of stars, with random depths and positions.
+The stars move slower and are drawn smaller and less bright when they are further 
+away, to show their depth.
