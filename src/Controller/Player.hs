@@ -17,6 +17,7 @@ import Physics
 import Vector
 import Util
 
+-- | Updates the player and returns particles and bullets if necessary.
 update :: RandomGen g => PlayerActions -> g -> Float -> Player -> (Player, Maybe Bullet, Maybe Particle, g)
 update (movement, rotation, shoot) rndGen dt player = (player'', bullet, particle, rndGen')
     where
@@ -25,17 +26,20 @@ update (movement, rotation, shoot) rndGen dt player = (player'', bullet, particl
             . updateMovement movement dt
             . updateRotation rotation dt
             ) player'
-        (player', particle, rndGen') = addParticle movement rndGen dt player
+        (player', particle, rndGen') = updateParticles movement rndGen dt player
 
+-- | Updates the velocity of the player according to the playerActions.
 updateMovement :: MovementAction -> Float -> Player -> Player
 updateMovement Thrust dt = thrust $ thrustForce * dt
 updateMovement NoMovement _ = id
 
+-- | Updates the rotation of the player according to the playerActions.
 updateRotation :: RotateAction -> Float -> Player -> Player
 updateRotation RotateRight dt = Player.rotate $ rotationSpeed * dt
 updateRotation RotateLeft dt = Player.rotate $ -rotationSpeed * dt
 updateRotation NoRotation _ = id
 
+-- | Updates the shootCooldown and returns a bullet and applies backfire to the player if the player shoots.
 updateShooting :: ShootAction -> Float -> Player -> (Player, Maybe Bullet)
 updateShooting action dt player @ Player { physics = position -> pos, .. } =
     if action == Shoot && shootCooldown <= 0 then
@@ -44,11 +48,12 @@ updateShooting action dt player @ Player { physics = position -> pos, .. } =
         (player & _shootCooldown (subtract dt), Nothing)
     where
         player' = player
-            & thrust (backfire)
+            & thrust backfire
             . set _shootCooldown shootDelay
 
-addParticle :: RandomGen g => MovementAction -> g -> Float -> Player -> (Player, Maybe Particle, g)
-addParticle move rndGen dt player @ Player { physics = position -> pos, .. } =
+-- | Updates the exhaustCooldown and returns new exhaust-particles when the player is thrusting.
+updateParticles :: RandomGen g => MovementAction -> g -> Float -> Player -> (Player, Maybe Particle, g)
+updateParticles move rndGen dt player @ Player { physics = position -> pos, .. } =
     if move == Thrust && exhaustCooldown <= 0 then
         ( player & set _exhaustCooldown coolDown
         , Just $ Particle defaultPhysics
