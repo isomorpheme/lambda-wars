@@ -2,9 +2,6 @@
 
 module Model.Pickup where
 
-import Control.Monad.State
-import System.Random
-
 import Graphics.Gloss
 
 import Draw
@@ -38,7 +35,7 @@ instance Spawn Pickup where
             }
 
 instance Draw Pickup where
-    draw pickup @ (physics -> position -> (x, y)) =
+    draw (physics -> position -> (x, y)) =
         Color white
             $ Translate x y
             $ Scale 8 8

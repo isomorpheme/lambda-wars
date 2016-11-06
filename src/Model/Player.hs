@@ -1,10 +1,5 @@
 module Model.Player where
 
-import Graphics.Gloss
-import Graphics.Gloss.Geometry.Angle
-
-import Draw
-import Model.Particle hiding (physics, direction)
 import Physics
 import Rectangle
 import Util

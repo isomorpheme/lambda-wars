@@ -33,8 +33,12 @@ explosion position direction size rndGen =
             direction' <- getRandomR (0, 2 * pi)
             lifeTime <- getRandomR (0.3, 0.6)
             speed <- getRandomR (100, 200)
-            let direction'' = direction + fromAngleLength direction' speed
-            return $ Particle defaultPhysics { position, velocity = direction'' } (angle direction'') lifeTime
+            let velocity = direction + fromAngleLength direction' speed
+            return $ Particle
+                { physics = defaultPhysics { position, velocity }
+                , direction = (angle velocity)
+                , lifeTime
+                }
 
 -- | Returns a particle at a given position with a speed, lifeTime and direction.
 particle :: Point -> Float -> Float -> Float -> Particle

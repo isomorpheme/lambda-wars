@@ -3,13 +3,10 @@ module Controller (
     handleTime
 ) where
 
-import Graphics.Gloss
 import Graphics.Gloss.Interface.Pure.Game
 
-import Config (rotationSpeed, thrustForce, bulletSpeed, shootDelay)
 import Controller.World
 import Model.World
-import Physics
 import Util
 
 -- | Event handling

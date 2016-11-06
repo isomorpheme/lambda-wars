@@ -7,8 +7,6 @@ import Control.Monad.State
 import System.Random
 
 import Config
-import Controller.Particle as Particle
-import Model.Enemy
 import Model.Particle
 import Model.Player as Player
 import Model.World

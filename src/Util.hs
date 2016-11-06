@@ -1,5 +1,4 @@
 {-# LANGUAGE TupleSections #-}
-
 module Util
     ( (&)
     , compose
@@ -10,7 +9,6 @@ module Util
     , iterateState
     ) where
 
-import Control.Arrow (first)
 import Control.Monad.State
 import Data.Function ((&))
 import System.Random

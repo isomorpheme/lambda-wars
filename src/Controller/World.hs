@@ -15,11 +15,8 @@ import Controller.Enemy as Enemy
 import Controller.Particle as Particle
 import Controller.Player as Player
 import Controller.Star as Star
-import Model.Bullet as Bullet
 import Model.Enemy as Enemy
 import Model.Particle as Particle
-import Model.Pickup as Pickup
-import Model.Player
 import Model.World
 import Physics
 import Rectangle
@@ -52,8 +49,8 @@ updatePlayer dt world @ World { player , rndGen } =
         & _bullets (maybe id (:) bullet)
         . _particles (maybe id (:) particle)
 
--- | Calculates the closest way to the player (when considering the screenwrap) 
---   and updates all enemies to move towards the player.   
+-- | Calculates the closest way to the player (when considering the screenwrap)
+--   and updates all enemies to move towards the player.
 updateEnemies :: Float -> World -> World
 updateEnemies dt world @ World { player = (physics' -> position -> playerPos), .. } =
     world & _enemies (map $ \enemy -> Enemy.update (closestWay enemy) dt enemy)
@@ -173,7 +170,7 @@ updatePickupCollisions world @ World { .. } =
 checkCollisions :: (HasPhysics a, HasPhysics b) => [a] -> [b] -> Maybe (a, b, [a], [b])
 checkCollisions xs ys = go xs ys [] []
     where
-        go [] bs aacc bacc = Nothing
+        go [] _ _ _ = Nothing
         go (a:as) [] aacc bacc = go as bacc (aacc ++ [a]) []
         go (a:as) (b:bs) aacc bacc
             | collides a b = Just (a, b, aacc ++ as, bacc ++ bs)

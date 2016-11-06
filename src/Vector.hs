@@ -1,6 +1,11 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
+-- Gloss does this as well, to implement 'Num' for 'Point', which is just
+-- @(Float, Float)@. We also implemented 'Random' and 'Fractional' for
+-- 'Point'/'Vector'. This annotation just supresses GHC's warnings about it.
+{-# OPTIONS -fno-warn-orphans #-}
+
 module Vector
     ( Vector, Point
     , module Vector

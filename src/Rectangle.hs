@@ -1,6 +1,9 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
+-- See the comment in Vector.hs
+{-# OPTIONS -fno-warn-orphans #-}
+
 module Rectangle where
 
 import Control.Arrow ((&&&))
@@ -10,8 +13,8 @@ import System.Random
 import Graphics.Gloss.Data.Picture
 
 import Draw
-import Vector
 import Util
+import Vector
 
 -- | An axis aligned rectangle, consisting of top left and bottom right corners.
 type Rectangle = (Point, Point)

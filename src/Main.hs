@@ -5,7 +5,6 @@
 -- http://hackage.haskell.org/package/gloss-1.8.1.2/docs/Graphics-Gloss.html
 module Main where
 
-import Control.Applicative
 import System.Environment (getArgs)
 import System.Random (getStdGen)
 
@@ -37,8 +36,10 @@ chooseDisplay [] =
     , InWindow
         "Lambda Wars"
         (round defaultHorizontalResolution, round defaultVerticalResolution)
-        (100, 100))
+        (100, 100)
+    )
 chooseDisplay [read -> horizontal, read -> vertical] =
     ( fromIntegral horizontal
     , fromIntegral vertical
-    , FullScreen (horizontal, vertical))
+    , FullScreen (horizontal, vertical)
+    )

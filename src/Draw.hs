@@ -1,7 +1,6 @@
 module Draw where
 
 import Graphics.Gloss
-import Graphics.Gloss.Geometry.Angle
 
 -- | Anything that can be converted into a 'Picture'
 class Draw a where

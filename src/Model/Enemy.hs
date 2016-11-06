@@ -3,13 +3,9 @@
 
 module Model.Enemy where
 
-import Control.Monad.State
-import System.Random
-
 import Graphics.Gloss
 
 import Config
-import Draw
 import Physics
 import Rectangle
 import Spawn
@@ -43,14 +39,14 @@ explosionSize Enemy { enemyType = Asteroid size _ _ } = round $ 3 * size
 
 -- | Returns an asteroid with a size, rotation, rotationSpeed, velocity and position.
 asteroid :: Float -> Float -> Float -> Vector -> Point -> Enemy
-asteroid size rotation rotationSpeed velocity position =
+asteroid size rotation rotSpeed velocity position =
     Enemy
         { physics = defaultPhysics
             { position
             , velocity
             , localBounds = rectangle 0 $ asteroidBounds size
             }
-        , enemyType = Asteroid size rotation rotationSpeed
+        , enemyType = Asteroid size rotation rotSpeed
         }
 
 -- | Returns a seeker at a position.
@@ -71,7 +67,7 @@ asteroidBounds size = tmap (* size) 5
 -- | Returns two smaller asteroids moving in opposite directions.
 --   Trying to split a Seeker returns an empty list.
 splitAsteroid :: Enemy -> [Enemy]
-splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotationSpeed) }
+splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotSpeed) }
     | size < 4 = []
     | otherwise =
         [ smallerAsteroid enemy (-1)
@@ -79,16 +75,17 @@ splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotat
         ]
     where
         size' = size / 2
-        smallerAsteroid enemy direction =
-            enemy
-                { enemyType = Asteroid size' rotation (direction * rotationSpeed)
+        smallerAsteroid enemy' direction =
+            enemy'
+                { enemyType = Asteroid size' rotation (direction * rotSpeed)
                 , physics = physics { localBounds = rectangle 0 $ asteroidBounds size' }
-                    & _velocity ((*1.5) . Vector.rotate (direction * pi / 2))
+                    & _velocity ((* 1.5) . Vector.rotate (direction * pi / 2))
                 }
 splitAsteroid _ = []
 
 instance Spawn Enemy where
-    -- | Spawns either a Seeker or an Asteroid based on their frequency at a random position, avoiding the player.
+    -- | Spawn either a Seeker or an Asteroid based on their frequency at a
+    --   random position, avoiding the player.
     spawn bounds avoid = do
         frequency
             [ seekerFrequency ==> do
@@ -98,10 +95,11 @@ instance Spawn Enemy where
                 size <- getRandomR (4, 16)
                 position <- randomAvoid bounds avoid $ asteroidBounds size
                 rotation <- getRandomR (0, 2 * pi)
-                rotationSpeed <- getRandomR (-50, 50)
+                rotSpeed <- getRandomR (-50, 50)
                 direction <- getRandomR (0, 2 * pi)
                 speed <- getRandomR (asteroidSpeed / 2, asteroidSpeed * 2)
-                return $ asteroid size rotation rotationSpeed (fromAngleLength direction speed) position
+                return $ asteroid size rotation rotSpeed (fromAngleLength direction speed) position
             ]
         where
+            -- To make it look a bit less ugly.
             (==>) = (,)

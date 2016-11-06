@@ -4,9 +4,6 @@
 module Controller.Particle where
 
 import Model.Particle
-import Model.World
-import Physics
-import Vector
 import Util
 
 -- | Updates the lifeTime of a particle and returns it if it is still alive.

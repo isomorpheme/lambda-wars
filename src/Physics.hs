@@ -3,9 +3,6 @@
 
 module Physics where
 
-import Data.Bifunctor (bimap)
-import Control.Monad (join)
-
 import Config
 import Rectangle
 import Vector

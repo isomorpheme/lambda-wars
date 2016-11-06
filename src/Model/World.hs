@@ -7,8 +7,6 @@ module Model.World where
 
 import System.Random
 
-import Graphics.Gloss
-
 import Config
 import Model.Bullet
 import Model.Enemy
@@ -16,10 +14,8 @@ import Model.Particle
 import Model.Pickup
 import Model.Player
 import Model.Star as Star
-import Physics
 import Rectangle
 import Util
-import Vector
 
 data RotateAction = NoRotation | RotateLeft | RotateRight
     deriving (Show, Eq)

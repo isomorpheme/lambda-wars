@@ -4,8 +4,6 @@
 module Controller.Bullet where
 
 import Model.Bullet
-import Model.World
-import Physics
 import Vector
 import Util
 
