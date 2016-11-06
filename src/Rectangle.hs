@@ -92,7 +92,7 @@ wrap area (x, y) =
     (wrap' (width area) x, wrap' (height area) y)
     where
         wrap' size value
-            | value < 0 - size / 2 = value + size
+            | value < -size / 2 = value + size
             | value > size / 2 = value - size
             | otherwise = value
 
@@ -100,7 +100,7 @@ wrap area (x, y) =
 randomAvoid :: RandomGen g => Rectangle -> Rectangle -> (Float, Float) -> State g Vector
 randomAvoid bounds avoid margins = do
     position <- getRandomR bounds
-    if avoid `intersects` (rectangle position margins) then
+    if avoid `intersects` rectangle position margins then
         randomAvoid bounds avoid margins
     else
         return position

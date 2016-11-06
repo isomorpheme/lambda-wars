@@ -32,7 +32,7 @@ instance Fractional Vector where
 
 -- | Create a vector from an angle (to the positive Y axis) and a length.
 fromAngleLength :: Float -> Float -> Vector
-fromAngleLength a l = l `mul` (rotate a unitY)
+fromAngleLength a l = l `mul` rotate a unitY
 
 -- | A vector with the X component set to 1
 unitX :: Vector

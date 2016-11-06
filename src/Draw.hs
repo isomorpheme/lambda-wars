@@ -1,6 +1,3 @@
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE ViewPatterns #-}
-
 module Draw where
 
 import Graphics.Gloss
