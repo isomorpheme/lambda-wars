@@ -56,8 +56,6 @@ asteroidSpeed = 20
 
 -- * Star settings
 
-starAngle :: Float
+starAngle, starSpeed :: Float
 starAngle = 5
-
-starSpeed :: Float
 starSpeed = 1
