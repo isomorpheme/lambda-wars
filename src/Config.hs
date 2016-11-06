@@ -58,4 +58,4 @@ asteroidSpeed = 20
 
 starAngle, starSpeed :: Float
 starAngle = 5
-starSpeed = 1
+starSpeed = 60
