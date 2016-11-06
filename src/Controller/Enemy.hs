@@ -2,7 +2,7 @@
 
 module Controller.Enemy where
 
-import Config (seekerSpeed)
+import Config
 import Model.Enemy
 import Physics
 import Vector
@@ -12,7 +12,7 @@ update :: Point -> Float -> Enemy -> Enemy
 update playerPosition dt enemy @ Enemy { .. } =
     case enemyType of
         Seeker -> enemy & _physics (accelerate a)
-        Asteroid size rotation rotationSpeed -> 
+        Asteroid size rotation rotationSpeed ->
             enemy { enemyType = Asteroid size (rotation + rotationSpeed * dt) rotationSpeed }
         where
             a = (dt * seekerSpeed) `mul` toPlayer

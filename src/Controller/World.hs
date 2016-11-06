@@ -9,7 +9,7 @@ import Data.List
 import Data.Ord
 import Data.Maybe
 
-import Config (spawnMargins, spawnTime)
+import Config
 import Controller.Bullet as Bullet
 import Controller.Enemy as Enemy
 import Controller.Particle as Particle
@@ -52,9 +52,9 @@ updateEnemies :: Float -> World -> World
 updateEnemies dt world @ World { player = (physics' -> position -> playerPos), .. } =
     world & _enemies (map $ \enemy -> Enemy.update (closestWay enemy) dt enemy)
     where
-        closestWay (physics' -> position -> enemyPos) = 
+        closestWay (physics' -> position -> enemyPos) =
             minimumBy (\a b -> comparing (distance enemyPos) a b) $ positions screenBounds
-        positions bounds = 
+        positions bounds =
             [ playerPos + (width bounds * w, height bounds * h)
             | w <- [-1, 0, 1]
             , h <- [-1, 0, 1]

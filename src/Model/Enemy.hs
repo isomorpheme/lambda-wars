@@ -8,7 +8,7 @@ import System.Random
 
 import Graphics.Gloss
 
-import Config (asteroidSize, asteroidFrequency, asteroidSpeed, seekerFrequency, seekerSize)
+import Config
 import Draw
 import Physics
 import Rectangle
@@ -34,7 +34,7 @@ instance HasPhysics Enemy where
 asteroid :: Float -> Float -> Float -> Vector -> Point -> Enemy
 asteroid size rotation rotationSpeed velocity position =
     Enemy
-        { physics = defaultPhysics 
+        { physics = defaultPhysics
             { position
             , velocity
             , localBounds = rectangle 0 $ asteroidBounds size
@@ -48,9 +48,9 @@ asteroidBounds size = tmap (* size) 5
 seeker :: Point -> Enemy
 seeker position =
     Enemy
-        { physics = defaultPhysics 
+        { physics = defaultPhysics
             { position
-            , localBounds = rectangle 0 seekerSize 
+            , localBounds = rectangle 0 seekerSize
             }
         , enemyType = Seeker
         }
@@ -59,20 +59,19 @@ splitAsteroid :: Enemy -> Maybe [Enemy]
 splitAsteroid enemy @ Enemy { physics, enemyType = (Asteroid size rotation rotationSpeed) }
     | size < 4 = Nothing
     | otherwise =
-        Just 
+        Just
             [ smallerAsteroid enemy (-1)
             , smallerAsteroid enemy 1
             ]
     where
         size' = size / 2
         smallerAsteroid enemy direction =
-            enemy 
+            enemy
                 { enemyType = Asteroid size' rotation (direction * rotationSpeed)
                 , physics = physics { localBounds = rectangle 0 $ asteroidBounds size' }
                     & _velocity ((*1.5) . Vector.rotate (direction * pi / 2))
                 }
 splitAsteroid _ = Nothing
-
 
 instance Spawn Enemy where
     spawn bounds avoid = do

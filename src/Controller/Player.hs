@@ -6,8 +6,8 @@ module Controller.Player where
 import Control.Monad.State
 import System.Random
 
-import Config (backfire, bulletSpeed, bulletLifeTime, rotationSpeed, shootDelay, thrustForce)
-import qualified Controller.Particle as Particle
+import Config
+import Controller.Particle as Particle
 import Model.Enemy
 import Model.Particle
 import Model.Player as Player
